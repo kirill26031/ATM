@@ -14,7 +14,7 @@ public:
     CardRepository() : Repository() {}
     ~CardRepository() = 0;
 
-    virtual CardEntity getByCardId(std::array<int, 16> cardId);
+    virtual const CardEntity& getByCardId(std::array<int, 16> cardId);
 };
 
 #endif // CARDREPOSITORY_H

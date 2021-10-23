@@ -12,7 +12,6 @@ class Repository
 public:
     Repository() {}
     virtual ~Repository() = 0;
-//    Repository* getInstance();
     virtual const T& getById(long);
     virtual const std::vector<T>& getAll();
     virtual void setById(long, T&);

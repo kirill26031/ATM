@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.5)
 
 project(ATM VERSION 0.1 LANGUAGES CXX)
 
+#set(QT_DIR "C:/Qt/6.2.0/mingw81_64/lib/cmake/Qt6")
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CMAKE_AUTOUIC ON)
@@ -22,6 +24,8 @@ set(PROJECT_SOURCES
         model/cardentity.h model/cardentity.cpp
         repository/repository.h repository/repository.cpp
         repository/cardrepository.h repository/cardrepository.cpp
+        repository/cardrepositoryimpl.h repository/cardrepositoryimpl.cpp
+        exception/notfoundexception.h exception/notfoundexception.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

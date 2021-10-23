@@ -8,7 +8,7 @@ public:
     Entity(long id);
     ~Entity(){}
     const long& id(){return _id;}
-protected:
+
     long _id;
 };
 
