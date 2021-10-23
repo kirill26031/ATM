@@ -16,9 +16,12 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 
 set(PROJECT_SOURCES
         main.cpp
-        widget.cpp
-        widget.h
-        widget.ui
+        view/widget.cpp view/widget.h view/widget.ui
+        model/entity.h model/entity.cpp
+        model/userentity.h model/userentity.cpp
+        model/cardentity.h model/cardentity.cpp
+        repository/repository.h repository/repository.cpp
+        repository/cardrepository.h repository/cardrepository.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
