@@ -8,11 +8,11 @@
 
 #include "cardrepository.h"
 
-class CardRepositoryImpl : public CardRepository
+class CardRepositoryImpl : virtual public CardRepository
 {
 public:
     CardRepositoryImpl();
-    ~CardRepositoryImpl();
+    ~CardRepositoryImpl(){}
 
     const CardEntity& getById(long);
     const std::vector<CardEntity>& getAll();

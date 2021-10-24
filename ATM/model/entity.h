@@ -7,7 +7,7 @@ class Entity
 public:
     Entity(long id);
     ~Entity(){}
-    const long& id(){return _id;}
+    Entity& operator=(const Entity& other);
 
     long _id;
 };

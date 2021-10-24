@@ -17,6 +17,7 @@ public:
     CardEntity(long id, std::array<int, 16> cardId, std::array<int, 4> pin, long userId, const std::string& name,
         long balance, long minBalance = 0, long maxBalance = LONG_MAX, long* reserveCardId = 0, long* overflowCardId = 0);
     ~CardEntity(){}
+    CardEntity& operator=(const CardEntity&);
 
     std::array<int, 16> _cardId;
     std::array<int, 4> _pin;
@@ -29,7 +30,6 @@ public:
     long* _overflowCardId;
 private:
     CardEntity(const CardEntity&) = delete;
-    void operator=(const CardEntity&) = delete;
 };
 
 #endif // CARDENTITY_H

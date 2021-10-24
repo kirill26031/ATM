@@ -4,7 +4,6 @@ CardRepositoryImpl::CardRepositoryImpl() : _entities(std::vector<CardEntity>())
 {
 }
 
-CardRepositoryImpl::~CardRepositoryImpl(){}
 
 const CardEntity& CardRepositoryImpl::getById(long id)
 {

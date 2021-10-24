@@ -3,6 +3,8 @@
 #include <vector>
 #endif
 
+
+
 #ifndef REPOSITORY_H
 #define REPOSITORY_H
 
@@ -11,11 +13,14 @@ class Repository
 {
 public:
     Repository() {}
-    virtual ~Repository() = 0;
-    virtual const T& getById(long);
-    virtual const std::vector<T>& getAll();
-    virtual void setById(long, T&);
-    virtual void deleteById(long);
+    ~Repository()
+    {
+
+    }
+    virtual const T& getById(long) = 0;
+    virtual const std::vector<T>& getAll() = 0;
+    virtual void setById(long, T&) = 0;
+    virtual void deleteById(long) = 0;
 
 
 };
