@@ -10,3 +10,8 @@ Entity& Entity::operator=(const Entity& other)
     _id = other._id;
     return *this;
 }
+
+Entity::Entity(const Entity& other) : _id(other._id)
+{
+}
+

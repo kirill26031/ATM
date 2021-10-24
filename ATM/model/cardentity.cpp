@@ -18,6 +18,13 @@ CardEntity& CardEntity::operator=(const CardEntity& other)
     _maxBalance = other._maxBalance;
     _reserveCardId = other._reserveCardId;
     _overflowCardId = other._overflowCardId;
-    this->operator=(other);
+    Entity::operator=(other);
     return *this;
+}
+
+CardEntity::CardEntity(const CardEntity& o) : Entity(o) , _cardId(o._cardId), _pin(o._pin), _balance(o._balance),
+    _minBalance(o._minBalance), _maxBalance(o._maxBalance), _reserveCardId(o._reserveCardId), _overflowCardId(o._overflowCardId),
+    _userId(o._userId), _name(o._name)
+{
+
 }

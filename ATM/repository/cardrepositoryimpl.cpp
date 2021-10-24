@@ -2,6 +2,8 @@
 
 CardRepositoryImpl::CardRepositoryImpl() : _entities(std::vector<CardEntity>())
 {
+    _entities.push_back(CardEntity(0, {1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6}, {4, 4, 5, 5}, 0, "Card 1", 300));
+    _entities.push_back(CardEntity(1, {9, 0, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 7, 8}, {4, 5, 4, 5}, 0, "Card 2", 400));
 }
 
 
@@ -26,7 +28,7 @@ void CardRepositoryImpl::setById(long id, CardEntity& card)
         if(c._id == id)
         {
             c = card;
-            break;
+            return;
         }
     }
     throw NotFoundException(std::string("Card with id=").append(std::to_string(id)).append(" not found in CardRepository"));
