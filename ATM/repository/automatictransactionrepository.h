@@ -14,7 +14,7 @@ public:
         for (AutomaticTransactionEntity& entity : _entities)
             if (entity._id == id)
                 return entity;
-        throw NotFoundException(std::string("User with id=")+std::to_string(id)+" not found in UserRepository");
+        throw NotFoundException(std::string("AutomaticTransaction with id=")+std::to_string(id)+" not found in AutomaticTransactionRepository");
     }
 
     virtual void setById(long id, AutomaticTransactionEntity& new_entity) override {
@@ -23,7 +23,7 @@ public:
                 entity = new_entity;
                 return;
             }
-        throw NotFoundException(std::string("User with id=")+std::to_string(id)+" not found in UserRepository");
+        throw NotFoundException(std::string("AutomaticTransaction with id=")+std::to_string(id)+" not found in AutomaticTransactionRepository");
     }
 
     virtual void deleteById(long id) override {
@@ -32,7 +32,7 @@ public:
                 _entities.erase(_entities.begin() + i);
                 return;
             }
-        throw NotFoundException(std::string("User with id=")+std::to_string(id)+" not found in UserRepository");
+        throw NotFoundException(std::string("AutomaticTransaction with id=")+std::to_string(id)+" not found in AutomaticTransactionRepository");
     }
 };
 
