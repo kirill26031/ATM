@@ -13,16 +13,19 @@ class Repository
 {
 public:
     Repository() {}
-    ~Repository()
-    {
+    ~Repository() {}
 
+
+    virtual const std::vector<T>& getAll(){
+        return _entities;
     }
+
     virtual const T& getById(long) = 0;
-    virtual const std::vector<T>& getAll() = 0;
     virtual void setById(long, T&) = 0;
     virtual void deleteById(long) = 0;
 
-
+protected:
+    std::vector<T> _entities;
 };
 
 #endif // REPOSITORY_H

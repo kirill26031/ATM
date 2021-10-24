@@ -1,7 +1,7 @@
-#ifndef STRING
-#define STRING
+//#ifndef STRING
+//#define STRING
 #include <string>
-#endif
+//#endif
 
 #ifndef USERENTITY_H
 #define USERENTITY_H
@@ -16,9 +16,7 @@ public:
     ~UserEntity();
     const std::string& name();
     std::string _name;
-private:
-    UserEntity(const UserEntity&) = delete;
-    void operator=(const UserEntity&) = delete;
+
 };
 
 #endif // USERENTITY_H
