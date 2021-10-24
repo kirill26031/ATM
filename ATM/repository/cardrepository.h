@@ -12,10 +12,7 @@ class CardRepository : public Repository<CardEntity>
 {
 public:
     CardRepository() : Repository<CardEntity>() {}
-    ~CardRepository()
-    {
-
-    }
+    ~CardRepository() {}
 
     virtual const CardEntity& getByCardId(std::array<int, 16> cardId) = 0;
 };

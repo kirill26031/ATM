@@ -19,7 +19,7 @@ public:
     void editPin(std::array<int, 16> cardId, std::array<int, 4> oldPin, std::array<int, 4> newPin);
 
 private:
-    CardRepositoryImpl _repository;
+    CardRepository* _repository;
 };
 
 #endif // CARDSERVICE_H

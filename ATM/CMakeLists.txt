@@ -29,6 +29,11 @@ set(PROJECT_SOURCES
         exception/notfoundexception.h exception/notfoundexception.cpp
         exception/incorrectcardauthinfoexception.h exception/incorrectcardauthinfoexception.cpp
         exception/customexception.h exception/customexception.cpp
+        repository/userrepository.h repository/userrepository.cpp
+        model/transactionentity.h model/transactionentity.cpp
+        model/automatictransactionentity.h model/automatictransactionentity.cpp
+        repository/transactionrepository.h repository/transactionrepository.cpp
+        repository/automatictransactionrepository.h repository/automatictransactionrepository.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
