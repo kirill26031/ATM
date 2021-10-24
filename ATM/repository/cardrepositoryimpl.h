@@ -8,7 +8,7 @@
 
 #include "cardrepository.h"
 
-class CardRepositoryImpl : virtual public CardRepository
+class CardRepositoryImpl : public CardRepository
 {
 public:
     CardRepositoryImpl();

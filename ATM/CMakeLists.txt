@@ -25,7 +25,10 @@ set(PROJECT_SOURCES
         repository/repository.h repository/repository.cpp
         repository/cardrepository.h repository/cardrepository.cpp
         repository/cardrepositoryimpl.h repository/cardrepositoryimpl.cpp
+        service/cardservice.h service/cardservice.cpp
         exception/notfoundexception.h exception/notfoundexception.cpp
+        exception/incorrectcardauthinfoexception.h exception/incorrectcardauthinfoexception.cpp
+        exception/customexception.h exception/customexception.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

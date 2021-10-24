@@ -1,6 +1,6 @@
 #include "notfoundexception.h"
 
-NotFoundException::NotFoundException(const std::string& message) : _message(message)
+NotFoundException::NotFoundException(const std::string& message) : CustomException(message)
 {
 
 }
