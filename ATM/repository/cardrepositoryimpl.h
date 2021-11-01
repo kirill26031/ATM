@@ -10,17 +10,19 @@
 
 class CardRepositoryImpl : public CardRepository
 {
-public:
+private:
     CardRepositoryImpl();
     ~CardRepositoryImpl(){}
-
-    const CardEntity& getById(long);
-    //const std::vector<CardEntity>& getAll();
-    void setById(long, CardEntity&);
-    void deleteById(long);
-    const CardEntity& getByCardId(std::array<int, 16> cardId);
-//private:
-    //std::vector<CardEntity> _entities;
+public:
+    const CardEntity& getById(long) override;
+    const std::vector<CardEntity>& getAll() override;
+    void setById(long, CardEntity&) override;
+    void deleteById(long) override;
+    const CardEntity& getByCardId(std::array<int, 16> cardId) override;
+    static CardRepository* getInstance();
+private:
+    std::vector<CardEntity> _entities;
+    static CardRepository* _rep;
 };
 
 #endif // CARDREPOSITORYIMPL_H

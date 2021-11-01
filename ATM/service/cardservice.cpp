@@ -1,6 +1,6 @@
 #include "cardservice.h"
 
-CardService::CardService() : _repository(new CardRepositoryImpl())
+CardService::CardService() : _repository(CardRepositoryImpl::getInstance())
 {
 
 }

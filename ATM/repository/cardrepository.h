@@ -11,10 +11,11 @@
 class CardRepository : public Repository<CardEntity>
 {
 public:
-    CardRepository() : Repository<CardEntity>() {}
-    ~CardRepository() {}
-
     virtual const CardEntity& getByCardId(std::array<int, 16> cardId) = 0;
+
+protected:
+    CardRepository() : Repository<CardEntity>() {}
+    virtual ~CardRepository() {}
 };
 
 #endif // CARDREPOSITORY_H

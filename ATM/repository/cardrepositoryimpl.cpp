@@ -1,5 +1,7 @@
 #include "cardrepositoryimpl.h"
 
+CardRepository* CardRepositoryImpl::_rep = nullptr;
+
 CardRepositoryImpl::CardRepositoryImpl()
 {
     _entities.push_back(CardEntity(0, {1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6}, {4, 4, 5, 5}, 0, "Card 1", 300));
@@ -16,6 +18,10 @@ const CardEntity& CardRepositoryImpl::getById(long id)
     throw NotFoundException(std::string("Card with id=").append(std::to_string(id)).append(" not found in CardRepository"));
 }
 
+const std::vector<CardEntity>& CardRepositoryImpl::getAll()
+{
+    return _entities;
+}
 
 void CardRepositoryImpl::setById(long id, CardEntity& card)
 {
@@ -46,4 +52,10 @@ const CardEntity& CardRepositoryImpl::getByCardId(std::array<int, 16> cardId)
         if(card._cardId == cardId) return card;
     }
     throw NotFoundException(std::string("Card with requested cardId not found in CardRepository"));
+}
+
+CardRepository* CardRepositoryImpl::getInstance()
+{
+    if(_rep == nullptr) _rep = new CardRepositoryImpl();
+    return _rep;
 }
