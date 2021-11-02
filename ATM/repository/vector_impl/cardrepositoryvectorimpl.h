@@ -12,7 +12,7 @@ public:
     const std::vector<CardEntity>& getAll() override;
     void setById(long, CardEntity&) override;
     void deleteById(long) override;
-    const CardEntity& getByCardId(long long cardId) override;
+    const CardEntity& getByCardId(long long) override;
     static CardRepository* getInstance();
 protected:
     CardRepositoryVectorImpl();

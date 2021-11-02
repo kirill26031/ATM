@@ -45,11 +45,11 @@ void CardRepositoryVectorImpl::deleteById(long id)
     else throw NotFoundException(std::string("Card with id=").append(std::to_string(id)).append(" not found in CardRepository"));
 }
 
-const CardEntity& CardRepositoryVectorImpl::getByCardId(long long cardId)
+const CardEntity& CardRepositoryVectorImpl::getByCardId(long long card_id)
 {
     for(CardEntity& card : _entities)
     {
-        if(card.cardId() == cardId) return card;
+        if(card.cardId() == card_id) return card;
     }
     throw NotFoundException(std::string("Card with requested cardId not found in CardRepository"));
 }

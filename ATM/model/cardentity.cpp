@@ -2,7 +2,7 @@
 
 CardEntity::CardEntity(long id, long long cardId, int pin, long userId, const std::string& name,
     long balance, long minBalance, long maxBalance, long* reserveCardId, long* overflowCardId) : Entity(id),
-    _cardId(cardId), _pin(pin), _userId(userId), _name(name), _balance(balance), _minBalance(minBalance), _reserveCardId(reserveCardId), _overflowCardId(overflowCardId)
+    _card_id(cardId), _pin(pin), _user_id(userId), _name(name), _balance(balance), _min_balance(minBalance), _reserve_card_id(reserveCardId), _overflow_card_id(overflowCardId)
 {}
 
 CardEntity::~CardEntity()
@@ -13,22 +13,22 @@ CardEntity::~CardEntity()
 
 CardEntity& CardEntity::operator=(const CardEntity& other)
 {
-    _cardId = other._cardId;
+    _card_id = other._card_id;
     _pin = other._pin;
-    _userId = other._userId;
+    _user_id = other._user_id;
     _name = other._name;
     _balance = other._balance;
-    _minBalance = other._minBalance;
-    _maxBalance = other._maxBalance;
-    _reserveCardId = other._reserveCardId;
-    _overflowCardId = other._overflowCardId;
+    _min_balance = other._min_balance;
+    _max_balance = other._max_balance;
+    _reserve_card_id = other._reserve_card_id;
+    _overflow_card_id = other._overflow_card_id;
     Entity::operator=(other);
     return *this;
 }
 
-CardEntity::CardEntity(const CardEntity& o) : Entity(o) , _cardId(o._cardId), _pin(o._pin), _balance(o._balance),
-    _minBalance(o._minBalance), _maxBalance(o._maxBalance), _reserveCardId(o._reserveCardId), _overflowCardId(o._overflowCardId),
-    _userId(o._userId), _name(o._name)
+CardEntity::CardEntity(const CardEntity& o) : Entity(o) , _card_id(o._card_id), _pin(o._pin), _balance(o._balance),
+    _min_balance(o._min_balance), _max_balance(o._max_balance), _reserve_card_id(o._reserve_card_id), _overflow_card_id(o._overflow_card_id),
+    _user_id(o._user_id), _name(o._name)
 {
 
 }

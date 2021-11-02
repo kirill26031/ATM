@@ -20,26 +20,26 @@ public:
     CardEntity& operator=(const CardEntity&);
     CardEntity(const CardEntity&);
 
-    const long long& cardId() const {return _cardId;}
+    const long long& cardId() const {return _card_id;}
     const int& pin() const {return _pin;}
-    const long& userId() const {return _userId;}
+    const long& userId() const {return _user_id;}
     const std::string& name() const {return _name;}
     const long& balance() const {return _balance;}
-    const long& minBalance() const {return _minBalance;}
-    const long& maxBalance() const {return _maxBalance;}
-    long* reserveCardId() const {return _reserveCardId;}
-    long* overflowCardId() const {return _overflowCardId;}
+    const long& minBalance() const {return _min_balance;}
+    const long& maxBalance() const {return _max_balance;}
+    long* reserveCardId() const {return _reserve_card_id;}
+    long* overflowCardId() const {return _overflow_card_id;}
 
 private:
-    long long _cardId;
+    long long _card_id;
     int _pin;
-    long _userId;
+    long _user_id;
     std::string _name;
     long _balance;
-    long _minBalance;
-    long _maxBalance;
-    long* _reserveCardId;
-    long* _overflowCardId;
+    long _min_balance;
+    long _max_balance;
+    long* _reserve_card_id;
+    long* _overflow_card_id;
 
 
 };
