@@ -1,15 +1,15 @@
-#include "cardrepositoryimpl.h"
+#include "cardrepositoryvectorimpl.h"
 
-CardRepository* CardRepositoryImpl::_rep = nullptr;
+CardRepository* CardRepositoryVectorImpl::_rep = nullptr;
 
-CardRepositoryImpl::CardRepositoryImpl()
+CardRepositoryVectorImpl::CardRepositoryVectorImpl()
 {
     _entities.push_back(CardEntity(0, {1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6}, {4, 4, 5, 5}, 0, "Card 1", 300));
     _entities.push_back(CardEntity(1, {9, 0, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 7, 8}, {4, 5, 4, 5}, 0, "Card 2", 400));
 }
 
 
-const CardEntity& CardRepositoryImpl::getById(long id)
+const CardEntity& CardRepositoryVectorImpl::getById(long id)
 {
     for(CardEntity& card : _entities)
     {
@@ -18,12 +18,12 @@ const CardEntity& CardRepositoryImpl::getById(long id)
     throw NotFoundException(std::string("Card with id=").append(std::to_string(id)).append(" not found in CardRepository"));
 }
 
-const std::vector<CardEntity>& CardRepositoryImpl::getAll()
+const std::vector<CardEntity>& CardRepositoryVectorImpl::getAll()
 {
     return _entities;
 }
 
-void CardRepositoryImpl::setById(long id, CardEntity& card)
+void CardRepositoryVectorImpl::setById(long id, CardEntity& card)
 {
     for(CardEntity& c : _entities)
     {
@@ -36,7 +36,7 @@ void CardRepositoryImpl::setById(long id, CardEntity& card)
     throw NotFoundException(std::string("Card with id=").append(std::to_string(id)).append(" not found in CardRepository"));
 }
 
-void CardRepositoryImpl::deleteById(long id)
+void CardRepositoryVectorImpl::deleteById(long id)
 {
     if(id >= 0 && id < _entities.size())
     {
@@ -45,7 +45,7 @@ void CardRepositoryImpl::deleteById(long id)
     else throw NotFoundException(std::string("Card with id=").append(std::to_string(id)).append(" not found in CardRepository"));
 }
 
-const CardEntity& CardRepositoryImpl::getByCardId(std::array<int, 16> cardId)
+const CardEntity& CardRepositoryVectorImpl::getByCardId(std::array<int, 16> cardId)
 {
     for(CardEntity& card : _entities)
     {
@@ -54,8 +54,8 @@ const CardEntity& CardRepositoryImpl::getByCardId(std::array<int, 16> cardId)
     throw NotFoundException(std::string("Card with requested cardId not found in CardRepository"));
 }
 
-CardRepository* CardRepositoryImpl::getInstance()
+CardRepository* CardRepositoryVectorImpl::getInstance()
 {
-    if(_rep == nullptr) _rep = new CardRepositoryImpl();
+    if(_rep == nullptr) _rep = new CardRepositoryVectorImpl();
     return _rep;
 }

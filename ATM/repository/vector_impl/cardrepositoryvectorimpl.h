@@ -1,18 +1,14 @@
-#ifndef NOT_FOUND_EXCEPTION
-#define NOT_FOUND_EXCEPTION
+#ifndef CARDREPOSITORYVECTORIMPL_H
+#define CARDREPOSITORYVECTORIMPL_H
+
 #include "exception/notfoundexception.h"
-#endif
+#include "repository/cardrepository.h"
 
-#ifndef CARDREPOSITORYIMPL_H
-#define CARDREPOSITORYIMPL_H
-
-#include "cardrepository.h"
-
-class CardRepositoryImpl : public CardRepository
+class CardRepositoryVectorImpl : public CardRepository
 {
 private:
-    CardRepositoryImpl();
-    ~CardRepositoryImpl(){}
+    CardRepositoryVectorImpl();
+    ~CardRepositoryVectorImpl(){}
 public:
     const CardEntity& getById(long) override;
     const std::vector<CardEntity>& getAll() override;
@@ -25,4 +21,4 @@ private:
     static CardRepository* _rep;
 };
 
-#endif // CARDREPOSITORYIMPL_H
+#endif // CARDREPOSITORYVECTORIMPL_H

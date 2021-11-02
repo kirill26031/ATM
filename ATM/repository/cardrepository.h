@@ -1,11 +1,7 @@
-#ifndef CARD_ENTITY
-#define CARD_ENTITY
-#include "model/cardentity.h"
-#endif
-
 #ifndef CARDREPOSITORY_H
 #define CARDREPOSITORY_H
 
+#include "model/cardentity.h"
 #include "repository.h"
 
 class CardRepository : public Repository<CardEntity>

@@ -24,7 +24,7 @@ set(PROJECT_SOURCES
         model/cardentity.h model/cardentity.cpp
         repository/repository.h repository/repository.cpp
         repository/cardrepository.h repository/cardrepository.cpp
-        repository/cardrepositoryimpl.h repository/cardrepositoryimpl.cpp
+        repository/vector_impl/cardrepositoryvectorimpl.h repository/vector_impl/cardrepositoryvectorimpl.cpp
         service/cardservice.h service/cardservice.cpp
         exception/notfoundexception.h exception/notfoundexception.cpp
         exception/incorrectcardauthinfoexception.h exception/incorrectcardauthinfoexception.cpp

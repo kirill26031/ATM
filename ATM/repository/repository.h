@@ -1,8 +1,7 @@
-#include <vector>
-
-
 #ifndef REPOSITORY_H
 #define REPOSITORY_H
+
+#include <vector>
 
 template <typename T>
 class Repository
