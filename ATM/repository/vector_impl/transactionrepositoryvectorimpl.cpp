@@ -9,7 +9,7 @@ const TransactionEntity& TransactionRepositoryVectorImpl::getById(long id)
 {
     for(TransactionEntity& e : _entities)
     {
-        if(e._id == id) return e;
+        if(e.id() == id) return e;
     }
     throw NotFoundException(std::string("Transaction with id=").append(std::to_string(id)).append(" not found in TransactionRepository"));
 }
@@ -23,7 +23,7 @@ void TransactionRepositoryVectorImpl::setById(long id, TransactionEntity& Transa
 {
     for(TransactionEntity& e : _entities)
     {
-        if(e._id == id)
+        if(e.id() == id)
         {
             e = Transaction;
             return;

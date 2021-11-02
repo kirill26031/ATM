@@ -13,7 +13,7 @@ protected:
     CardService();
     ~CardService(){}
 private:
-    CardRepository* _cardRep;
+    CardRepository* _card_rep;
     static CardService* _service;
 };
 

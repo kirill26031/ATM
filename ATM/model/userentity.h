@@ -14,7 +14,8 @@ class UserEntity : public Entity
 public:
     UserEntity(long id, const std::string& name);
     ~UserEntity();
-    const std::string& name();
+    const std::string& name() const {return _name;}
+private:
     std::string _name;
 
 };

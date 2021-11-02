@@ -9,7 +9,7 @@ const UserEntity& UserRepositoryVectorImpl::getById(long id)
 {
     for(UserEntity& e : _entities)
     {
-        if(e._id == id) return e;
+        if(e.id() == id) return e;
     }
     throw NotFoundException(std::string("User with id=").append(std::to_string(id)).append(" not found in UserRepository"));
 }
@@ -23,7 +23,7 @@ void UserRepositoryVectorImpl::setById(long id, UserEntity& user)
 {
     for(UserEntity& e : _entities)
     {
-        if(e._id == id)
+        if(e.id() == id)
         {
             e = user;
             return;
