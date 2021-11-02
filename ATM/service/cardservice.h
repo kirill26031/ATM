@@ -10,7 +10,7 @@ public:
     CardService();
     ~CardService(){}
 
-    void editPin(std::array<int, 16> cardId, std::array<int, 4> oldPin, std::array<int, 4> newPin);
+    void editPin(long long cardId, int oldPin, int newPin);
 
 private:
     CardRepository* _repository;

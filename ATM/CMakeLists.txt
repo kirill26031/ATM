@@ -34,6 +34,9 @@ set(PROJECT_SOURCES
         model/automatictransactionentity.h model/automatictransactionentity.cpp
         repository/transactionrepository.h repository/transactionrepository.cpp
         repository/automatictransactionrepository.h repository/automatictransactionrepository.cpp
+        repository/vector_impl/userrepositoryvectorimpl.h repository/vector_impl/userrepositoryvectorimpl.cpp
+        repository/vector_impl/transactionrepositoryvectorimpl.h repository/vector_impl/transactionrepositoryvectorimpl.cpp
+        repository/vector_impl/automatictransactionrepositoryvectorimpl.h repository/vector_impl/automatictransactionrepositoryvectorimpl.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

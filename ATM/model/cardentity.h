@@ -14,14 +14,14 @@
 class CardEntity : public Entity
 {
 public:
-    CardEntity(long id, std::array<int, 16> cardId, std::array<int, 4> pin, long userId, const std::string& name,
+    CardEntity(long id, long long cardId, int pin, long userId, const std::string& name,
         long balance, long minBalance = 0, long maxBalance = LONG_MAX, long* reserveCardId = 0, long* overflowCardId = 0);
     ~CardEntity(){}
     CardEntity& operator=(const CardEntity&);
     CardEntity(const CardEntity&);
 
-    std::array<int, 16> _cardId;
-    std::array<int, 4> _pin;
+    long long _cardId;
+    int _pin;
     long _userId;
     std::string _name;
     long _balance;

@@ -5,7 +5,7 @@ CardService::CardService() : _repository(CardRepositoryVectorImpl::getInstance()
 
 }
 
-void CardService::editPin(std::array<int, 16> cardId, std::array<int, 4> oldPin, std::array<int, 4> newPin)
+void CardService::editPin(long long cardId, int oldPin, int newPin)
 {
     try {
         const CardEntity& e = _repository->getByCardId(cardId);
