@@ -3,8 +3,12 @@
 CardEntity::CardEntity(long id, long long cardId, int pin, long userId, const std::string& name,
     long balance, long minBalance, long maxBalance, long* reserveCardId, long* overflowCardId) : Entity(id),
     _cardId(cardId), _pin(pin), _userId(userId), _name(name), _balance(balance), _minBalance(minBalance), _reserveCardId(reserveCardId), _overflowCardId(overflowCardId)
-{
+{}
 
+CardEntity::~CardEntity()
+{
+//    if(_reserveCardId != nullptr) delete _reserveCardId;
+//    if(_overflowCardId != nullptr) delete _overflowCardId;
 }
 
 CardEntity& CardEntity::operator=(const CardEntity& other)

@@ -10,6 +10,8 @@ public:
     Entity& operator=(const Entity& other);
     Entity(const Entity& other);
 
+    const long& id() const {return _id;}
+protected:
     long _id;
 };
 
