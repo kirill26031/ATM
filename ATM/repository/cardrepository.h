@@ -1,20 +1,17 @@
-#ifndef CARD_ENTITY
-#define CARD_ENTITY
-#include "model/cardentity.h"
-#endif
-
 #ifndef CARDREPOSITORY_H
 #define CARDREPOSITORY_H
 
+#include "model/cardentity.h"
 #include "repository.h"
 
 class CardRepository : public Repository<CardEntity>
 {
 public:
-    CardRepository() : Repository<CardEntity>() {}
-    ~CardRepository() {}
+    virtual const CardEntity& getByCardId(long long cardId) = 0;
 
-    virtual const CardEntity& getByCardId(std::array<int, 16> cardId) = 0;
+protected:
+    CardRepository() : Repository<CardEntity>() {}
+    virtual ~CardRepository() {}
 };
 
 #endif // CARDREPOSITORY_H

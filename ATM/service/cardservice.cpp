@@ -1,19 +1,21 @@
 #include "cardservice.h"
 
-CardService::CardService() : _repository(new CardRepositoryImpl())
+CardService* CardService::_service = nullptr;
+
+CardService::CardService() : _cardRep(CardRepositoryVectorImpl::getInstance())
 {
 
 }
 
-void CardService::editPin(std::array<int, 16> cardId, std::array<int, 4> oldPin, std::array<int, 4> newPin)
+void CardService::editPin(long long cardId, int oldPin, int newPin)
 {
     try {
-        const CardEntity& e = _repository->getByCardId(cardId);
+        const CardEntity& e = _cardRep->getByCardId(cardId);
         if(e._pin == oldPin)
         {
             CardEntity newCard = e;
             newCard._pin = newPin;
-            _repository->setById(e._id, newCard);
+            _cardRep->setById(e._id, newCard);
         } else {
             throw new IncorrectCardAuthInfoException("Incorrect card authentication exception while trying to change pin");
         }
@@ -22,4 +24,10 @@ void CardService::editPin(std::array<int, 16> cardId, std::array<int, 4> oldPin,
     {
         int x = 2+ 2;
     }
+}
+
+CardService* CardService::getInstance()
+{
+    if(_service == nullptr) _service = new CardService();
+    return _service;
 }
