@@ -5,8 +5,8 @@
 
 int main(int argc, char *argv[])
 {
-    CardService cs;
-    cs.editPin(1234567890123456, 4455, 4444);
+    CardService* cs = CardService::getInstance();
+    cs->editPin(1234567890123456, 4455, 4444);
 
     QApplication a(argc, argv);
     Widget w;

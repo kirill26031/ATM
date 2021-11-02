@@ -7,13 +7,14 @@
 class CardService
 {
 public:
+    void editPin(long long cardId, int oldPin, int newPin);
+    static CardService* getInstance();
+protected:
     CardService();
     ~CardService(){}
-
-    void editPin(long long cardId, int oldPin, int newPin);
-
 private:
-    CardRepository* _repository;
+    CardRepository* _cardRep;
+    static CardService* _service;
 };
 
 #endif // CARDSERVICE_H
