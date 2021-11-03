@@ -25,8 +25,8 @@ public:
     const long& userId() const {return _user_id;}
     const std::string& name() const {return _name;}
     const long& balance() const {return _balance;}
-    long* minBalance() const {return _min_balance;}
-    long* maxBalance() const {return _max_balance;}
+    unsigned long* minBalance() const {return _min_balance;}
+    unsigned long* maxBalance() const {return _max_balance;}
     long* reserveCardId() const {return _reserve_card_id;}
     long* overflowCardId() const {return _overflow_card_id;}
 
@@ -36,8 +36,8 @@ private:
     long _user_id;
     std::string _name;
     long _balance;
-    long* _min_balance;
-    long* _max_balance;
+    unsigned long* _min_balance;
+    unsigned long* _max_balance;
     long* _reserve_card_id;
     long* _overflow_card_id;
 

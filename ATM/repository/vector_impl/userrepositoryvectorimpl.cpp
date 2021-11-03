@@ -46,3 +46,12 @@ UserRepository* UserRepositoryVectorImpl::getInstance()
     if(_rep == nullptr) _rep = new UserRepositoryVectorImpl();
     return _rep;
 }
+
+bool UserRepositoryVectorImpl::existsById(long id)
+{
+    for(UserEntity& e : _entities)
+    {
+        if(e.id() == id) return true;
+    }
+    return false;
+}

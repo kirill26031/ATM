@@ -37,7 +37,8 @@ set(PROJECT_SOURCES
         repository/vector_impl/userrepositoryvectorimpl.h repository/vector_impl/userrepositoryvectorimpl.cpp
         repository/vector_impl/transactionrepositoryvectorimpl.h repository/vector_impl/transactionrepositoryvectorimpl.cpp
         repository/vector_impl/automatictransactionrepositoryvectorimpl.h repository/vector_impl/automatictransactionrepositoryvectorimpl.cpp
-)
+        util/utils.h
+        )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(ATM

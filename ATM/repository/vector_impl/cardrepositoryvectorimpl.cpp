@@ -59,3 +59,12 @@ CardRepository* CardRepositoryVectorImpl::getInstance()
     if(_rep == nullptr) _rep = new CardRepositoryVectorImpl();
     return _rep;
 }
+
+bool CardRepositoryVectorImpl::existsById(long id)
+{
+    for(CardEntity& e : _entities)
+    {
+        if(e.id() == id) return true;
+    }
+    return false;
+}

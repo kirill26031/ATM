@@ -46,3 +46,12 @@ TransactionRepository* TransactionRepositoryVectorImpl::getInstance()
     if(_rep == nullptr) _rep = new TransactionRepositoryVectorImpl();
     return _rep;
 }
+
+bool TransactionRepositoryVectorImpl::existsById(long id)
+{
+    for(TransactionEntity& e : _entities)
+    {
+        if(e.id() == id) return true;
+    }
+    return false;
+}

@@ -1,11 +1,11 @@
 #include "cardentity.h"
 
 CardEntity::CardEntity(long id, long long cardId, int pin, long userId, const std::string& name,
-    long balance, long* minBalance, long* maxBalance, long* reserveCardId, long* overflowCardId) : Entity(id),
+    long balance, unsigned long* minBalance, unsigned long* maxBalance, long* reserveCardId, long* overflowCardId) : Entity(id),
     _card_id(cardId), _pin(pin), _user_id(userId), _name(name), _balance(balance), _min_balance(minBalance), _max_balance(maxBalance), _reserve_card_id(reserveCardId), _overflow_card_id(overflowCardId)
 {
-    if(minBalance != nullptr) _min_balance = new long(*minBalance);
-    if(maxBalance != nullptr) _max_balance = new long(*maxBalance);
+    if(minBalance != nullptr) _min_balance = new unsigned long(*minBalance);
+    if(maxBalance != nullptr) _max_balance = new unsigned long(*maxBalance);
     if(reserveCardId != nullptr) _reserve_card_id = new long(*reserveCardId);
     if(overflowCardId != nullptr) _overflow_card_id = new long(*overflowCardId);
 }

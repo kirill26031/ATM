@@ -46,3 +46,12 @@ AutomaticTransactionRepository* AutomaticTransactionRepositoryVectorImpl::getIns
     if(_rep == nullptr) _rep = new AutomaticTransactionRepositoryVectorImpl();
     return _rep;
 }
+
+bool AutomaticTransactionRepositoryVectorImpl::existsById(long id)
+{
+    for(AutomaticTransactionEntity& e : _entities)
+    {
+        if(e.id() == id) return true;
+    }
+    return false;
+}
