@@ -15,7 +15,7 @@ class CardEntity : public Entity
 {
 public:
     CardEntity(long id, long long cardId, int pin, long userId, const std::string& name,
-        long balance, long* minBalance = 0, long* maxBalance = 0, long* reserveCardId = 0, long* overflowCardId = 0);
+        long balance, unsigned long* minBalance = 0, unsigned long* maxBalance = 0, long* reserveCardId = 0, long* overflowCardId = 0);
     ~CardEntity();
     CardEntity& operator=(const CardEntity&);
     CardEntity(const CardEntity&);

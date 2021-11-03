@@ -55,15 +55,35 @@ const CardEntity& CardService::getCardById(long id)
     return _card_rep->getById(id);
 }
 
-void CardService::setAsReserveCard(long long protected_card_id, long long reserve_card_id, long min_limit)
+void CardService::setAsReserveCard(long long protected_card_id, long long reserve_card_id, unsigned long min_limit)
 {
-//    if(cardIdExists(protected_card_id) && cardIdExists(reserve_card_id))
-//    {
-
-//    }
+    if(cardIdExists(protected_card_id) && cardIdExists(reserve_card_id))
+    {
+        CardEntity pr = _card_rep->getById(protected_card_id);
+        const CardEntity& reserve = _card_rep->getByCardId(reserve_card_id);
+        CardEntity updated_protected_card(pr.id(), pr.cardId(), pr.pin(), pr.userId(), pr.name(), pr.balance(),
+                                          new unsigned long(min_limit), pr.maxBalance(), new long(reserve.id()));
+        _card_rep->setById(pr.id(), updated_protected_card);
+    }
+    else
+    {
+        throw NotFoundException("One of card numbers provided to CardService::setAsReserveCard was incorrect");
+    }
 }
 
-void CardService::setAsOverflowCard(long long from_card_id, long long from_to_id, long max_limit)
+void CardService::setAsOverflowCard(long long from_card_id, long long to_card_id, unsigned long max_limit)
 {
-
+    if(cardIdExists(from_card_id) && cardIdExists(to_card_id))
+    {
+        CardEntity ov = _card_rep->getById(from_card_id);
+        const CardEntity& target = _card_rep->getByCardId(to_card_id);
+        CardEntity target_card(ov.id(), ov.cardId(), ov.pin(), ov.userId(), ov.name(), ov.balance(),
+                               ov.minBalance(), new unsigned long(max_limit), ov.reserveCardId(),
+                               new long(target.id()));
+        _card_rep->setById(target_card.id(), target_card);
+    }
+    else
+    {
+        throw NotFoundException("One of card numbers provided to CardService::setAsReserveCard was incorrect");
+    }
 }
