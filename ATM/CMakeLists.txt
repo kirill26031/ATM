@@ -39,6 +39,7 @@ set(PROJECT_SOURCES
         repository/vector_impl/automatictransactionrepositoryvectorimpl.h repository/vector_impl/automatictransactionrepositoryvectorimpl.cpp
         service/transactionservice.h service/transactionservice.cpp
         service/globalservice.h service/globalservice.cpp
+        view/qcardnumberedit.h view/qcardnumberedit.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
