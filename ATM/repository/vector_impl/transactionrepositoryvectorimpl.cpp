@@ -29,7 +29,9 @@ void TransactionRepositoryVectorImpl::setById(long id, TransactionEntity& Transa
             return;
         }
     }
-    throw NotFoundException(std::string("Transaction with id=").append(std::to_string(id)).append(" not found in TransactionRepository"));
+
+    _entities.push_back(Transaction);
+    //throw NotFoundException(std::string("Transaction with id=").append(std::to_string(id)).append(" not found in TransactionRepository"));
 }
 
 void TransactionRepositoryVectorImpl::deleteById(long id)

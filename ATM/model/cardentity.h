@@ -11,6 +11,7 @@
 
 #include "entity.h"
 
+//mutable entity
 class CardEntity : public Entity
 {
 public:
@@ -20,13 +21,13 @@ public:
     CardEntity& operator=(const CardEntity&);
     CardEntity(const CardEntity&);
 
-    const long long& cardId() const {return _card_id;}
-    const int& pin() const {return _pin;}
-    const long& userId() const {return _user_id;}
-    const std::string& name() const {return _name;}
-    const long& balance() const {return _balance;}
-    const long& minBalance() const {return _min_balance;}
-    const long& maxBalance() const {return _max_balance;}
+    long long& cardId()  {return _card_id;}
+    int& pin()  {return _pin;}
+    long& userId()  {return _user_id;}
+    std::string& name()  {return _name;}
+    long& balance()  {return _balance;}
+    long& minBalance()  {return _min_balance;}
+    long& maxBalance()  {return _max_balance;}
     long* reserveCardId() const {return _reserve_card_id;}
     long* overflowCardId() const {return _overflow_card_id;}
 

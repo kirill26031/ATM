@@ -29,7 +29,9 @@ void AutomaticTransactionRepositoryVectorImpl::setById(long id, AutomaticTransac
             return;
         }
     }
-    throw NotFoundException(std::string("AutomaticTransaction with id=").append(std::to_string(id)).append(" not found in AutomaticTransactionRepository"));
+
+    _entities.push_back(AutomaticTransaction);
+    //throw NotFoundException(std::string("AutomaticTransaction with id=").append(std::to_string(id)).append(" not found in AutomaticTransactionRepository"));
 }
 
 void AutomaticTransactionRepositoryVectorImpl::deleteById(long id)

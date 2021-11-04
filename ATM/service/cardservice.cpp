@@ -7,7 +7,9 @@ CardService::CardService() : _card_rep(CardRepositoryVectorImpl::getInstance())
 
 }
 
-void CardService::editPin(long long cardId, int oldPin, int newPin)
+//Transfered to GlobalService class
+
+/*void CardService::editPin(long long cardId, int oldPin, int newPin)
 {
     try {
         const CardEntity& e = _card_rep->getByCardId(cardId);
@@ -24,7 +26,7 @@ void CardService::editPin(long long cardId, int oldPin, int newPin)
     {
         int x = 2+ 2;
     }
-}
+}*/
 
 CardService* CardService::getInstance()
 {
