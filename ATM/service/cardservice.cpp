@@ -1,5 +1,6 @@
 #include "cardservice.h"
 #include "util/utils.h"
+#include "exception/logicconflictexception.h"
 
 CardService* CardService::_service = nullptr;
 
@@ -31,16 +32,22 @@ bool CardService::cardIdExists(long long card_id)
 {
     try {
         const CardEntity& card = _card_rep->getByCardId(card_id);
+        return true;
     }  catch (const NotFoundException& e) {
         return false;
     }
-    return true;
+
 }
 
 bool CardService::areCardCredentialsCorrect(long long card_id, int pin)
 {
-    const CardEntity& card = _card_rep->getByCardId(card_id);
-    return card.pin() == pin;
+    try {
+        const CardEntity& card = _card_rep->getByCardId(card_id);
+        return card.pin() == pin;
+    }  catch (const NotFoundException e) {
+        return false;
+    }
+
 }
 
 long CardService::generateCard(long user_id, const std::string& name)
@@ -59,8 +66,9 @@ void CardService::setAsReserveCard(long long protected_card_id, long long reserv
 {
     if(cardIdExists(protected_card_id) && cardIdExists(reserve_card_id))
     {
-        CardEntity pr = _card_rep->getById(protected_card_id);
+        const CardEntity& pr = _card_rep->getByCardId(protected_card_id);
         const CardEntity& reserve = _card_rep->getByCardId(reserve_card_id);
+        if(pr.balance() <= min_limit) throw LogicConflictException("You can't set minimum limit below it's current balance");
         CardEntity updated_protected_card(pr.id(), pr.cardId(), pr.pin(), pr.userId(), pr.name(), pr.balance(),
                                           new unsigned long(min_limit), pr.maxBalance(), new long(reserve.id()));
         _card_rep->setById(pr.id(), updated_protected_card);
@@ -75,8 +83,9 @@ void CardService::setAsOverflowCard(long long from_card_id, long long to_card_id
 {
     if(cardIdExists(from_card_id) && cardIdExists(to_card_id))
     {
-        CardEntity ov = _card_rep->getById(from_card_id);
+        const CardEntity& ov = _card_rep->getByCardId(from_card_id);
         const CardEntity& target = _card_rep->getByCardId(to_card_id);
+        if(ov.balance() >= max_limit) throw LogicConflictException("You can't set maximum limit above it's current balance");
         CardEntity target_card(ov.id(), ov.cardId(), ov.pin(), ov.userId(), ov.name(), ov.balance(),
                                ov.minBalance(), new unsigned long(max_limit), ov.reserveCardId(),
                                new long(target.id()));

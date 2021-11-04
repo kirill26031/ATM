@@ -25,10 +25,10 @@ CardEntity& CardEntity::operator=(const CardEntity& other)
     _user_id = other._user_id;
     _name = other._name;
     _balance = other._balance;
-    _min_balance = other._min_balance;
-    _max_balance = other._max_balance;
-    _reserve_card_id = other._reserve_card_id;
-    _overflow_card_id = other._overflow_card_id;
+    if(other._min_balance != nullptr) _min_balance = new unsigned long(*other._min_balance);
+    if(other._max_balance != nullptr) _max_balance = new unsigned long(*other._max_balance);
+    if(other._reserve_card_id != nullptr) _reserve_card_id = new long(*other._reserve_card_id);
+    if(other._overflow_card_id != nullptr) _overflow_card_id = new long(*other._overflow_card_id);
     Entity::operator=(other);
     return *this;
 }
