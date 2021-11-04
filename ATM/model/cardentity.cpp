@@ -1,11 +1,11 @@
 #include "cardentity.h"
 
 CardEntity::CardEntity(long id, long long cardId, int pin, long userId, const std::string& name,
-    long balance, unsigned long* minBalance, unsigned long* maxBalance, long* reserveCardId, long* overflowCardId) : Entity(id),
+    long balance, unsigned long minBalance, unsigned long maxBalance, long* reserveCardId, long* overflowCardId) : Entity(id),
     _card_id(cardId), _pin(pin), _user_id(userId), _name(name), _balance(balance), _min_balance(minBalance), _max_balance(maxBalance), _reserve_card_id(reserveCardId), _overflow_card_id(overflowCardId)
 {
-    if(minBalance != nullptr) _min_balance = new unsigned long(*minBalance);
-    if(maxBalance != nullptr) _max_balance = new unsigned long(*maxBalance);
+//    if(minBalance != nullptr) _min_balance = new unsigned long(*minBalance);
+//    if(maxBalance != nullptr) _max_balance = new unsigned long(*maxBalance);
     if(reserveCardId != nullptr) _reserve_card_id = new long(*reserveCardId);
     if(overflowCardId != nullptr) _overflow_card_id = new long(*overflowCardId);
 }
@@ -14,8 +14,8 @@ CardEntity::~CardEntity()
 {
     if(_reserve_card_id != nullptr) delete _reserve_card_id;
     if(_overflow_card_id != nullptr) delete _overflow_card_id;
-    if(_min_balance != nullptr) delete _min_balance;
-    if(_max_balance != nullptr) delete _max_balance;
+//    if(_min_balance != nullptr) delete _min_balance;
+//    if(_max_balance != nullptr) delete _max_balance;
 }
 
 CardEntity& CardEntity::operator=(const CardEntity& other)
@@ -25,8 +25,10 @@ CardEntity& CardEntity::operator=(const CardEntity& other)
     _user_id = other._user_id;
     _name = other._name;
     _balance = other._balance;
-    if(other._min_balance != nullptr) _min_balance = new unsigned long(*other._min_balance);
-    if(other._max_balance != nullptr) _max_balance = new unsigned long(*other._max_balance);
+//    if(other._min_balance != nullptr) _min_balance = new unsigned long(*other._min_balance);
+//    if(other._max_balance != nullptr) _max_balance = new unsigned long(*other._max_balance);
+    _min_balance = other._min_balance;
+    _max_balance = other._max_balance;
     if(other._reserve_card_id != nullptr) _reserve_card_id = new long(*other._reserve_card_id);
     if(other._overflow_card_id != nullptr) _overflow_card_id = new long(*other._overflow_card_id);
     Entity::operator=(other);

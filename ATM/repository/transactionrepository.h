@@ -5,7 +5,7 @@
 #include "repository.h"
 #include    <exception/notfoundexception.h>
 
-class TransactionRepository : Repository<TransactionEntity>
+class TransactionRepository : public Repository<TransactionEntity>
 {
 //public:
 protected:

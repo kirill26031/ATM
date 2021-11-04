@@ -29,7 +29,10 @@ void UserRepositoryVectorImpl::setById(long id, UserEntity& user)
             return;
         }
     }
-    throw NotFoundException(std::string("User with id=").append(std::to_string(id)).append(" not found in UserRepository"));
+
+    _entities.push_back(user);
+
+    //throw NotFoundException(std::string("User with id=").append(std::to_string(id)).append(" not found in UserRepository"));
 }
 
 void UserRepositoryVectorImpl::deleteById(long id)
