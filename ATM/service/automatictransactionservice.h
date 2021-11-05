@@ -7,10 +7,12 @@
 #include "repository/vector_impl/automatictransactionrepositoryvectorimpl.h"
 #include "repository/vector_impl/transactionrepositoryvectorimpl.h"
 #include "repository/vector_impl/cardrepositoryvectorimpl.h"
-#include "util/utils.h"
-#include <ctime>
 #include "transactionservice.h"
 #include "exception/notenoughmoney.h"
+#include <set>
+#include <functional>
+#include "util/utils.h"
+#include <ctime>
 
 class AutomaticTransactionService
 {
@@ -39,6 +41,18 @@ private:
     CardRepository* _card_rep;
     TransactionService* _transaction_service;
     static AutomaticTransactionService* _service;
+
+    struct ATE
+    { // AutomaticTransactionEntity
+        long _id;
+        long long _last_executed_time;
+        long _time_period;
+        long _amount;
+        long _part; // of payment used for 1 transaction
+        long _from_card_id;
+        long _to_card_id;
+        bool _aborted;
+    };
 };
 
 #endif // AUTOMATICTRANSACTIONSERVICE_H
