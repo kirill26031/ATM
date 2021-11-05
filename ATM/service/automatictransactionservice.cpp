@@ -7,3 +7,4 @@ AutomaticTransactionService::AutomaticTransactionService() : _transaction_rep(Tr
 {
 
 }
+

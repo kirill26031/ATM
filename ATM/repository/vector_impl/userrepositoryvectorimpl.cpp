@@ -2,7 +2,9 @@
 
 UserRepository* UserRepositoryVectorImpl::_rep = nullptr;
 
-UserRepositoryVectorImpl::UserRepositoryVectorImpl() : UserRepository() {}
+UserRepositoryVectorImpl::UserRepositoryVectorImpl() : UserRepository() {
+    _entities.push_back(UserEntity(0, "Bill Crapet"));
+}
 
 
 const UserEntity& UserRepositoryVectorImpl::getById(long id)
