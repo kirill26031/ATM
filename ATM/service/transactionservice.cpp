@@ -46,7 +46,7 @@ bool TransactionService::GetMoney(long amount, long from_card_id, long to_card_i
                 //TODO: add transaction
                 if(dependant){
                     TransactionEntity dep_tr(generateId(), from_card_id, to_card_id,
-                                             from_card.balance()-from_card.minBalance(), 2, nullptr);
+                                             amount, 2, nullptr);
                     _transaction_rep->setById(dep_tr.id(), dep_tr);
                 }
             }
@@ -93,7 +93,7 @@ bool TransactionService::AddMoney(long amount, long from_card_id, long to_card_i
                 //TODO: transaction
                 if(dependant){
                     TransactionEntity dep_tr(generateId(), from_card_id, to_card_id,
-                                             to_card.maxBalance()-to_card.balance(), 3, nullptr);
+                                             amount, 3, nullptr);
                     _transaction_rep->setById(dep_tr.id(), dep_tr);
                 }
             }
