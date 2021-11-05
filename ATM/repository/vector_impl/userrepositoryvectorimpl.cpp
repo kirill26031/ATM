@@ -2,7 +2,9 @@
 
 UserRepository* UserRepositoryVectorImpl::_rep = nullptr;
 
-UserRepositoryVectorImpl::UserRepositoryVectorImpl() : UserRepository() {}
+UserRepositoryVectorImpl::UserRepositoryVectorImpl() : UserRepository() {
+    _entities.push_back(UserEntity(0, "Bill Crapet"));
+}
 
 
 const UserEntity& UserRepositoryVectorImpl::getById(long id)
@@ -29,7 +31,10 @@ void UserRepositoryVectorImpl::setById(long id, UserEntity& user)
             return;
         }
     }
-    throw NotFoundException(std::string("User with id=").append(std::to_string(id)).append(" not found in UserRepository"));
+
+    _entities.push_back(user);
+
+    //throw NotFoundException(std::string("User with id=").append(std::to_string(id)).append(" not found in UserRepository"));
 }
 
 void UserRepositoryVectorImpl::deleteById(long id)
@@ -45,4 +50,13 @@ UserRepository* UserRepositoryVectorImpl::getInstance()
 {
     if(_rep == nullptr) _rep = new UserRepositoryVectorImpl();
     return _rep;
+}
+
+bool UserRepositoryVectorImpl::existsById(long id)
+{
+    for(UserEntity& e : _entities)
+    {
+        if(e.id() == id) return true;
+    }
+    return false;
 }

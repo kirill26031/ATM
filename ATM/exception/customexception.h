@@ -13,6 +13,8 @@ public:
     CustomException(const std::string&);
     ~CustomException(){}
     std::string _message;
+
+
 };
 
 #endif // CUSTOMEXCEPTION_H

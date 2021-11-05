@@ -33,7 +33,9 @@ void CardRepositoryVectorImpl::setById(long id, CardEntity& card)
             return;
         }
     }
-    throw NotFoundException(std::string("Card with id=").append(std::to_string(id)).append(" not found in CardRepository"));
+
+    _entities.push_back(card);
+    //throw NotFoundException(std::string("Card with id=").append(std::to_string(id)).append(" not found in CardRepository"));
 }
 
 void CardRepositoryVectorImpl::deleteById(long id)
@@ -58,4 +60,13 @@ CardRepository* CardRepositoryVectorImpl::getInstance()
 {
     if(_rep == nullptr) _rep = new CardRepositoryVectorImpl();
     return _rep;
+}
+
+bool CardRepositoryVectorImpl::existsById(long id)
+{
+    for(CardEntity& e : _entities)
+    {
+        if(e.id() == id) return true;
+    }
+    return false;
 }
