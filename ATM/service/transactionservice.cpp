@@ -1,6 +1,6 @@
 #include "transactionservice.h"
-#include "repository/vector_impl/transactionrepositoryvectorimpl.h"
-#include "repository/vector_impl/cardrepositoryvectorimpl.h"
+
+TransactionService* TransactionService::_service = nullptr;
 
 TransactionService::TransactionService() : _card_rep(CardRepositoryVectorImpl::getInstance()),
     _transaction_rep(TransactionRepositoryVectorImpl::getInstance())
@@ -10,7 +10,6 @@ TransactionService::TransactionService() : _card_rep(CardRepositoryVectorImpl::g
 
 bool TransactionService::Transfer(long amount, long from_card_id, long to_card_id)
 {
-    if(!_card_rep->existsById(from_card_id) || !_card_rep->existsById(to_card_id)) throw NotFoundException("One of the card's id called in Transfer method is incorrect");
     bool can_execute = GetMoney(amount, from_card_id, to_card_id, false, false) && AddMoney(amount, from_card_id, to_card_id, false, false);
     if (can_execute)
     {
@@ -115,4 +114,41 @@ bool TransactionService::AddMoney(long amount, long from_card_id, long to_card_i
     }  catch (const NotFoundException& ex) {
         return false;
     }
+}
+
+
+std::vector<TransactionEntity> TransactionService::getSentTransactions(long sender_card_id)
+{
+//    const CardEntity& sender = _card_rep->getById(sender_card_id);
+    if(!_card_rep->existsById(sender_card_id))
+    {
+        throw NotFoundException("Card with id proided to TransactionService::getSentTransactions was not found");
+    }
+    std::vector<TransactionEntity> res;
+    for(const TransactionEntity& tr : _transaction_rep->getAll())
+    {
+        if(tr.fromCardId() == sender_card_id) res.push_back(tr);
+    }
+    return res;
+}
+
+std::vector<TransactionEntity> TransactionService::getReceivedTransactions(long receiver_card_id)
+{
+    if(!_card_rep->existsById(receiver_card_id))
+    {
+        throw NotFoundException("Card with id proided to TransactionService::getReceivedTransactions was not found");
+    }
+    std::vector<TransactionEntity> res;
+    for(const TransactionEntity& tr : _transaction_rep->getAll())
+    {
+        if(tr.toCardId() == receiver_card_id) res.push_back(tr);
+    }
+    return res;
+}
+
+bool TransactionService::makeTransfer(long amount, long long from_card_n, long long to_card_n)
+{
+    const CardEntity& from = _card_rep->getByCardId(from_card_n);
+    const CardEntity& to = _card_rep->getByCardId(to_card_n);
+    return Transfer(amount, from.id(), to.id());
 }

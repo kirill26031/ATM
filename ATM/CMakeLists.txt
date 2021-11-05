@@ -37,11 +37,11 @@ set(PROJECT_SOURCES
         repository/vector_impl/userrepositoryvectorimpl.h repository/vector_impl/userrepositoryvectorimpl.cpp
         repository/vector_impl/transactionrepositoryvectorimpl.h repository/vector_impl/transactionrepositoryvectorimpl.cpp
         repository/vector_impl/automatictransactionrepositoryvectorimpl.h repository/vector_impl/automatictransactionrepositoryvectorimpl.cpp
-        util/utils.h
+        util/utils.h util/utils.cpp
         exception/logicconflictexception.h exception/logicconflictexception.cpp
         service/transactionservice.h service/transactionservice.cpp
 #        service/globalservice.h service/globalservice.cpp
-        util/utils.cpp
+        service/automatictransactionservice.h service/automatictransactionservice.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

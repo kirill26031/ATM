@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QApplication>
 #include "service/cardservice.h"
+#include "service/transactionservice.h"
 
 int main(int argc, char *argv[])
 {
