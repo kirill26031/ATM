@@ -30,8 +30,8 @@ public:
 protected:
     TransactionService();
 private:
-    bool GetMoney(long amount, long from_card_id, long to_card_id, bool execute, bool dependant);
-    bool AddMoney(long amount, long from_card_id, long to_card_id, bool execute, bool dependant);
+    bool prepareTransferFromCard(long amount, long from_card_id, long to_card_id, bool execute, bool dependant);
+    bool prepareTransferToCard(long amount, long from_card_id, long to_card_id, bool execute, bool dependant);
 
 
     TransactionRepository* _transaction_rep;

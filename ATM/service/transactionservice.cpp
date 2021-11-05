@@ -10,11 +10,12 @@ TransactionService::TransactionService() : _card_rep(CardRepositoryVectorImpl::g
 
 bool TransactionService::Transfer(long amount, long from_card_id, long to_card_id, long* automatic_transaction_id)
 {
-    bool can_execute = GetMoney(amount, from_card_id, to_card_id, false, false) && AddMoney(amount, from_card_id, to_card_id, false, false);
+    bool can_execute = prepareTransferFromCard(amount, from_card_id, to_card_id, false, false) &&
+            prepareTransferToCard(amount, from_card_id, to_card_id, false, false);
     if (can_execute)
     {
-        GetMoney(amount, from_card_id, to_card_id, true, false);
-        AddMoney(amount, from_card_id, to_card_id, true, false);
+        prepareTransferFromCard(amount, from_card_id, to_card_id, true, false);
+        prepareTransferToCard(amount, from_card_id, to_card_id, true, false);
         TransactionEntity transaction(generateId(), from_card_id, to_card_id, amount,
                                       (automatic_transaction_id == nullptr ? 0 : 1), automatic_transaction_id);
         _transaction_rep->setById(transaction.id(), transaction);
@@ -28,14 +29,14 @@ bool TransactionService::Transfer(long amount, long from_card_id, long to_card_i
  * execute - should method change data in repository (is this real transaction or check)
  * dependant - is checked transaction is part of reserve system chain execution
 */
-bool TransactionService::GetMoney(long amount, long from_card_id, long to_card_id, bool execute, bool dependant) {
+bool TransactionService::prepareTransferFromCard(long amount, long from_card_id, long to_card_id, bool execute, bool dependant) {
     try {
         const CardEntity& from_card = _card_rep->getById(from_card_id);
 
         if (from_card.balance() - amount < from_card.minBalance()) {
             long lacks = from_card.minBalance() - (from_card.balance() - amount);
             if(from_card.reserveCardId() == nullptr) return false;
-            bool result = GetMoney(lacks, *from_card.reserveCardId(), from_card_id, execute, true);
+            bool result = prepareTransferFromCard(lacks, *from_card.reserveCardId(), from_card_id, execute, true);
             if (!result) return false;
             if (execute) {
                 //from_card.balance() = from_card.minBalance();
@@ -75,14 +76,14 @@ bool TransactionService::GetMoney(long amount, long from_card_id, long to_card_i
  * execute - should method change data in repository (is this real transaction or check)
  * dependant - is checked transaction is part of overflow system chain execution
 */
-bool TransactionService::AddMoney(long amount, long from_card_id, long to_card_id, bool execute, bool dependant) {
+bool TransactionService::prepareTransferToCard(long amount, long from_card_id, long to_card_id, bool execute, bool dependant) {
     try {
         const CardEntity& to_card = _card_rep->getById(to_card_id);
 
         if (to_card.balance() + amount > to_card.maxBalance()) {
             long overflows = to_card.balance() + amount - to_card.maxBalance();
             if(to_card.overflowCardId() == nullptr) return false;
-            bool result = AddMoney(overflows, to_card_id, *to_card.overflowCardId(), execute, true);
+            bool result = prepareTransferToCard(overflows, to_card_id, *to_card.overflowCardId(), execute, true);
             if (!result) return false;
             if (execute) {
                 //to_card.balance() = to_card.maxBalance();
