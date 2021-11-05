@@ -3,7 +3,8 @@
 AutomaticTransactionService* AutomaticTransactionService::_service = nullptr;
 
 AutomaticTransactionService::AutomaticTransactionService() : _transaction_rep(TransactionRepositoryVectorImpl::getInstance()),
-    _a_tr_rep(AutomaticTransactionRepositoryVectorImpl::getInstance()), _card_rep(CardRepositoryVectorImpl::getInstance())
+    _a_tr_rep(AutomaticTransactionRepositoryVectorImpl::getInstance()), _card_rep(CardRepositoryVectorImpl::getInstance()),
+    _transaction_service(TransactionService::getInstance())
 {
 
 }
@@ -63,5 +64,40 @@ std::vector<AutomaticTransactionEntity> AutomaticTransactionService::getAllAutom
 
 void AutomaticTransactionService::checkAndExecute()
 {
-
+    for(const AutomaticTransactionEntity& a_tr : _a_tr_rep->getAll())
+    {
+        time_t now = time(0);
+        long planned_money_to_spend = a_tr.amount();
+        bool aborted_loop = false;
+        for(time_t i = a_tr.startTime(); (now-i) >= a_tr.time_period(); i+=a_tr.time_period())
+        {
+            if(planned_money_to_spend >= a_tr.part())
+            {
+                bool sent = _transaction_service->Transfer(a_tr.part(), a_tr.fromCardId(), a_tr.toCardId(), new long(a_tr.id()));
+                if(sent)
+                {
+                    planned_money_to_spend -= a_tr.part();
+                }
+                else {
+                    aborted_loop = true;
+                    break;
+                }
+            }
+            else{
+                bool sent = _transaction_service->Transfer(planned_money_to_spend, a_tr.fromCardId(), a_tr.toCardId(), new long(a_tr.id()));
+                if(sent)
+                {
+                    planned_money_to_spend = 0;
+                }
+                else{
+                    aborted_loop = true;
+                }
+                break;
+            }
+        }
+        AutomaticTransactionEntity updated_a_tr(a_tr.id(), a_tr.fromCardId(), a_tr.toCardId(), planned_money_to_spend,
+                                                a_tr.part(), a_tr.time_period(), a_tr.startTime());
+        _a_tr_rep->setById(updated_a_tr.id(), updated_a_tr);
+        if(aborted_loop) throw NotEnoughMoney("You can't send planned transaction");
+    }
 }

@@ -8,14 +8,14 @@ TransactionService::TransactionService() : _card_rep(CardRepositoryVectorImpl::g
 
 }
 
-bool TransactionService::Transfer(long amount, long from_card_id, long to_card_id)
+bool TransactionService::Transfer(long amount, long from_card_id, long to_card_id, long* automatic_transaction_id)
 {
     bool can_execute = GetMoney(amount, from_card_id, to_card_id, false, false) && AddMoney(amount, from_card_id, to_card_id, false, false);
     if (can_execute)
     {
         GetMoney(amount, from_card_id, to_card_id, true, false);
         AddMoney(amount, from_card_id, to_card_id, true, false);
-        TransactionEntity transaction(generateId(), from_card_id, to_card_id, amount, 0, nullptr);
+        TransactionEntity transaction(generateId(), from_card_id, to_card_id, amount, 0, automatic_transaction_id);
         _transaction_rep->setById(transaction.id(), transaction);
         return true;
     } else {

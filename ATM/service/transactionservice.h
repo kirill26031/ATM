@@ -5,6 +5,7 @@
 #include "repository/vector_impl/transactionrepositoryvectorimpl.h"
 #include "repository/vector_impl/cardrepositoryvectorimpl.h"
 #include "util/utils.h"
+//#include "automatictransactionservice.h"
 
 
 class TransactionService
@@ -19,6 +20,8 @@ public:
 
     bool makeTransfer(long amount, long long from_card_n, long long to_card_n);
 
+    bool Transfer(long amount, long from_card_id, long to_card_id, long* automatic_transaction_id = nullptr);
+
     std::vector<TransactionEntity> getSentTransactions(long sender_card_id);
 
     std::vector<TransactionEntity> getReceivedTransactions(long receiver_card_id);
@@ -29,7 +32,7 @@ protected:
 private:
     bool GetMoney(long amount, long from_card_id, long to_card_id, bool execute, bool dependant);
     bool AddMoney(long amount, long from_card_id, long to_card_id, bool execute, bool dependant);
-    bool Transfer(long amount, long from_card_id, long to_card_id);
+
 
     TransactionRepository* _transaction_rep;
     CardRepository* _card_rep;

@@ -9,6 +9,8 @@
 #include "repository/vector_impl/cardrepositoryvectorimpl.h"
 #include "util/utils.h"
 #include <ctime>
+#include "transactionservice.h"
+#include "exception/notenoughmoney.h"
 
 class AutomaticTransactionService
 {
@@ -35,6 +37,7 @@ private:
     TransactionRepository* _transaction_rep;
     AutomaticTransactionRepository* _a_tr_rep;
     CardRepository* _card_rep;
+    TransactionService* _transaction_service;
     static AutomaticTransactionService* _service;
 };
 
