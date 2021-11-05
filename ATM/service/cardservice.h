@@ -10,6 +10,7 @@ public:
     void editPin(long long card_id, int old_pin, int new_pin);
     bool cardIdExists(long long card_id);
     bool areCardCredentialsCorrect(long long card_id, int pin);
+    long getCardIdByCredentials(long long card_id, int pin);
     long generateCard(long user_id, const std::string& name);
     const CardEntity& getCardById(long id);
     void setAsReserveCard(long long protected_card_id, long long reserve_card_id, unsigned long min_limit);

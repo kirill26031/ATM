@@ -50,6 +50,18 @@ bool CardService::areCardCredentialsCorrect(long long card_id, int pin)
 
 }
 
+long CardService::getCardIdByCredentials(long long card_id, int pin)
+{
+    const CardEntity& card = _card_rep->getByCardId(card_id);
+    if(card.pin() == pin)
+    {
+        return card.id();
+    }
+    else{
+        throw IncorrectCardAuthInfoException("Incorrect card authentication exception while trying to get card id");
+    }
+}
+
 long CardService::generateCard(long user_id, const std::string& name)
 {
     CardEntity card(generateId(), generateCardId(), generatePin(), user_id, name, 0);
