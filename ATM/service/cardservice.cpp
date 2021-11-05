@@ -70,7 +70,7 @@ void CardService::setAsReserveCard(long long protected_card_id, long long reserv
         const CardEntity& reserve = _card_rep->getByCardId(reserve_card_id);
         if(pr.balance() <= min_limit) throw LogicConflictException("You can't set minimum limit below it's current balance");
         CardEntity updated_protected_card(pr.id(), pr.cardId(), pr.pin(), pr.userId(), pr.name(), pr.balance(),
-                                          new unsigned long(min_limit), pr.maxBalance(), new long(reserve.id()));
+                                          min_limit, pr.maxBalance(), new long(reserve.id()));
         _card_rep->setById(pr.id(), updated_protected_card);
     }
     else
@@ -87,7 +87,7 @@ void CardService::setAsOverflowCard(long long from_card_id, long long to_card_id
         const CardEntity& target = _card_rep->getByCardId(to_card_id);
         if(ov.balance() >= max_limit) throw LogicConflictException("You can't set maximum limit above it's current balance");
         CardEntity target_card(ov.id(), ov.cardId(), ov.pin(), ov.userId(), ov.name(), ov.balance(),
-                               ov.minBalance(), new unsigned long(max_limit), ov.reserveCardId(),
+                               ov.minBalance(), max_limit, ov.reserveCardId(),
                                new long(target.id()));
         _card_rep->setById(target_card.id(), target_card);
     }

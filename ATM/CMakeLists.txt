@@ -40,7 +40,8 @@ set(PROJECT_SOURCES
         util/utils.h
         exception/logicconflictexception.h exception/logicconflictexception.cpp
         service/transactionservice.h service/transactionservice.cpp
-        service/globalservice.h service/globalservice.cpp
+#        service/globalservice.h service/globalservice.cpp
+        util/utils.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
