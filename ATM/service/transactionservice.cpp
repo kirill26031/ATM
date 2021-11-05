@@ -15,7 +15,8 @@ bool TransactionService::Transfer(long amount, long from_card_id, long to_card_i
     {
         GetMoney(amount, from_card_id, to_card_id, true, false);
         AddMoney(amount, from_card_id, to_card_id, true, false);
-        TransactionEntity transaction(generateId(), from_card_id, to_card_id, amount, 0, automatic_transaction_id);
+        TransactionEntity transaction(generateId(), from_card_id, to_card_id, amount,
+                                      (automatic_transaction_id == nullptr ? 0 : 1), automatic_transaction_id);
         _transaction_rep->setById(transaction.id(), transaction);
         return true;
     } else {
