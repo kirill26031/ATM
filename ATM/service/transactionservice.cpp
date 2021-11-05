@@ -152,3 +152,8 @@ bool TransactionService::makeTransfer(long amount, long long from_card_n, long l
     const CardEntity& to = _card_rep->getByCardId(to_card_n);
     return Transfer(amount, from.id(), to.id());
 }
+
+const TransactionEntity& TransactionService::getById(long id)
+{
+    return _transaction_rep->getById(id);
+}
