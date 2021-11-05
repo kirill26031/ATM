@@ -69,7 +69,7 @@ void AutomaticTransactionService::checkAndExecute()
         time_t now = time(0);
         long planned_money_to_spend = a_tr.amount();
         bool aborted_loop = false;
-        for(time_t i = a_tr.startTime(); (now-i) >= a_tr.time_period(); i+=a_tr.time_period())
+        for(time_t i = a_tr.startTime()+a_tr.time_period(); (now-i) >= a_tr.time_period(); i+=a_tr.time_period())
         {
             if(planned_money_to_spend >= a_tr.part())
             {
