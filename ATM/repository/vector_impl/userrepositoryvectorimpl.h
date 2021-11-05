@@ -12,6 +12,7 @@ public:
     const std::vector<UserEntity>& getAll() override;
     void setById(long, UserEntity&) override;
     void deleteById(long) override;
+    bool existsById(long) override;
     static UserRepository* getInstance();
 protected:
     UserRepositoryVectorImpl();

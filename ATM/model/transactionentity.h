@@ -24,7 +24,7 @@ private:
     0 - one time transaction made by user
     1 - automatic transaction
     2 - transaction due to reserve card operation
-    2 - transaction due to overflow card operation
+    3 - transaction due to overflow card operation
 */
     int _type;
     long* _automatic_transaction_id;

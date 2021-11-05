@@ -12,6 +12,7 @@ public:
     const std::vector<AutomaticTransactionEntity>& getAll() override;
     void setById(long, AutomaticTransactionEntity&) override;
     void deleteById(long) override;
+    bool existsById(long) override;
     static AutomaticTransactionRepository* getInstance();
 protected:
     AutomaticTransactionRepositoryVectorImpl();
