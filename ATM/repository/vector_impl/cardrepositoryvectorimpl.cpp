@@ -6,6 +6,7 @@ CardRepositoryVectorImpl::CardRepositoryVectorImpl() : CardRepository()
 {
     _entities.push_back(CardEntity(0, 1234567890123456, 4455, 0, "Card 1", 300));
     _entities.push_back(CardEntity(1, 9012345612345678, 4545, 0, "Card 2", 400));
+    _entities.push_back(CardEntity(2, 1234123412341234, 4545, 0, "Card 3", 500));
 }
 
 
@@ -69,4 +70,24 @@ bool CardRepositoryVectorImpl::existsById(long id)
         if(e.id() == id) return true;
     }
     return false;
+}
+
+const std::vector<CardEntity> CardRepositoryVectorImpl::getCardsDependantOnThisByReserve(long id)
+{
+    std::vector<CardEntity> res;
+    for(const CardEntity& card : getAll())
+    {
+        if(card.reserveCardId() != nullptr && *card.reserveCardId() == id) res.push_back(card);
+    }
+    return res;
+}
+
+const std::vector<CardEntity> CardRepositoryVectorImpl::getCardsDependantOnThisByOverflow(long id)
+{
+    std::vector<CardEntity> res;
+    for(const CardEntity& card : getAll())
+    {
+        if(card.overflowCardId() != nullptr && *card.overflowCardId() == id) res.push_back(card);
+    }
+    return res;
 }

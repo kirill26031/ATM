@@ -10,7 +10,10 @@ TransactionEntity::TransactionEntity(long id, long from_card_id, long to_card_id
 
 TransactionEntity::TransactionEntity(const TransactionEntity& o) : Entity(o._id),
     _from_card_id(o._from_card_id), _to_card_id(o._to_card_id), _amount(o._amount), _type(o._type),
-    _automatic_transaction_id(o._automatic_transaction_id){}
+    _automatic_transaction_id(o._automatic_transaction_id)
+{
+    if(o._automatic_transaction_id != nullptr) _automatic_transaction_id = new long(*o._automatic_transaction_id);
+}
 
 TransactionEntity::~TransactionEntity()
 {
@@ -24,6 +27,6 @@ TransactionEntity& TransactionEntity::operator=(const TransactionEntity& o)
     _to_card_id = o._to_card_id;
     _amount = o._amount;
     _type = o._type;
-    _automatic_transaction_id = o._automatic_transaction_id;
+    if(o._automatic_transaction_id != nullptr) _automatic_transaction_id = new long(*o._automatic_transaction_id);
     return *this;
 }

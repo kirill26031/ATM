@@ -16,8 +16,8 @@ int main(int argc, char *argv[])
 //        bool correct = cs->areCardCredentialsCorrect(new_id, card.pin());
 //        qDebug() << exists << " " << correct;
 //    cs->setAsReserveCard(9012345612345678, 1234567890123456, 200);
-//    const CardEntity& protected_card = cs->getCardById(1);
-//    const CardEntity& reserve_card = cs->getCardById(0);
+//    cs->setAsReserveCard(1234567890123456, 1234123412341234, 200);
+//    cs->setAsReserveCard(1234123412341234, 9012345612345678, 200);
 //      cs->setAsOverflowCard(9012345612345678, 1234567890123456, 200);
 //      const CardEntity& overflow_source = cs->getCardById(1);
 //      const CardEntity& overflow_target = cs->getCardById(0);
