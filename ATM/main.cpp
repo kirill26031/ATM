@@ -4,9 +4,21 @@
 #include "service/cardservice.h"
 #include "service/transactionservice.h"
 #include "service/automatictransactionservice.h"
+#include <tests/unittests.h>
+
+#define NODEBUG 0
 
 int main(int argc, char *argv[])
 {
+    if(!NODEBUG)
+    {
+        UnitTests tests;
+        tests.runTests();
+    }
+
+
+
+
 //    CardService* cs = CardService::getInstance();
     try {
 //        cs->editPin(1234567890123456, 4355, 4444);
