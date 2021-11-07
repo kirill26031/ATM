@@ -106,9 +106,7 @@ void CardService::setAsOverflowCard(long long from_card_id, long long to_card_id
                                ov.minBalance(), max_limit, ov.reserveCardId(),
                                new long(target.id()));
         _card_rep->setById(target_card.id(), target_card);
-    }
-    else
-    {
+    } else {
         throw NotFoundException("One of card numbers provided to CardService::setAsReserveCard was incorrect");
     }
 }
