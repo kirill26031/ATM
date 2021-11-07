@@ -2,6 +2,7 @@
 #define TRANSACTIONENTITY_H
 
 #include "entity.h"
+#include <ctime>
 
 class TransactionEntity : public Entity
 {
@@ -20,6 +21,7 @@ private:
     long _from_card_id;
     long _to_card_id;
     long _amount;
+//    time_t _time;
 /*
     0 - one time transaction made by user
     1 - automatic transaction

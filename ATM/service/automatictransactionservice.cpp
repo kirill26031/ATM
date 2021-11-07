@@ -92,7 +92,12 @@ void AutomaticTransactionService::checkAndExecute()
     {
         auto ate = *ates.begin();
         ates.erase(ates.begin());
-        if(ate._last_executed_time + ate._time_period > now) continue;
+        if(ate._last_executed_time + ate._time_period > now)
+        {
+            AutomaticTransactionEntity ch(ate._id, ate._from_card_id, ate._to_card_id, ate._amount, ate._part, ate._time_period, ate._last_executed_time, ate._aborted);
+            _a_tr_rep->setById(ch.id(), ch);
+            continue;
+        }
         long amount_to_remove = ate._part <= ate._amount ? ate._part : ate._amount;
         if(ate._amount == 0)
         {

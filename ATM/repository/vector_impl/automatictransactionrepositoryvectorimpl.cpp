@@ -1,8 +1,11 @@
 #include "automaticTransactionrepositoryvectorimpl.h"
+#include <ctime>
 
 AutomaticTransactionRepository* AutomaticTransactionRepositoryVectorImpl::_rep = nullptr;
 
-AutomaticTransactionRepositoryVectorImpl::AutomaticTransactionRepositoryVectorImpl() : AutomaticTransactionRepository() {}
+AutomaticTransactionRepositoryVectorImpl::AutomaticTransactionRepositoryVectorImpl() : AutomaticTransactionRepository() {
+    _entities.push_back(AutomaticTransactionEntity(0, 0, 3, 10, 1, 30, time(0)-150));
+}
 
 
 const AutomaticTransactionEntity& AutomaticTransactionRepositoryVectorImpl::getById(long id)
