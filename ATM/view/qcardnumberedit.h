@@ -7,7 +7,6 @@
 class QCardNumberEdit : public QLineEdit
 {
 public:
-    QCardNumberEdit();
     QCardNumberEdit(QWidget *parent = nullptr) : QLineEdit(parent) {}
 
     virtual void keyPressEvent(QKeyEvent *event) override {
@@ -35,14 +34,13 @@ public:
         if (!str.isEmpty() && str.back() == '-') str = str.left(str.length()-1);
         if (str.length() > 19) str = str.left(19);
 
-        str.remove('1');
         setText(str);
     }
 
 
 
     long long GetCardNumber() {
-        QString str = text().remove('1');
+        QString str = text().remove('-');
 
         if (str.length() != 16) return -1;
 
@@ -57,6 +55,20 @@ public:
         return GetCardNumber() != -1;
     }
 
+    void SetCardNumber(long long number) {        
+        setText(CardNumber(number));
+    }
+
+    static QString CardNumber(long long number){
+        QString str = QString::number(number);
+        while (str.length() < 16) str = "0"+str;
+        str = str.mid(0, 4) + "-" + str.mid(4, 4) + "-"+str.mid(8, 4) + "-" + str.mid(12, 4);
+        return str;
+    }
+
+    static QString ShortCardNumber(long long number){
+        return CardNumber(number).left(9);
+    }
 };
 
 #endif // QCARDNUMBEREDIT_H

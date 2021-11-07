@@ -2,6 +2,8 @@
 #define WIDGET_H
 
 #include <QWidget>
+#include <QListWidgetItem>
+#include <model/cardentity.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
@@ -37,6 +39,18 @@ private slots:
     void on_cancel_changes_button_clicked();
 
     void on_save_changes_button_clicked();
+
+    void on_auto_transactions_button_clicked();
+
+    void on_auto_cancel_button_clicked();
+
+    void on_auto_exit_button_clicked();
+
+    void on_transaction_list_itemClicked(QListWidgetItem *item);
+
+    void on_auto_transaction_list_itemClicked(QListWidgetItem *item);
+
+    void InitATM(CardEntity card);
 
 private:
     Ui::Widget *ui;

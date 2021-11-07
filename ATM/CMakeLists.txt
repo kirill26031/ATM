@@ -43,6 +43,13 @@ set(PROJECT_SOURCES
         view/qcardnumberedit.h view/qcardnumberedit.cpp
         service/automatictransactionservice.h service/automatictransactionservice.cpp
         exception/notenoughmoney.h exception/notenoughmoney.cpp
+        #view/qintegervalueedit.h view/qintegervalueedit.cpp
+        view/qtransactionitem.h view/qtransactionitem.cpp
+        view/qautomatictransactionitem.h view/qautomatictransactionitem.cpp
+        #view/qpinedit.h view/qpinedit.cpp
+        #view/qamountedit.h view/qamountedit.cpp
+        view/qpinedit.h view/qpinedit.cpp
+        view/qamountedit.h view/qamountedit.cpp
 
 )
 
