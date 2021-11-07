@@ -4,6 +4,7 @@
 #include "service/cardservice.h"
 #include "service/transactionservice.h"
 #include "service/automatictransactionservice.h"
+#include "dbmanager.h"
 
 int main(int argc, char *argv[])
 {
@@ -24,15 +25,17 @@ int main(int argc, char *argv[])
 //      const CardEntity& overflow_target = cs->getCardById(0);
 //    int x = 2+ 3;
 
-        TransactionService* t_s = TransactionService::getInstance();
-       AutomaticTransactionService* a_t_s = AutomaticTransactionService::getInstance();
-       AutomaticTransactionEntity* ate = new AutomaticTransactionEntity(a_t_s->getById(0));
-       while(ate->amount() > 0)
-       {
-           a_t_s->checkAndExecute();
-           ate = new AutomaticTransactionEntity(a_t_s->getById(0));
+//        TransactionService* t_s = TransactionService::getInstance();
+//       AutomaticTransactionService* a_t_s = AutomaticTransactionService::getInstance();
+//       AutomaticTransactionEntity* ate = new AutomaticTransactionEntity(a_t_s->getById(0));
+//       while(ate->amount() > 0)
+//       {
+//           a_t_s->checkAndExecute();
+//           ate = new AutomaticTransactionEntity(a_t_s->getById(0));
 
-       }
+//       }
+        DBManager db;
+
        int x = 2+ 2;
     }
     catch(const CustomException& e)

@@ -13,8 +13,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Sql)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Sql)
 
 set(PROJECT_SOURCES
         main.cpp
@@ -44,6 +44,7 @@ set(PROJECT_SOURCES
         service/automatictransactionservice.h service/automatictransactionservice.cpp
         exception/notenoughmoney.h exception/notenoughmoney.cpp
         exception/circulardependancyexception.h exception/circulardependancyexception.cpp
+        dbmanager.h dbmanager.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -69,7 +70,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(ATM PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(ATM PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Sql)
 
 set_target_properties(ATM PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
