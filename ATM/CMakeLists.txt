@@ -40,10 +40,18 @@ set(PROJECT_SOURCES
         util/utils.h util/utils.cpp
         exception/logicconflictexception.h exception/logicconflictexception.cpp
         service/transactionservice.h service/transactionservice.cpp
-#        service/globalservice.h service/globalservice.cpp
+        view/qcardnumberedit.h view/qcardnumberedit.cpp
         service/automatictransactionservice.h service/automatictransactionservice.cpp
         exception/notenoughmoney.h exception/notenoughmoney.cpp
+        #view/qintegervalueedit.h view/qintegervalueedit.cpp
+        view/qtransactionitem.h view/qtransactionitem.cpp
+        #view/qautomatictransactionitem.h view/qautomatictransactionitem.cpp
+        #view/qpinedit.h view/qpinedit.cpp
+        #view/qamountedit.h view/qamountedit.cpp
+        view/qpinedit.h view/qpinedit.cpp
+        view/qamountedit.h view/qamountedit.cpp
         exception/circulardependancyexception.h exception/circulardependancyexception.cpp
+        view/qautotransactionitem.h view/qautotransactionitem.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
