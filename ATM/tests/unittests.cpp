@@ -133,8 +133,8 @@ bool UnitTests::shouldMakeTransactionsWithReserveCard()
    qDebug().noquote() <<  "[" << __func__<< "]" << "Can Transfer" <<  condition4;
 
 
-   bool condition1 = cardService->getCardById(firstCard.id()).balance() == 200;
-   bool condition2 = cardService->getCardById(secondCard.id()).balance() == 100;
+   bool condition1 = cardService->getCardById(firstCard.id()).balance() == 0;
+   bool condition2 = cardService->getCardById(secondCard.id()).balance() == 300;
    bool condition3 = cardService->getCardById(thirdCard.id()).balance() == 500;
 
    return condition1 && condition2 && condition3 && condition4;
