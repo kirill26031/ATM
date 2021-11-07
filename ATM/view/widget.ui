@@ -29,7 +29,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Настройка карты</string>
+          <string>Card settings</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -57,7 +57,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Пин код</string>
+          <string>Pin code</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -207,7 +207,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPinEdit" name="lineEdit">
+        <widget class="QPinEdit" name="reserve_pin_field">
          <property name="font">
           <font>
            <pointsize>15</pointsize>
@@ -279,7 +279,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Авторизация</string>
+          <string>Authorization</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -328,7 +328,7 @@
           <enum>Qt::ActionsContextMenu</enum>
          </property>
          <property name="placeholderText">
-          <string>1111-2222-3333-4444</string>
+          <string>****-****-****-****</string>
          </property>
         </widget>
        </item>
@@ -372,7 +372,7 @@
           <enum>QLineEdit::Password</enum>
          </property>
          <property name="placeholderText">
-          <string>pin code</string>
+          <string>****</string>
          </property>
         </widget>
        </item>
@@ -478,81 +478,78 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QLabel" name="role_label">
-            <property name="font">
-             <font>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Отправитель/Получатель</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCardNumberEdit" name="transaction_card_field">
-            <property name="font">
-             <font>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>2222-2222-2222-2223</string>
-            </property>
-            <property name="readOnly">
+           <widget class="QWidget" name="transaction_widget" native="true">
+            <property name="enabled">
              <bool>true</bool>
             </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_7">
-            <property name="font">
-             <font>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Сумма</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QAmountEdit" name="transaction_sum_field">
-            <property name="font">
-             <font>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>100</string>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_18">
-            <property name="font">
-             <font>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Date and time</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="date_time_field">
-            <property name="font">
-             <font>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_8">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="role_label">
+               <property name="font">
+                <font>
+                 <pointsize>15</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Reciever</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCardNumberEdit" name="transaction_card_field">
+               <property name="font">
+                <font>
+                 <pointsize>15</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>2222-2222-2222-2223</string>
+               </property>
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_7">
+               <property name="font">
+                <font>
+                 <pointsize>15</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Sum</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QAmountEdit" name="transaction_sum_field">
+               <property name="font">
+                <font>
+                 <pointsize>15</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>100</string>
+               </property>
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </item>
           <item>
@@ -601,7 +598,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Настройка карты</string>
+          <string>Card settings</string>
          </property>
         </widget>
        </item>
@@ -619,7 +616,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Просмотр переводов</string>
+          <string>Show transactions</string>
          </property>
         </widget>
        </item>
@@ -640,7 +637,7 @@
           <enum>Qt::PreventContextMenu</enum>
          </property>
          <property name="text">
-          <string>Перевод средств</string>
+          <string>Transfering</string>
          </property>
         </widget>
        </item>
@@ -676,7 +673,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Auto</string>
+          <string>Show auto transactions</string>
          </property>
         </widget>
        </item>
@@ -691,6 +688,9 @@
            <pointsize>15</pointsize>
           </font>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
          <property name="readOnly">
           <bool>true</bool>
          </property>
@@ -704,244 +704,111 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Новый элемент</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Новый элемент</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>1000 70%</string>
-          </property>
-         </item>
         </widget>
        </item>
        <item row="1" column="1">
         <widget class="QWidget" name="widget" native="true">
          <layout class="QVBoxLayout" name="verticalLayout_5">
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
           <item>
-           <widget class="QLabel" name="label_17">
-            <property name="font">
-             <font>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Card</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCardNumberEdit" name="auto_card_field">
-            <property name="font">
-             <font>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_15">
-            <property name="font">
-             <font>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Amount</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QAmountEdit" name="auto_amount_field">
-            <property name="font">
-             <font>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_16">
-            <property name="font">
-             <font>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Completed</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="completed_field">
-            <property name="font">
-             <font>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>70%</string>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
+           <widget class="QWidget" name="auto_transaction_widget" native="true">
+            <layout class="QVBoxLayout" name="verticalLayout_9">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="label_17">
+               <property name="font">
+                <font>
+                 <pointsize>15</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Card</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCardNumberEdit" name="auto_card_field">
+               <property name="font">
+                <font>
+                 <pointsize>15</pointsize>
+                </font>
+               </property>
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_15">
+               <property name="font">
+                <font>
+                 <pointsize>15</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Amount</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QAmountEdit" name="auto_amount_field">
+               <property name="font">
+                <font>
+                 <pointsize>15</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>???</string>
+               </property>
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_16">
+               <property name="font">
+                <font>
+                 <pointsize>15</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Remainder</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QAmountEdit" name="completed_field">
+               <property name="font">
+                <font>
+                 <pointsize>15</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </item>
           <item>
@@ -956,18 +823,6 @@
              </size>
             </property>
            </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="auto_cancel_button">
-            <property name="font">
-             <font>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Отменить перичисления</string>
-            </property>
-           </widget>
           </item>
           <item>
            <widget class="QPushButton" name="auto_exit_button">
@@ -996,7 +851,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Перевод средств</string>
+          <string>Transfering</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -1024,7 +879,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Карта получателя</string>
+          <string>Reciever card number</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -1132,7 +987,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="time_period_field">
+           <widget class="QAmountEdit" name="time_period_field">
             <property name="font">
              <font>
               <pointsize>15</pointsize>

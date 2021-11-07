@@ -39,5 +39,6 @@ CardEntity::CardEntity(const CardEntity& o) : Entity(o) , _card_id(o._card_id), 
     _min_balance(o._min_balance), _max_balance(o._max_balance), _reserve_card_id(o._reserve_card_id), _overflow_card_id(o._overflow_card_id),
     _user_id(o._user_id), _name(o._name)
 {
-
+    if(o._reserve_card_id != nullptr) _reserve_card_id = new long(*o._reserve_card_id);
+    if(o._overflow_card_id != nullptr) _overflow_card_id = new long(*o._overflow_card_id);
 }

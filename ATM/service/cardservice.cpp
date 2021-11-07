@@ -80,6 +80,8 @@ void CardService::setAsReserveCard(long long protected_card_id, long long reserv
     {
         const CardEntity& pr = _card_rep->getByCardId(protected_card_id);
         const CardEntity& reserve = _card_rep->getByCardId(reserve_card_id);
+        if(detectedCircularDependancy(pr.id(), reserve.id(), true))
+            throw CircularDependancyException("Setting reserve card for this card to this value would create circular dependancy");
         if(pr.balance() <= min_limit) throw LogicConflictException("You can't set minimum limit below it's current balance");
         CardEntity updated_protected_card(pr.id(), pr.cardId(), pr.pin(), pr.userId(), pr.name(), pr.balance(),
                                           min_limit, pr.maxBalance(), new long(reserve.id()));
@@ -97,14 +99,37 @@ void CardService::setAsOverflowCard(long long from_card_id, long long to_card_id
     {
         const CardEntity& ov = _card_rep->getByCardId(from_card_id);
         const CardEntity& target = _card_rep->getByCardId(to_card_id);
+        if(detectedCircularDependancy(ov.id(), target.id(), false))
+            throw CircularDependancyException("Setting overflow card for this card to this value would create circular dependancy");
         if(ov.balance() >= max_limit) throw LogicConflictException("You can't set maximum limit above it's current balance");
         CardEntity target_card(ov.id(), ov.cardId(), ov.pin(), ov.userId(), ov.name(), ov.balance(),
                                ov.minBalance(), max_limit, ov.reserveCardId(),
                                new long(target.id()));
         _card_rep->setById(target_card.id(), target_card);
-    }
-    else
-    {
+    } else {
         throw NotFoundException("One of card numbers provided to CardService::setAsReserveCard was incorrect");
     }
+}
+
+bool CardService::detectedCircularDependancy(long card_id, long other_id, bool is_reserve)
+{
+    std::vector<CardEntity> dependant_cards;
+//    std::vector<CardEntity> processed_dep_cards;
+    CardEntity card = _card_rep->getById(card_id);
+    dependant_cards.push_back(card);
+    while(!dependant_cards.empty())
+    {
+        CardEntity last_card(dependant_cards.back());
+//        processed_dep_cards.push_back(last_card);
+        dependant_cards.pop_back();
+        std::vector<CardEntity> new_dependant = is_reserve ?
+                    _card_rep->getCardsDependantOnThisByReserve(last_card.id()) :
+                    _card_rep->getCardsDependantOnThisByOverflow(last_card.id());
+        for(const CardEntity& c : new_dependant)
+        {
+            if(c.id() == other_id) return true;
+            dependant_cards.push_back(c);
+        }
+    }
+    return false;
 }

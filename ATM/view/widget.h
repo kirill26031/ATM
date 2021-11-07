@@ -50,9 +50,13 @@ private slots:
 
     void on_auto_transaction_list_itemClicked(QListWidgetItem *item);
 
-    void InitATM(CardEntity card);
+
 
 private:
+    long current_card_id = -1;
+
     Ui::Widget *ui;
+
+    void InitATM(long card_id);
 };
 #endif // WIDGET_H

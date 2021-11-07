@@ -45,12 +45,13 @@ set(PROJECT_SOURCES
         exception/notenoughmoney.h exception/notenoughmoney.cpp
         #view/qintegervalueedit.h view/qintegervalueedit.cpp
         view/qtransactionitem.h view/qtransactionitem.cpp
-        view/qautomatictransactionitem.h view/qautomatictransactionitem.cpp
+        #view/qautomatictransactionitem.h view/qautomatictransactionitem.cpp
         #view/qpinedit.h view/qpinedit.cpp
         #view/qamountedit.h view/qamountedit.cpp
         view/qpinedit.h view/qpinedit.cpp
         view/qamountedit.h view/qamountedit.cpp
-
+        exception/circulardependancyexception.h exception/circulardependancyexception.cpp
+        view/qautotransactionitem.h view/qautotransactionitem.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

@@ -32,7 +32,7 @@ public:
     long* reserveCardId() const {return _reserve_card_id;}
     long* overflowCardId() const {return _overflow_card_id;}
 
-private:
+//private:
     long long _card_id;
     int _pin;
     long _user_id;

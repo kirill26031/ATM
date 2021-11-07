@@ -1,25 +1,29 @@
-#ifndef QTRANSACTIONITEM_H
-#define QTRANSACTIONITEM_H
+#ifndef QAUTOTRANSACTIONITEM_H
+#define QAUTOTRANSACTIONITEM_H
 
 #include <QListWidgetItem>
-#include <repository/vector_impl/transactionrepositoryvectorimpl.h>
-#include <model/transactionentity.h>
+
+#include <model/automatictransactionentity.h>
+#include <repository/vector_impl/automatictransactionrepositoryvectorimpl.h>
 #include <view/qcardnumberedit.h>
 #include <view/qamountedit.h>
 #include <model/cardentity.h>
 #include <repository/vector_impl/cardrepositoryvectorimpl.h>
 
-class QTransactionItem : public QListWidgetItem
+class QAutoTransactionItem : public QListWidgetItem
 {
+
+
 public:
+
     const long transaction_id;
 
+    QAutoTransactionItem();  
 
-    QTransactionItem(long transaction_id, long card_id): QListWidgetItem(), transaction_id(transaction_id) {
-        TransactionEntity transaction = TransactionRepositoryVectorImpl::getInstance()->getById(transaction_id);
+    QAutoTransactionItem(long transaction_id, long card_id): QListWidgetItem(), transaction_id(transaction_id) {
+        AutomaticTransactionEntity transaction = AutomaticTransactionRepositoryVectorImpl::getInstance()->getById(transaction_id);
 
-
-        QString str = QAmountEdit::Amount(transaction.amount())+" ";
+        QString str = QAmountEdit::Amount(transaction.amount()) + " ";
         if ((transaction.fromCardId()) == card_id) {
             CardEntity card = CardRepositoryVectorImpl::getInstance()->getById(transaction.toCardId());
             str += "to " + QCardNumberEdit::CardNumber(card.cardId());
@@ -32,4 +36,4 @@ public:
     }
 };
 
-#endif // QTRANSACTIONITEM_H
+#endif // QAUTOTRANSACTIONITEM_H

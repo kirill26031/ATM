@@ -5,7 +5,7 @@
 
 class QAutomaticTransactionItem : public QListWidgetItem
 {
-public:
+//public:
 
 };
 
