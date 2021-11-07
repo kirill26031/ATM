@@ -43,6 +43,7 @@ set(PROJECT_SOURCES
 #        service/globalservice.h service/globalservice.cpp
         service/automatictransactionservice.h service/automatictransactionservice.cpp
         exception/notenoughmoney.h exception/notenoughmoney.cpp
+        exception/circulardependancyexception.h exception/circulardependancyexception.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

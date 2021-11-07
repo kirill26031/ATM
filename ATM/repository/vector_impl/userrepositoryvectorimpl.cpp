@@ -3,7 +3,9 @@
 UserRepository* UserRepositoryVectorImpl::_rep = nullptr;
 
 UserRepositoryVectorImpl::UserRepositoryVectorImpl() : UserRepository() {
-    _entities.push_back(UserEntity(0, "Bill Crapet"));
+    _entities.push_back(UserEntity(0, "Bill Crapet 0"));
+    _entities.push_back(UserEntity(1, "Bill Crapet 1"));
+    _entities.push_back(UserEntity(2, "Bill Crapet 2"));
 }
 
 
