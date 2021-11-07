@@ -4,7 +4,7 @@
 #include "service/cardservice.h"
 #include "service/transactionservice.h"
 #include "service/automatictransactionservice.h"
-#include "dbmanager.h"
+#include "repository/db_impl/userrepositorydbimpl.h"
 
 int main(int argc, char *argv[])
 {
@@ -34,8 +34,16 @@ int main(int argc, char *argv[])
 //           ate = new AutomaticTransactionEntity(a_t_s->getById(0));
 
 //       }
-        DBManager db;
-
+       UserRepository* u_rep = UserRepositoryDBImpl::getInstance();
+//
+//        bool exists = u_rep->existsById(0);
+//        bool exist = u_rep->existsById(99);
+//        u_rep->deleteById(0);
+//        auto r1 = u_rep->getAll();
+//        auto r2 = u_rep->getById(1);
+//        UserEntity uu(39, "hEllo");
+//        u_rep->setById(1, uu);
+//        auto r3 = u_rep->getAll();
        int x = 2+ 2;
     }
     catch(const CustomException& e)

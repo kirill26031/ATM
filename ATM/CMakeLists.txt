@@ -49,6 +49,7 @@ set(PROJECT_SOURCES
         repository/db_impl/transactionrepositorydbimpl.h repository/db_impl/transactionrepositorydbimpl.cpp
         repository/db_impl/automatictransactiondbimpl.h repository/db_impl/automatictransactiondbimpl.cpp
         repository/db_impl/userrepositorydbimpl.h repository/db_impl/userrepositorydbimpl.cpp
+        exception/sqlexception.h exception/sqlexception.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

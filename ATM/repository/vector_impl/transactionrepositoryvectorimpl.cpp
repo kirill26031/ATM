@@ -8,7 +8,7 @@ TransactionRepositoryVectorImpl::TransactionRepositoryVectorImpl() : Transaction
 }
 
 
-const TransactionEntity& TransactionRepositoryVectorImpl::getById(long id)
+TransactionEntity TransactionRepositoryVectorImpl::getById(long id)
 {
     for(TransactionEntity& e : _entities)
     {
@@ -17,7 +17,7 @@ const TransactionEntity& TransactionRepositoryVectorImpl::getById(long id)
     throw NotFoundException(std::string("Transaction with id=").append(std::to_string(id)).append(" not found in TransactionRepository"));
 }
 
-const std::vector<TransactionEntity>& TransactionRepositoryVectorImpl::getAll()
+std::vector<TransactionEntity> TransactionRepositoryVectorImpl::getAll()
 {
     return _entities;
 }

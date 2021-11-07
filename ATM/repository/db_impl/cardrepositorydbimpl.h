@@ -1,5 +1,6 @@
 #ifndef CARDREPOSITORYDBIMPL_H
 #define CARDREPOSITORYDBIMPL_H
+#include "dbmanager.h"
 
 
 class CardRepositoryDBImpl
