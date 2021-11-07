@@ -45,6 +45,10 @@ set(PROJECT_SOURCES
         exception/notenoughmoney.h exception/notenoughmoney.cpp
         exception/circulardependancyexception.h exception/circulardependancyexception.cpp
         dbmanager.h dbmanager.cpp
+        repository/db_impl/cardrepositorydbimpl.h repository/db_impl/cardrepositorydbimpl.cpp
+        repository/db_impl/transactionrepositorydbimpl.h repository/db_impl/transactionrepositorydbimpl.cpp
+        repository/db_impl/automatictransactiondbimpl.h repository/db_impl/automatictransactiondbimpl.cpp
+        repository/db_impl/userrepositorydbimpl.h repository/db_impl/userrepositorydbimpl.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

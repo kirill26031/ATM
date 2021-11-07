@@ -5,12 +5,17 @@
 class DBManager
 {
 public:
-    DBManager();
     ~DBManager();
+    static DBManager* getInstance();
 
     bool isOpen() const;
+
+    const QSqlDatabase& db() const {return _db;}
+protected:
+        DBManager();
 private:
     QSqlDatabase _db;
+    static DBManager* _db_manager;
 };
 
 #endif // DBMANAGER_H

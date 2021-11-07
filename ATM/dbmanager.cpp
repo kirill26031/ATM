@@ -1,6 +1,14 @@
 #include "dbmanager.h"
 #include <QDebug>
 
+DBManager* DBManager::_db_manager = nullptr;
+
+DBManager* DBManager::getInstance()
+{
+    if(_db_manager== nullptr) _db_manager = new DBManager();
+    return _db_manager;
+}
+
 DBManager::DBManager()
 {
     _db = QSqlDatabase::addDatabase("QPSQL");
@@ -21,5 +29,13 @@ DBManager::DBManager()
 
 DBManager::~DBManager()
 {
+    if (_db.isOpen())
+    {
+        _db.close();
+    }
+}
 
+bool DBManager::isOpen() const
+{
+    return _db.isOpen();
 }

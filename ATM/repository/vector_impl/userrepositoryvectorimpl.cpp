@@ -9,7 +9,7 @@ UserRepositoryVectorImpl::UserRepositoryVectorImpl() : UserRepository() {
 }
 
 
-const UserEntity& UserRepositoryVectorImpl::getById(long id)
+UserEntity UserRepositoryVectorImpl::getById(long id)
 {
     for(UserEntity& e : _entities)
     {
@@ -18,7 +18,7 @@ const UserEntity& UserRepositoryVectorImpl::getById(long id)
     throw NotFoundException(std::string("User with id=").append(std::to_string(id)).append(" not found in UserRepository"));
 }
 
-const std::vector<UserEntity>& UserRepositoryVectorImpl::getAll()
+std::vector<UserEntity> UserRepositoryVectorImpl::getAll()
 {
     return _entities;
 }

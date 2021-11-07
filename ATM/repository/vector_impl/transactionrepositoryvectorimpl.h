@@ -8,8 +8,8 @@
 class TransactionRepositoryVectorImpl : public TransactionRepository
 {
 public:
-    const TransactionEntity& getById(long) override;
-    const std::vector<TransactionEntity>& getAll() override;
+    TransactionEntity getById(long) override;
+    std::vector<TransactionEntity> getAll() override;
     void setById(long, TransactionEntity&) override;
     void deleteById(long) override;
     bool existsById(long) override;

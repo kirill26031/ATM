@@ -14,7 +14,7 @@ CardRepositoryVectorImpl::CardRepositoryVectorImpl() : CardRepository()
 }
 
 
-const CardEntity& CardRepositoryVectorImpl::getById(long id)
+CardEntity CardRepositoryVectorImpl::getById(long id)
 {
     for(CardEntity& card : _entities)
     {
@@ -23,7 +23,7 @@ const CardEntity& CardRepositoryVectorImpl::getById(long id)
     throw NotFoundException(std::string("Card with id=").append(std::to_string(id)).append(" not found in CardRepository"));
 }
 
-const std::vector<CardEntity>& CardRepositoryVectorImpl::getAll()
+std::vector<CardEntity> CardRepositoryVectorImpl::getAll()
 {
     return _entities;
 }
@@ -52,7 +52,7 @@ void CardRepositoryVectorImpl::deleteById(long id)
     else throw NotFoundException(std::string("Card with id=").append(std::to_string(id)).append(" not found in CardRepository"));
 }
 
-const CardEntity& CardRepositoryVectorImpl::getByCardId(long long card_id)
+CardEntity CardRepositoryVectorImpl::getByCardId(long long card_id)
 {
     for(CardEntity& card : _entities)
     {
@@ -76,7 +76,7 @@ bool CardRepositoryVectorImpl::existsById(long id)
     return false;
 }
 
-const std::vector<CardEntity> CardRepositoryVectorImpl::getCardsDependantOnThisByReserve(long id)
+std::vector<CardEntity> CardRepositoryVectorImpl::getCardsDependantOnThisByReserve(long id)
 {
     std::vector<CardEntity> res;
     for(const CardEntity& card : getAll())
@@ -86,7 +86,7 @@ const std::vector<CardEntity> CardRepositoryVectorImpl::getCardsDependantOnThisB
     return res;
 }
 
-const std::vector<CardEntity> CardRepositoryVectorImpl::getCardsDependantOnThisByOverflow(long id)
+std::vector<CardEntity> CardRepositoryVectorImpl::getCardsDependantOnThisByOverflow(long id)
 {
     std::vector<CardEntity> res;
     for(const CardEntity& card : getAll())

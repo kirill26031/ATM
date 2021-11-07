@@ -8,7 +8,7 @@ AutomaticTransactionRepositoryVectorImpl::AutomaticTransactionRepositoryVectorIm
 }
 
 
-const AutomaticTransactionEntity& AutomaticTransactionRepositoryVectorImpl::getById(long id)
+AutomaticTransactionEntity AutomaticTransactionRepositoryVectorImpl::getById(long id)
 {
     for(AutomaticTransactionEntity& e : _entities)
     {
@@ -17,7 +17,7 @@ const AutomaticTransactionEntity& AutomaticTransactionRepositoryVectorImpl::getB
     throw NotFoundException(std::string("AutomaticTransaction with id=").append(std::to_string(id)).append(" not found in AutomaticTransactionRepository"));
 }
 
-const std::vector<AutomaticTransactionEntity>& AutomaticTransactionRepositoryVectorImpl::getAll()
+std::vector<AutomaticTransactionEntity> AutomaticTransactionRepositoryVectorImpl::getAll()
 {
     return _entities;
 }
