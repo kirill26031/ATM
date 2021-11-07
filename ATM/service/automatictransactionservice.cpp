@@ -64,40 +64,61 @@ std::vector<AutomaticTransactionEntity> AutomaticTransactionService::getAllAutom
 
 void AutomaticTransactionService::checkAndExecute()
 {
-    for(const AutomaticTransactionEntity& a_tr : _a_tr_rep->getAll())
+    auto auto_transactions(_a_tr_rep->getAll());
+    std::set<ATE, std::function<bool (const ATE& a, const ATE& b)>> ates(
+        [](const ATE& a, const ATE& b){
+            if((a._last_executed_time+a._time_period) < (b._last_executed_time+b._time_period)) return true;
+            if((a._last_executed_time+a._time_period) > (b._last_executed_time+b._time_period)) return false;
+            return a._id < b._id;
+        }
+    );
+    for(const AutomaticTransactionEntity& e : _a_tr_rep->getAll())
     {
-        time_t now = time(0);
-        long planned_money_to_spend = a_tr.amount();
-        bool aborted_loop = false;
-        for(time_t i = a_tr.startTime()+a_tr.time_period(); (now-i) >= a_tr.time_period(); i+=a_tr.time_period())
+        ATE ate;
+        ate._id = e.id();
+        ate._last_executed_time =  e.lastExecutedTime();
+        ate._time_period = e.time_period();
+        ate._amount = e.amount();
+        ate._part = e.part();
+        ate._from_card_id = e.fromCardId();
+        ate._to_card_id = e.toCardId();
+        ate._aborted = e.aborted();
+        ates.insert(ate);
+    }
+
+    time_t now = time(0);
+
+    while(!ates.empty())
+    {
+        auto ate = *ates.begin();
+        ates.erase(ates.begin());
+        if(ate._last_executed_time + ate._time_period > now)
         {
-            if(planned_money_to_spend >= a_tr.part())
+            AutomaticTransactionEntity ch(ate._id, ate._from_card_id, ate._to_card_id, ate._amount, ate._part, ate._time_period, ate._last_executed_time, ate._aborted);
+            _a_tr_rep->setById(ch.id(), ch);
+            continue;
+        }
+        long amount_to_remove = ate._part <= ate._amount ? ate._part : ate._amount;
+        if(ate._amount == 0)
+        {
+            AutomaticTransactionEntity ch(ate._id, ate._from_card_id, ate._to_card_id, 0, ate._part, ate._time_period, ate._last_executed_time, ate._aborted);
+            _a_tr_rep->setById(ch.id(), ch);
+        }
+        else
+        {
+            bool sent = _transaction_service->Transfer(amount_to_remove, ate._from_card_id, ate._to_card_id, new long(ate._id));
+            if(sent)
             {
-                bool sent = _transaction_service->Transfer(a_tr.part(), a_tr.fromCardId(), a_tr.toCardId(), new long(a_tr.id()));
-                if(sent)
-                {
-                    planned_money_to_spend -= a_tr.part();
-                }
-                else {
-                    aborted_loop = true;
-                    break;
-                }
+                ate._amount-=amount_to_remove;
+                ate._last_executed_time+=ate._time_period;
+                ates.insert(ate);
             }
-            else{
-                bool sent = _transaction_service->Transfer(planned_money_to_spend, a_tr.fromCardId(), a_tr.toCardId(), new long(a_tr.id()));
-                if(sent)
-                {
-                    planned_money_to_spend = 0;
-                }
-                else{
-                    aborted_loop = true;
-                }
-                break;
+            else
+            {
+                ate._aborted = true;
+                AutomaticTransactionEntity ch(ate._id, ate._from_card_id, ate._to_card_id, ate._amount, ate._part, ate._time_period, ate._last_executed_time, ate._aborted);
+                _a_tr_rep->setById(ch.id(), ch);
             }
         }
-        AutomaticTransactionEntity updated_a_tr(a_tr.id(), a_tr.fromCardId(), a_tr.toCardId(), planned_money_to_spend,
-                                                a_tr.part(), a_tr.time_period(), a_tr.startTime());
-        _a_tr_rep->setById(updated_a_tr.id(), updated_a_tr);
-        if(aborted_loop) throw NotEnoughMoney("You can't send planned transaction");
     }
 }

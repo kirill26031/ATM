@@ -14,6 +14,8 @@ public:
     void deleteById(long) override;
     bool existsById(long) override;
     const CardEntity& getByCardId(long long) override;
+    const std::vector<CardEntity> getCardsDependantOnThisByReserve(long id) override;
+    const std::vector<CardEntity> getCardsDependantOnThisByOverflow(long id) override;
     static CardRepository* getInstance();
 protected:
     CardRepositoryVectorImpl();

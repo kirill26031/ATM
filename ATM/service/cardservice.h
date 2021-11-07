@@ -3,6 +3,7 @@
 
 #include "repository/vector_impl./cardrepositoryvectorimpl.h"
 #include "exception/incorrectcardauthinfoexception.h"
+#include "exception/circulardependancyexception.h"
 
 class CardService
 {
@@ -21,6 +22,8 @@ protected:
     CardService();
     ~CardService(){}
 private:
+    bool detectedCircularDependancy(long card_id, long other_id, bool is_reserve);
+
     CardRepository* _card_rep;
     static CardService* _service;
 };

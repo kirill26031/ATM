@@ -2,7 +2,10 @@
 
 TransactionRepository* TransactionRepositoryVectorImpl::_rep = nullptr;
 
-TransactionRepositoryVectorImpl::TransactionRepositoryVectorImpl() : TransactionRepository() {}
+TransactionRepositoryVectorImpl::TransactionRepositoryVectorImpl() : TransactionRepository() {
+    _entities.push_back(TransactionEntity(0, 0, 2, 100, 0, 0));
+    _entities.push_back(TransactionEntity(1, 2, 0, 150, 0, 0));
+}
 
 
 const TransactionEntity& TransactionRepositoryVectorImpl::getById(long id)
