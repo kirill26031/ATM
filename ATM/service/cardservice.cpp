@@ -74,7 +74,7 @@ const CardEntity& CardService::getCardById(long id)
     return _card_rep->getById(id);
 }
 
-void CardService::setAsReserveCard(long long protected_card_id, long long reserve_card_id, unsigned long min_limit)
+void CardService::setAsReserveCard(long long protected_card_id, long long reserve_card_id, long min_limit)
 {
     if(cardIdExists(protected_card_id) && cardIdExists(reserve_card_id))
     {
@@ -93,7 +93,7 @@ void CardService::setAsReserveCard(long long protected_card_id, long long reserv
     }
 }
 
-void CardService::setAsOverflowCard(long long from_card_id, long long to_card_id, unsigned long max_limit)
+void CardService::setAsOverflowCard(long long from_card_id, long long to_card_id, long max_limit)
 {
     if(cardIdExists(from_card_id) && cardIdExists(to_card_id))
     {

@@ -14,8 +14,8 @@ public:
     long getCardIdByCredentials(long long card_id, int pin);
     long generateCard(long user_id, const std::string& name);
     const CardEntity& getCardById(long id);
-    void setAsReserveCard(long long protected_card_id, long long reserve_card_id, unsigned long min_limit);
-    void setAsOverflowCard(long long from_card_id, long long to_card_id, unsigned long max_limit);
+    void setAsReserveCard(long long protected_card_id, long long reserve_card_id, long min_limit);
+    void setAsOverflowCard(long long from_card_id, long long to_card_id, long max_limit);
 
     static CardService* getInstance();
 protected:
