@@ -49,6 +49,7 @@ set(PROJECT_SOURCES
         service/automatictransactionservice.h service/automatictransactionservice.cpp
         exception/notenoughmoney.h exception/notenoughmoney.cpp
         exception/circulardependancyexception.h exception/circulardependancyexception.cpp
+        tests/unittests.h tests/unittests.cpp
 )
 
 
