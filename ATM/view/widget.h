@@ -52,11 +52,13 @@ private slots:
 
 
 
+    void on_screens_container_currentChanged(int arg1);
+
 private:
     long current_card_id = -1;
 
     Ui::Widget *ui;
 
-    void InitATM(long card_id);
+    void UpdateATM(long card_id);
 };
 #endif // WIDGET_H
