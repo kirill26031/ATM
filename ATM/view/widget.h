@@ -4,6 +4,9 @@
 #include <QWidget>
 #include <QListWidgetItem>
 #include <model/cardentity.h>
+#include "service/automatictransactionservice.h"
+#include "service/cardservice.h"
+#include "service/transactionservice.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
@@ -56,9 +59,13 @@ private slots:
 
 private:
     long current_card_id = -1;
+    CardService* _card_service;
+    AutomaticTransactionService* _auto_service;
+    TransactionService* _transaction_service;
 
     Ui::Widget *ui;
 
     void UpdateATM(long card_id);
+
 };
 #endif // WIDGET_H

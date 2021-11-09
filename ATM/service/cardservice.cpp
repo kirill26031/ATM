@@ -133,3 +133,8 @@ bool CardService::detectedCircularDependancy(long card_id, long other_id, bool i
     }
     return false;
 }
+
+CardEntity CardService::getByCardNumber(long long card_number)
+{
+    return _card_rep->getByCardId(card_number);
+}

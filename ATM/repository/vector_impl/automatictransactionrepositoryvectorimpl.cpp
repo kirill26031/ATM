@@ -1,10 +1,10 @@
-#include "automaticTransactionrepositoryvectorimpl.h"
+#include "automatictransactionrepositoryvectorimpl.h"
 #include <ctime>
 
 AutomaticTransactionRepository* AutomaticTransactionRepositoryVectorImpl::_rep = nullptr;
 
 AutomaticTransactionRepositoryVectorImpl::AutomaticTransactionRepositoryVectorImpl() : AutomaticTransactionRepository() {
-    _entities.push_back(AutomaticTransactionEntity(0, 0, 3, 10, 1, 20, time(0)-150));
+    _entities.push_back(AutomaticTransactionEntity(0, 0, 3, 10, 10, 1, 20, time(0)-150));
 }
 
 
