@@ -20,7 +20,7 @@ UserRepository* UserRepositoryDBImpl::getInstance()
 UserEntity UserRepositoryDBImpl::getById(long id)
 {
     QSqlQuery query(_db_manager->db());
-    query.prepare("SELECT id, name FROM schema.user WHERE id=:id");
+    query.prepare("SELECT id, name FROM schema.user WHERE id = :id");
     query.bindValue(":id", QVariant::fromValue(id));
     if(!query.exec())
     {
@@ -51,13 +51,19 @@ std::vector<UserEntity> UserRepositoryDBImpl::getAll()
 void UserRepositoryDBImpl::setById(long id, UserEntity& user)
 {
     QSqlQuery query(_db_manager->db());
-    query.prepare("INSERT INTO schema.user (id, name) VALUES (:id, :name ) ON CONFLICT (id) DO UPDATE SET name = excluded.name");
-    query.bindValue(":id", QVariant::fromValue(id));
+    if(id == -1)
+    {
+        query.prepare("INSERT INTO schema.user ( name) VALUES ( :name )");
+    }
+    else{
+        query.prepare("INSERT INTO schema.user ( id, name) VALUES ( :id, :name ) ON CONFLICT (id) DO UPDATE SET name = excluded.name");
+        query.bindValue(":id", QVariant::fromValue(id));
+    }
     query.bindValue(":name", QString::fromStdString(user.name()));
-    auto r1 = query.boundValues();
+//    auto r1 = query.boundValues();
     if(!query.exec())
     {
-        auto r = query.executedQuery();
+//        auto r = query.executedQuery();
         throw SQLException(query.lastError().text().toStdString());
     }
 }
@@ -76,7 +82,7 @@ void UserRepositoryDBImpl::deleteById(long id)
 bool UserRepositoryDBImpl::existsById(long id)
 {
     QSqlQuery query(_db_manager->db());
-    query.prepare("SELECT id, name FROM schema.user WHERE id=:id");
+    query.prepare("SELECT id FROM schema.user WHERE id = :id");
     query.bindValue(":id", QVariant::fromValue(id));
     if(!query.exec())
     {

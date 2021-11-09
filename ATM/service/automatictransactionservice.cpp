@@ -23,7 +23,7 @@ long AutomaticTransactionService::createAutomaticTransaction(long long from_card
     time_t now = time(0);
     time_t start_time = now + start_time_offset;
 
-    AutomaticTransactionEntity a_tr(generateId(), from_card.id(), to_card.id(), amount, part, time_period,
+    AutomaticTransactionEntity a_tr(generateId(), from_card.id(), to_card.id(), amount, amount, part, time_period,
                                     start_time-time_period);
     _a_tr_rep->setById(a_tr.id(), a_tr);
     return a_tr.id();
@@ -78,6 +78,7 @@ void AutomaticTransactionService::checkAndExecute()
         ate._id = e.id();
         ate._last_executed_time =  e.lastExecutedTime();
         ate._time_period = e.time_period();
+        ate._total = e.total();
         ate._amount = e.amount();
         ate._part = e.part();
         ate._from_card_id = e.fromCardId();
@@ -94,14 +95,14 @@ void AutomaticTransactionService::checkAndExecute()
         ates.erase(ates.begin());
         if(ate._last_executed_time + ate._time_period > now)
         {
-            AutomaticTransactionEntity ch(ate._id, ate._from_card_id, ate._to_card_id, ate._amount, ate._part, ate._time_period, ate._last_executed_time, ate._aborted);
+            AutomaticTransactionEntity ch(ate._id, ate._from_card_id, ate._to_card_id, ate._total, ate._amount, ate._part, ate._time_period, ate._last_executed_time, ate._aborted);
             _a_tr_rep->setById(ch.id(), ch);
             continue;
         }
         long amount_to_remove = ate._part <= ate._amount ? ate._part : ate._amount;
         if(ate._amount == 0)
         {
-            AutomaticTransactionEntity ch(ate._id, ate._from_card_id, ate._to_card_id, 0, ate._part, ate._time_period, ate._last_executed_time, ate._aborted);
+            AutomaticTransactionEntity ch(ate._id, ate._from_card_id, ate._to_card_id, ate._total, 0, ate._part, ate._time_period, ate._last_executed_time, ate._aborted);
             _a_tr_rep->setById(ch.id(), ch);
         }
         else
@@ -116,7 +117,7 @@ void AutomaticTransactionService::checkAndExecute()
             else
             {
                 ate._aborted = true;
-                AutomaticTransactionEntity ch(ate._id, ate._from_card_id, ate._to_card_id, ate._amount, ate._part, ate._time_period, ate._last_executed_time, ate._aborted);
+                AutomaticTransactionEntity ch(ate._id, ate._from_card_id, ate._to_card_id, ate._total, ate._amount, ate._part, ate._time_period, ate._last_executed_time, ate._aborted);
                 _a_tr_rep->setById(ch.id(), ch);
             }
         }

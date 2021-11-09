@@ -36,14 +36,14 @@ int main(int argc, char *argv[])
 //       }
        UserRepository* u_rep = UserRepositoryDBImpl::getInstance();
 //
-//        bool exists = u_rep->existsById(0);
-//        bool exist = u_rep->existsById(99);
+        bool exists = u_rep->existsById(0);
+        bool exist = u_rep->existsById(99);
 //        u_rep->deleteById(0);
-//        auto r1 = u_rep->getAll();
-//        auto r2 = u_rep->getById(1);
-//        UserEntity uu(39, "hEllo");
-//        u_rep->setById(1, uu);
-//        auto r3 = u_rep->getAll();
+        auto r1 = u_rep->getAll();
+        auto r2 = u_rep->getById(1);
+        UserEntity uu(39, "hEllo 77 ");
+        u_rep->setById(1, uu);
+        auto r3 = u_rep->getAll();
        int x = 2+ 2;
     }
     catch(const CustomException& e)

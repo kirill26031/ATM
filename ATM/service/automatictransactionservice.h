@@ -47,6 +47,7 @@ private:
         long _id;
         long long _last_executed_time;
         long _time_period;
+        long _total;
         long _amount;
         long _part; // of payment used for 1 transaction
         long _from_card_id;
