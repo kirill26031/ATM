@@ -1084,17 +1084,17 @@
   <customwidget>
    <class>QCardNumberEdit</class>
    <extends>QLineEdit</extends>
-   <header>qcardnumberedit.h</header>
+   <header>view/qcardnumberedit.h</header>
   </customwidget>
   <customwidget>
    <class>QAmountEdit</class>
    <extends>QLineEdit</extends>
-   <header>qamountedit.h</header>
+   <header>view/qamountedit.h</header>
   </customwidget>
   <customwidget>
    <class>QPinEdit</class>
    <extends>QLineEdit</extends>
-   <header location="global">qpinedit.h</header>
+   <header location="global">view/qpinedit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

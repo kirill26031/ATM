@@ -6,7 +6,7 @@
 #include "service/automatictransactionservice.h"
 #include <tests/unittests.h>
 
-#define NODEBUG 0
+#define NODEBUG 1
 
 int main(int argc, char *argv[])
 {
