@@ -68,7 +68,7 @@ void CardRepositoryDBImpl::setById(long id, CardEntity& card)
     else{
         query.prepare(QString("INSERT INTO schema.card ( id, card_id, pin, user_id, name, balance, min_balance, max_balance, reserve_card_id, overflow_card_id) ")+
                       QString("VALUES ( :id, :card_id, :pin, :user_id, :name, :balance, :min_balance, :max_balance, :reserve_card_id, :overflow_card_id ) ")+
-                      QString("ON CONFLICT (id) DO UPDATE SET name = excluded.name"));
+                      QString("ON CONFLICT (id) DO UPDATE SET card_id = excluded.card_id , pin = excluded.pin , user_id = excluded.user_id , name = excluded.name , balance = excluded.balance , min_balance = excluded.min_balance , max_balance = excluded.max_balance , reserve_card_id = excluded.reserve_card_id , overflow_card_id = excluded.overflow_card_id "));
         query.bindValue(":id", QVariant::fromValue(id));
     }
     query.bindValue(":id", QVariant::fromValue(card.id()));

@@ -63,7 +63,7 @@ void TransactionRepositoryDBImpl::setById(long id, TransactionEntity& transactio
     else{
         query.prepare(QString("INSERT INTO schema.transaction (id, from_card_id, to_card_id, amount, type, automatic_transaction_id) ")+
                       QString("VALUES ( :id, :from_card_id, :to_card_id, :amount, :type, :automatic_transaction_id )")+
-                      QString(" ON CONFLICT (id) DO UPDATE SET name = excluded.name"));
+                      QString(" ON CONFLICT (id) DO UPDATE SET from_card_id = excluded.from_card_id , to_card_id = excluded.to_card_id , amount = excluded.amount , type = excluded.type , automatic_transaction_id = excluded.automatic_transaction_id "));
         query.bindValue(":id", QVariant::fromValue(id));
     }
     query.bindValue(":from_card_id", QVariant::fromValue(transaction.fromCardId()));
