@@ -32,7 +32,7 @@ AutomaticTransactionRepository* AutomaticTransactionRepositoryDBImpl::getInstanc
 
 AutomaticTransactionEntity AutomaticTransactionRepositoryDBImpl::getById(long id)
 {
-    qDebug() << "\nAutomaticTransactionRepositoryDBImpl::getById " << _cache_modified;
+    // qDebug() << "\nAutomaticTransactionRepositoryDBImpl::getById " << _cache_modified;
     if(!_cache_modified) return _cache->getById(id);
     QSqlQuery query(_db_manager->db());
     query.prepare("SELECT id, from_card_id, to_card_id, total, amount, part, time_period, last_executed_time, aborted FROM schema.automatic_transaction WHERE id = :id");
@@ -56,7 +56,7 @@ AutomaticTransactionEntity AutomaticTransactionRepositoryDBImpl::getById(long id
 
 std::vector<AutomaticTransactionEntity> AutomaticTransactionRepositoryDBImpl::getAll()
 {
-    qDebug() << "\nAutomaticTransactionRepositoryDBImpl::getAll " << _cache_modified;
+    // qDebug() << "\nAutomaticTransactionRepositoryDBImpl::getAll " << _cache_modified;
     if(!_cache_modified) return _cache->getAll();
     QSqlQuery query("SELECT id, from_card_id, to_card_id, total, amount, part, time_period, last_executed_time, aborted FROM schema.automatic_transaction", _db_manager->db());
     std::vector<AutomaticTransactionEntity> res;
@@ -77,7 +77,7 @@ std::vector<AutomaticTransactionEntity> AutomaticTransactionRepositoryDBImpl::ge
 
 void AutomaticTransactionRepositoryDBImpl::setById(long id, const AutomaticTransactionEntity& automaticTransaction)
 {
-    qDebug() << "\nAutomaticTransactionRepositoryDBImpl::setById " << _cache_modified;
+    // qDebug() << "\nAutomaticTransactionRepositoryDBImpl::setById " << _cache_modified;
     _cache_modified = true;
     QSqlQuery query(_db_manager->db());
     if(id == -1)
@@ -110,7 +110,7 @@ void AutomaticTransactionRepositoryDBImpl::setById(long id, const AutomaticTrans
 
 void AutomaticTransactionRepositoryDBImpl::deleteById(long id)
 {
-    qDebug() << "\nAutomaticTransactionRepositoryDBImpl::deleteById ";
+    // qDebug() << "\nAutomaticTransactionRepositoryDBImpl::deleteById ";
     _cache->deleteById(id);
     QSqlQuery query(_db_manager->db());
     query.prepare("DELETE FROM schema.automatic_transaction WHERE id = :id");
@@ -123,7 +123,7 @@ void AutomaticTransactionRepositoryDBImpl::deleteById(long id)
 
 bool AutomaticTransactionRepositoryDBImpl::existsById(long id)
 {
-    qDebug() << "\nAutomaticTransactionRepositoryDBImpl::existsById " << _cache_modified;
+    // qDebug() << "\nAutomaticTransactionRepositoryDBImpl::existsById " << _cache_modified;
     if(!_cache_modified) return _cache->existsById(id);
     QSqlQuery query(_db_manager->db());
     query.prepare("SELECT id FROM schema.automatic_transaction WHERE id = :id");
