@@ -2,8 +2,8 @@
 
 AutomaticTransactionService* AutomaticTransactionService::_service = nullptr;
 
-AutomaticTransactionService::AutomaticTransactionService() : _transaction_rep(TransactionRepositoryVectorImpl::getInstance()),
-    _a_tr_rep(AutomaticTransactionRepositoryVectorImpl::getInstance()), _card_rep(CardRepositoryVectorImpl::getInstance()),
+AutomaticTransactionService::AutomaticTransactionService() : _transaction_rep(TransactionRepositoryDBImpl::getInstance()),
+    _a_tr_rep(AutomaticTransactionRepositoryDBImpl::getInstance()), _card_rep(CardRepositoryDBImpl::getInstance()),
     _transaction_service(TransactionService::getInstance())
 {
 

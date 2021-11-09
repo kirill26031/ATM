@@ -1,7 +1,8 @@
 #ifndef CARDSERVICE_H
 #define CARDSERVICE_H
 
-#include "repository/vector_impl./cardrepositoryvectorimpl.h"
+//#include "repository/vector_impl./cardrepositoryvectorimpl.h"
+#include "repository/db_impl/cardrepositorydbimpl.h"
 #include "exception/incorrectcardauthinfoexception.h"
 #include "exception/circulardependancyexception.h"
 

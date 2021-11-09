@@ -2,8 +2,8 @@
 
 TransactionService* TransactionService::_service = nullptr;
 
-TransactionService::TransactionService() : _card_rep(CardRepositoryVectorImpl::getInstance()),
-    _transaction_rep(TransactionRepositoryVectorImpl::getInstance())
+TransactionService::TransactionService() : _card_rep(CardRepositoryDBImpl::getInstance()),
+    _transaction_rep(TransactionRepositoryDBImpl::getInstance())
 {
 
 }

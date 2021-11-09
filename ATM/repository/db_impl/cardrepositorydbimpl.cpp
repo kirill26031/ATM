@@ -66,9 +66,10 @@ void CardRepositoryDBImpl::setById(long id, CardEntity& card)
                       QString("( :card_id, :pin, :user_id, :name, :balance, :min_balance, :max_balance, :reserve_card_id, :overflow_card_id )"));
     }
     else{
-        query.prepare(QString("INSERT INTO schema.card ( id, card_id, pin, user_id, name, balance, min_balance, max_balance, reserve_card_id, overflow_card_id) ")+
-                      QString("VALUES ( :id, :card_id, :pin, :user_id, :name, :balance, :min_balance, :max_balance, :reserve_card_id, :overflow_card_id ) ")+
-                      QString("ON CONFLICT (id) DO UPDATE SET card_id = excluded.card_id , pin = excluded.pin , user_id = excluded.user_id , name = excluded.name , balance = excluded.balance , min_balance = excluded.min_balance , max_balance = excluded.max_balance , reserve_card_id = excluded.reserve_card_id , overflow_card_id = excluded.overflow_card_id "));
+        query.prepare(QString("UPDATE schema.card SET ")+
+                      QString("(card_id, pin, user_id, name, balance, min_balance, max_balance, reserve_card_id, overflow_card_id) = ")+
+                      QString("( :card_id, :pin, :user_id, :name, :balance, :min_balance, :max_balance, :reserve_card_id, :overflow_card_id ) ")+
+                      QString("WHERE id = :id"));
         query.bindValue(":id", QVariant::fromValue(id));
     }
     query.bindValue(":id", QVariant::fromValue(card.id()));
@@ -80,9 +81,14 @@ void CardRepositoryDBImpl::setById(long id, CardEntity& card)
     query.bindValue(":min_balance", QVariant::fromValue(card.minBalance()));
     query.bindValue(":max_balance", QVariant::fromValue(card.maxBalance()));
     query.bindValue(":reserve_card_id", card.reserveCardId() == nullptr ?
-                        QString::fromStdString(std::string("null")) : QVariant::fromValue(card.reserveCardId()));
+                        QVariant::fromValue(nullptr) : QVariant::fromValue(*card.reserveCardId()));
     query.bindValue(":overflow_card_id", card.overflowCardId() == nullptr ?
-                        QString::fromStdString(std::string("null")) : QVariant::fromValue(card.overflowCardId()));
+                        QVariant::fromValue(nullptr) : QVariant::fromValue(*card.overflowCardId()));
+//    auto b = query.boundValues();
+//    for(auto i : b)
+//    {
+//        qDebug() << "\n" << i;
+//    }
     if(!query.exec())
     {
 //        auto r = query.executedQuery();

@@ -4,7 +4,7 @@
 
 CardService* CardService::_service = nullptr;
 
-CardService::CardService() : _card_rep(CardRepositoryVectorImpl::getInstance())
+CardService::CardService() : _card_rep(CardRepositoryDBImpl::getInstance())
 {
 
 }

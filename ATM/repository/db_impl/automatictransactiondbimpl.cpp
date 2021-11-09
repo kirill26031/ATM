@@ -65,14 +65,20 @@ void AutomaticTransactionRepositoryDBImpl::setById(long id, AutomaticTransaction
                       QString("VALUES ( :from_card_id, :to_card_id, :total, :amount, :part, :time_period, :last_executed_time, :aborted )"));
     }
     else{
-        query.prepare(QString("INSERT INTO schema.automatic_transaction (id, from_card_id, to_card_id, total, amount, part, time_period, last_executed_time, aborted) ")+
-                      QString("VALUES ( :id, :from_card_id, :to_card_id, :total, :amount, :part, :time_period, :last_executed_time, :aborted )")+
-                      QString(" ON CONFLICT (id) DO UPDATE SET from_card_id = excluded.from_card_id , to_card_id = excluded.to_card_id , total = excluded.total , amount = excluded.amount, part = excluded.part , time_period = excluded.time_period , last_executed_time = excluded.last_executed_time , aborted = excluded.aborted"));
+        query.prepare(QString("UPDATE schema.automatic_transaction SET ")+
+                      QString("( from_card_id, to_card_id, total, amount, part, time_period, last_executed_time, aborted) = ")+
+                      QString("( :from_card_id, :to_card_id, :total, :amount, :part, :time_period, :last_executed_time, :aborted ) ")+
+                      QString("WHERE id = :id"));
         query.bindValue(":id", QVariant::fromValue(id));
     }
     query.bindValue(":from_card_id", QVariant::fromValue(automaticTransaction.fromCardId()));
     query.bindValue(":to_card_id", QVariant::fromValue(automaticTransaction.toCardId()));
+    query.bindValue(":total", QVariant::fromValue(automaticTransaction.total()));
     query.bindValue(":amount", QVariant::fromValue(automaticTransaction.amount()));
+    query.bindValue(":part", QVariant::fromValue(automaticTransaction.part()));
+    query.bindValue(":time_period", QVariant::fromValue(automaticTransaction.time_period()));
+    query.bindValue(":last_executed_time", QVariant::fromValue(automaticTransaction.lastExecutedTime()));
+    query.bindValue(":aborted", QVariant::fromValue(automaticTransaction.aborted()));
 
     if(!query.exec())
     {

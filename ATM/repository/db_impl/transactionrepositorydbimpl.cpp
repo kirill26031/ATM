@@ -61,9 +61,10 @@ void TransactionRepositoryDBImpl::setById(long id, TransactionEntity& transactio
                       QString("VALUES ( :from_card_id, :to_card_id, :amount, :type, :automatic_transaction_id )"));
     }
     else{
-        query.prepare(QString("INSERT INTO schema.transaction (id, from_card_id, to_card_id, amount, type, automatic_transaction_id) ")+
-                      QString("VALUES ( :id, :from_card_id, :to_card_id, :amount, :type, :automatic_transaction_id )")+
-                      QString(" ON CONFLICT (id) DO UPDATE SET from_card_id = excluded.from_card_id , to_card_id = excluded.to_card_id , amount = excluded.amount , type = excluded.type , automatic_transaction_id = excluded.automatic_transaction_id "));
+        query.prepare(QString("UPDATE schema.transaction SET ")+
+                      QString("(from_card_id, to_card_id, amount, type, automatic_transaction_id) = ")+
+                      QString("( :from_card_id, :to_card_id, :amount, :type, :automatic_transaction_id ) ")+
+                      QString("WHERE id = :id"));
         query.bindValue(":id", QVariant::fromValue(id));
     }
     query.bindValue(":from_card_id", QVariant::fromValue(transaction.fromCardId()));
@@ -71,7 +72,7 @@ void TransactionRepositoryDBImpl::setById(long id, TransactionEntity& transactio
     query.bindValue(":amount", QVariant::fromValue(transaction.amount()));
     query.bindValue(":type", QVariant::fromValue(transaction.type()));
     query.bindValue(":automatic_transaction_id", transaction.automaticTransactionId() == nullptr ?
-                        QString::fromStdString(std::string("null")) : QVariant::fromValue(transaction.automaticTransactionId()));
+                        QVariant::fromValue(nullptr) : QVariant::fromValue(*transaction.automaticTransactionId()));
 //    auto r1 = query.boundValues();
     if(!query.exec())
     {

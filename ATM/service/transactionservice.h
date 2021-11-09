@@ -2,8 +2,10 @@
 #define TRANSACTIONSERVICE_H
 #include "repository/transactionrepository.h"
 #include "repository/cardrepository.h"
-#include "repository/vector_impl/transactionrepositoryvectorimpl.h"
-#include "repository/vector_impl/cardrepositoryvectorimpl.h"
+//#include "repository/vector_impl/transactionrepositoryvectorimpl.h"
+//#include "repository/vector_impl/cardrepositoryvectorimpl.h"
+#include "repository/db_impl/transactionrepositorydbimpl.h"
+#include "repository/db_impl/cardrepositorydbimpl.h"
 #include "util/utils.h"
 //#include "automatictransactionservice.h"
 

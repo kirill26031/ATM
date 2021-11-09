@@ -56,14 +56,14 @@ void UserRepositoryDBImpl::setById(long id, UserEntity& user)
         query.prepare("INSERT INTO schema.user ( name) VALUES ( :name )");
     }
     else{
-        query.prepare("INSERT INTO schema.user ( id, name) VALUES ( :id, :name ) ON CONFLICT (id) DO UPDATE SET name = excluded.name");
+        query.prepare("UPDATE schema.user ( name) = ( :name ) WHERE id = :id");
         query.bindValue(":id", QVariant::fromValue(id));
     }
     query.bindValue(":name", QString::fromStdString(user.name()));
 //    auto r1 = query.boundValues();
     if(!query.exec())
     {
-        auto r = query.executedQuery();
+//        auto r = query.executedQuery();
         throw SQLException(query.lastError().text().toStdString());
     }
 }

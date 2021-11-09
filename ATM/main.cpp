@@ -17,46 +17,8 @@ int main(int argc, char *argv[])
         tests.runTests();
     }
 
+    try{
 
-
-
-//    CardService* cs = CardService::getInstance();
-    try {
-//        cs->editPin(1234567890123456, 4355, 4444);
-        // 9012345612345678
-//        long new_id = cs->generateCard(0, std::string("Card new"));
-//        bool exists = cs->cardIdExists(new_id);
-//        const CardEntity& card = cs->getCardById(new_id);
-//        bool correct = cs->areCardCredentialsCorrect(new_id, card.pin());
-//        qDebug() << exists << " " << correct;
-//    cs->setAsReserveCard(9012345612345678, 1234567890123456, 200);
-//    cs->setAsReserveCard(1234567890123456, 1234123412341234, 200);
-//    cs->setAsReserveCard(1234123412341234, 9012345612345678, 200);
-//      cs->setAsOverflowCard(9012345612345678, 1234567890123456, 200);
-//      const CardEntity& overflow_source = cs->getCardById(1);
-//      const CardEntity& overflow_target = cs->getCardById(0);
-//    int x = 2+ 3;
-
-//        TransactionService* t_s = TransactionService::getInstance();
-//       AutomaticTransactionService* a_t_s = AutomaticTransactionService::getInstance();
-//       AutomaticTransactionEntity* ate = new AutomaticTransactionEntity(a_t_s->getById(0));
-//       while(ate->amount() > 0)
-//       {
-//           a_t_s->checkAndExecute();
-//           ate = new AutomaticTransactionEntity(a_t_s->getById(0));
-
-//       }
-//       UserRepository* u_rep = UserRepositoryDBImpl::getInstance();
-////
-//        bool exists = u_rep->existsById(0);
-//        bool exist = u_rep->existsById(99);
-////        u_rep->deleteById(0);
-//        auto r1 = u_rep->getAll();
-//        auto r2 = u_rep->getById(1);
-//        UserEntity uu(39, "hEllo 77 ");
-//        u_rep->setById(-1, uu);
-//        auto r3 = u_rep->getAll();
-       int x = 2+ 2;
        AutomaticTransactionService* a_t_s = AutomaticTransactionService::getInstance();
        a_t_s->checkAndExecute();
 
