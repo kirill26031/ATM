@@ -112,3 +112,63 @@ bool CardRepositoryDBImpl::existsById(long id)
     }
     return query.next();
 }
+
+CardEntity CardRepositoryDBImpl::getByCardId(long long cardId)
+{
+    QSqlQuery query(_db_manager->db());
+    query.prepare("SELECT id, card_id, pin, user_id, name, balance, min_balance, max_balance, reserve_card_id, overflow_card_id FROM schema.card WHERE card_id = :card_id");
+    query.bindValue(":card_id", QString::fromStdString(printCardNumber(cardId)));
+    if(!query.exec())
+    {
+        throw SQLException(query.lastError().text().toStdString());
+    }
+    if(!query.next())
+    {
+        throw NotFoundException(std::string("Card with card_id=").append(std::to_string(cardId)).append(" not found in CardRepository"));
+    }
+    QSqlRecord record(query.record());
+    long* reserve_card_id = record.isNull(8) ? nullptr : new long(record.value(8).toLongLong());
+    long* overflow_card_id = record.isNull(9) ? nullptr : new long(record.value(9).toLongLong());
+    CardEntity card(record.value(0).toLongLong(), readCardNumber(record.value(1).toString().toStdString()),
+                    readPin(record.value(2).toString().toStdString()), record.value(3).toLongLong(), record.value(4).toString().toStdString(),
+                    record.value(5).toLongLong(), record.value(6).toLongLong(), record.value(7).toLongLong(), reserve_card_id, overflow_card_id);
+    return card;
+}
+
+std::vector<CardEntity> CardRepositoryDBImpl::getCardsDependantOnThisByReserve(long id)
+{
+    QSqlQuery query(QString("SELECT id, card_id, pin, user_id, name, balance, min_balance, max_balance, reserve_card_id, overflow_card_id FROM schema.card ")+
+                    QString("WHERE reserve_card_id = :reserve_card_id "), _db_manager->db());
+    query.bindValue(":reserve_card_id", QVariant::fromValue(id));
+    std::vector<CardEntity> res;
+    while(query.next())
+    {
+        QSqlRecord record(query.record());
+        long* reserve_card_id = record.isNull(8) ? nullptr : new long(record.value(8).toLongLong());
+        long* overflow_card_id = record.isNull(9) ? nullptr : new long(record.value(9).toLongLong());
+        CardEntity card(record.value(0).toLongLong(), readCardNumber(record.value(1).toString().toStdString()),
+                        readPin(record.value(2).toString().toStdString()), record.value(3).toLongLong(), record.value(4).toString().toStdString(),
+                        record.value(5).toLongLong(), record.value(6).toLongLong(), record.value(7).toLongLong(), reserve_card_id, overflow_card_id);
+        res.push_back(card);
+    }
+    return res;
+}
+
+std::vector<CardEntity> CardRepositoryDBImpl::getCardsDependantOnThisByOverflow(long id)
+{
+    QSqlQuery query(QString("SELECT id, card_id, pin, user_id, name, balance, min_balance, max_balance, reserve_card_id, overflow_card_id FROM schema.card ")+
+                    QString("WHERE overflow_card_id = :overflow_card_id "), _db_manager->db());
+    query.bindValue(":overflow_card_id", QVariant::fromValue(id));
+    std::vector<CardEntity> res;
+    while(query.next())
+    {
+        QSqlRecord record(query.record());
+        long* reserve_card_id = record.isNull(8) ? nullptr : new long(record.value(8).toLongLong());
+        long* overflow_card_id = record.isNull(9) ? nullptr : new long(record.value(9).toLongLong());
+        CardEntity card(record.value(0).toLongLong(), readCardNumber(record.value(1).toString().toStdString()),
+                        readPin(record.value(2).toString().toStdString()), record.value(3).toLongLong(), record.value(4).toString().toStdString(),
+                        record.value(5).toLongLong(), record.value(6).toLongLong(), record.value(7).toLongLong(), reserve_card_id, overflow_card_id);
+        res.push_back(card);
+    }
+    return res;
+}
