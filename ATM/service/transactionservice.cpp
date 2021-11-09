@@ -18,7 +18,7 @@ bool TransactionService::Transfer(long amount, long from_card_id, long to_card_i
         prepareTransferToCard(amount, from_card_id, to_card_id, true, false);
         TransactionEntity transaction(generateId(), from_card_id, to_card_id, amount,
                                       (automatic_transaction_id == nullptr ? 0 : 1), automatic_transaction_id);
-        _transaction_rep->setById(transaction.id(), transaction);
+        _transaction_rep->setById(-1, transaction);
         return true;
     } else {
         return false;
@@ -48,7 +48,7 @@ bool TransactionService::prepareTransferFromCard(long amount, long from_card_id,
                 if(dependant){
                     TransactionEntity dep_tr(generateId(), from_card_id, to_card_id,
                                              amount, 2, nullptr);
-                    _transaction_rep->setById(dep_tr.id(), dep_tr);
+                    _transaction_rep->setById(-1, dep_tr);
                 }
             }
             return true;
@@ -62,7 +62,7 @@ bool TransactionService::prepareTransferFromCard(long amount, long from_card_id,
 
                 if(dependant){
                     TransactionEntity dep_tr(generateId(), from_card_id, to_card_id, amount, 2, nullptr);
-                    _transaction_rep->setById(dep_tr.id(), dep_tr);
+                    _transaction_rep->setById(-1, dep_tr);
                 }
             }
             return true;
@@ -95,7 +95,7 @@ bool TransactionService::prepareTransferToCard(long amount, long from_card_id, l
                 if(dependant){
                     TransactionEntity dep_tr(generateId(), from_card_id, to_card_id,
                                              amount, 3, nullptr);
-                    _transaction_rep->setById(dep_tr.id(), dep_tr);
+                    _transaction_rep->setById(-1, dep_tr);
                 }
             }
             return true;
@@ -108,7 +108,7 @@ bool TransactionService::prepareTransferToCard(long amount, long from_card_id, l
                 _card_rep->setById(to_card_id, updated_to_card);
                 if(dependant){
                     TransactionEntity dep_tr(generateId(), from_card_id, to_card_id, amount, 3, nullptr);
-                    _transaction_rep->setById(dep_tr.id(), dep_tr);
+                    _transaction_rep->setById(-1, dep_tr);
                 }
             }
             return true;

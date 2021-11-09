@@ -65,7 +65,7 @@ long CardService::getCardIdByCredentials(long long card_id, int pin)
 long CardService::generateCard(long user_id, const std::string& name)
 {
     CardEntity card(generateId(), generateCardId(), generatePin(), user_id, name, 0);
-    _card_rep->setById(card.id(), card);
+    _card_rep->setById(-1, card);
     return card.id();
 }
 

@@ -25,7 +25,7 @@ long AutomaticTransactionService::createAutomaticTransaction(long long from_card
 
     AutomaticTransactionEntity a_tr(generateId(), from_card.id(), to_card.id(), amount, amount, part, time_period,
                                     start_time-time_period);
-    _a_tr_rep->setById(a_tr.id(), a_tr);
+    _a_tr_rep->setById(-1, a_tr);
     return a_tr.id();
 }
 
