@@ -74,6 +74,8 @@ void AutomaticTransactionService::checkAndExecute()
     );
     for(const AutomaticTransactionEntity& e : _a_tr_rep->getAll())
     {
+        if(e.amount() != 0)
+        {
         ATE ate;
         ate._id = e.id();
         ate._last_executed_time =  e.lastExecutedTime();
@@ -85,6 +87,7 @@ void AutomaticTransactionService::checkAndExecute()
         ate._to_card_id = e.toCardId();
         ate._aborted = e.aborted();
         ates.insert(ate);
+        }
     }
 
     time_t now = time(0);

@@ -24,7 +24,7 @@ std::vector<TransactionEntity> TransactionRepositoryVectorImpl::getAll()
     return _entities;
 }
 
-void TransactionRepositoryVectorImpl::setById(long id, TransactionEntity& Transaction)
+void TransactionRepositoryVectorImpl::setById(long id, const TransactionEntity& Transaction)
 {
     for(TransactionEntity& e : _entities)
     {

@@ -10,7 +10,7 @@ class CardRepositoryVectorImpl : public CardRepository
 public:
     CardEntity getById(long) override;
     std::vector<CardEntity> getAll() override;
-    void setById(long, CardEntity&) override;
+    void setById(long, const CardEntity&) override;
     void deleteById(long) override;
     bool existsById(long) override;
     CardEntity getByCardId(long long) override;

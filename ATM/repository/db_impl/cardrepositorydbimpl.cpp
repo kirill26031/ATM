@@ -9,7 +9,21 @@
 
 CardRepository* CardRepositoryDBImpl::_rep = nullptr;
 
-CardRepositoryDBImpl::CardRepositoryDBImpl() : CardRepository(), _db_manager(DBManager::getInstance()) {}
+CardRepositoryDBImpl::CardRepositoryDBImpl() : CardRepository(), _db_manager(DBManager::getInstance()),
+    _cache(CardRepositoryVectorImpl::getInstance()), _cache_modified(true), _counter_of_usages_while_cache_is_modified(0)
+{
+    getAll();
+}
+
+void CardRepositoryDBImpl::fillCache(const std::vector<CardEntity> &vector)
+{
+    for(const CardEntity& e : vector)
+    {
+        _cache->setById(e.id(), e);
+    }
+    _counter_of_usages_while_cache_is_modified = 0;
+    _cache_modified = false;
+}
 
 CardRepository* CardRepositoryDBImpl::getInstance()
 {
@@ -20,6 +34,13 @@ CardRepository* CardRepositoryDBImpl::getInstance()
 
 CardEntity CardRepositoryDBImpl::getById(long id)
 {
+    if(_counter_of_usages_while_cache_is_modified > cache_limit) {
+        _counter_of_usages_while_cache_is_modified = 0;
+        getAll();
+    }
+    // qDebug() << "\nCardRepositoryDBImpl::getById " << _cache_modified;
+    if(!_cache_modified) return _cache->getById(id);
+    else _counter_of_usages_while_cache_is_modified++;
     QSqlQuery query(_db_manager->db());
     query.prepare("SELECT id, card_id, pin, user_id, name, balance, min_balance, max_balance, reserve_card_id, overflow_card_id FROM schema.card WHERE id = :id");
     query.bindValue(":id", QVariant::fromValue(id));
@@ -42,6 +63,8 @@ CardEntity CardRepositoryDBImpl::getById(long id)
 
 std::vector<CardEntity> CardRepositoryDBImpl::getAll()
 {
+    // qDebug() << "\nCardRepositoryDBImpl::getAll " << _cache_modified;
+    if(!_cache_modified) return _cache->getAll();
     QSqlQuery query("SELECT id, card_id, pin, user_id, name, balance, min_balance, max_balance, reserve_card_id, overflow_card_id FROM schema.card", _db_manager->db());
     std::vector<CardEntity> res;
     while(query.next())
@@ -54,11 +77,14 @@ std::vector<CardEntity> CardRepositoryDBImpl::getAll()
                         record.value(5).toLongLong(), record.value(6).toLongLong(), record.value(7).toLongLong(), reserve_card_id, overflow_card_id);
         res.push_back(card);
     }
+    fillCache(res);
     return res;
 }
 
-void CardRepositoryDBImpl::setById(long id, CardEntity& card)
+void CardRepositoryDBImpl::setById(long id, const CardEntity& card)
 {
+    // qDebug() << "\nCardRepositoryDBImpl::setById " << _cache_modified;
+    _cache_modified = true;
     QSqlQuery query(_db_manager->db());
     if(id == -1)
     {
@@ -87,7 +113,7 @@ void CardRepositoryDBImpl::setById(long id, CardEntity& card)
 //    auto b = query.boundValues();
 //    for(auto i : b)
 //    {
-//        qDebug() << "\n" << i;
+//        // qDebug() << "\n" << i;
 //    }
     if(!query.exec())
     {
@@ -98,6 +124,8 @@ void CardRepositoryDBImpl::setById(long id, CardEntity& card)
 
 void CardRepositoryDBImpl::deleteById(long id)
 {
+    // qDebug() << "\nCardRepositoryDBImpl::deleteById ";
+    _cache->deleteById(id);
     QSqlQuery query(_db_manager->db());
     query.prepare("DELETE FROM schema.card WHERE id = :id");
     query.bindValue(":id", QVariant::fromValue(id));
@@ -109,6 +137,10 @@ void CardRepositoryDBImpl::deleteById(long id)
 
 bool CardRepositoryDBImpl::existsById(long id)
 {
+    if(_counter_of_usages_while_cache_is_modified > cache_limit) getAll();
+    // qDebug() << "\nCardRepositoryDBImpl::existsById " << _cache_modified;
+    if(!_cache_modified) return _cache->existsById(id);
+    else _counter_of_usages_while_cache_is_modified++;
     QSqlQuery query(_db_manager->db());
     query.prepare("SELECT id FROM schema.card WHERE id = :id");
     query.bindValue(":id", QVariant::fromValue(id));
@@ -121,17 +153,24 @@ bool CardRepositoryDBImpl::existsById(long id)
 
 CardEntity CardRepositoryDBImpl::getByCardId(long long cardId)
 {
+    if(_counter_of_usages_while_cache_is_modified > cache_limit) {
+        _counter_of_usages_while_cache_is_modified = 0;
+        getAll();
+    }
+    // qDebug() << "\nCardRepositoryDBImpl::getByCardId " << _cache_modified;
+    if(!_cache_modified) return _cache->getByCardId(cardId);
+    else _counter_of_usages_while_cache_is_modified++;
     QSqlQuery query(_db_manager->db());
     query.prepare("SELECT id, card_id, pin, user_id, name, balance, min_balance, max_balance, reserve_card_id, overflow_card_id FROM schema.card WHERE card_id = :card_id ");
     std::string card_numbers = printCardNumber(cardId);
     query.bindValue(":card_id", QString::fromStdString(card_numbers));
     if(!query.exec())
     {
-        auto r = query.boundValues();
-        for(auto i: r){
-            qDebug() << "\n" << i;
-        }
-        auto r2 = query.lastQuery();
+//        auto r = query.boundValues();
+//        for(auto i: r){
+//            // qDebug() << "\n" << i;
+//        }
+//        auto r2 = query.lastQuery();
 
         throw SQLException(query.lastError().text().toStdString());
     }
@@ -150,6 +189,13 @@ CardEntity CardRepositoryDBImpl::getByCardId(long long cardId)
 
 std::vector<CardEntity> CardRepositoryDBImpl::getCardsDependantOnThisByReserve(long id)
 {
+    if(_counter_of_usages_while_cache_is_modified > cache_limit) {
+        _counter_of_usages_while_cache_is_modified = 0;
+        getAll();
+    }
+    // qDebug() << "\nCardRepositoryDBImpl::getCardsDependantOnThisByReserve " << _cache_modified;
+    if(!_cache_modified) return _cache->getCardsDependantOnThisByReserve(id);
+    else _counter_of_usages_while_cache_is_modified++;
     QSqlQuery query(QString("SELECT id, card_id, pin, user_id, name, balance, min_balance, max_balance, reserve_card_id, overflow_card_id FROM schema.card ")+
                     QString("WHERE reserve_card_id = :reserve_card_id "), _db_manager->db());
     query.bindValue(":reserve_card_id", QVariant::fromValue(id));
@@ -169,6 +215,13 @@ std::vector<CardEntity> CardRepositoryDBImpl::getCardsDependantOnThisByReserve(l
 
 std::vector<CardEntity> CardRepositoryDBImpl::getCardsDependantOnThisByOverflow(long id)
 {
+    if(_counter_of_usages_while_cache_is_modified > cache_limit) {
+        _counter_of_usages_while_cache_is_modified = 0;
+        getAll();
+    }
+    // qDebug() << "\nCardRepositoryDBImpl::getCardsDependantOnThisByOverflow " << _cache_modified;
+    if(!_cache_modified) return _cache->getCardsDependantOnThisByOverflow(id);
+    else _counter_of_usages_while_cache_is_modified++;
     QSqlQuery query(QString("SELECT id, card_id, pin, user_id, name, balance, min_balance, max_balance, reserve_card_id, overflow_card_id FROM schema.card ")+
                     QString("WHERE overflow_card_id = :overflow_card_id "), _db_manager->db());
     query.bindValue(":overflow_card_id", QVariant::fromValue(id));

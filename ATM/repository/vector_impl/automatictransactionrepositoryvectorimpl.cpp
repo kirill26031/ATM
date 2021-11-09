@@ -22,7 +22,7 @@ std::vector<AutomaticTransactionEntity> AutomaticTransactionRepositoryVectorImpl
     return _entities;
 }
 
-void AutomaticTransactionRepositoryVectorImpl::setById(long id, AutomaticTransactionEntity& AutomaticTransaction)
+void AutomaticTransactionRepositoryVectorImpl::setById(long id, const AutomaticTransactionEntity& AutomaticTransaction)
 {
     for(AutomaticTransactionEntity& e : _entities)
     {

@@ -23,7 +23,7 @@ std::vector<UserEntity> UserRepositoryVectorImpl::getAll()
     return _entities;
 }
 
-void UserRepositoryVectorImpl::setById(long id, UserEntity& user)
+void UserRepositoryVectorImpl::setById(long id, const UserEntity& user)
 {
     for(UserEntity& e : _entities)
     {

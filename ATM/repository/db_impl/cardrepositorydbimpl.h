@@ -4,6 +4,7 @@
 #include "exception/notfoundexception.h"
 #include <string>
 #include "dbmanager.h"
+#include "repository/vector_impl/cardrepositoryvectorimpl.h"
 
 
 class CardRepositoryDBImpl : public CardRepository
@@ -11,7 +12,7 @@ class CardRepositoryDBImpl : public CardRepository
 public:
     CardEntity getById(long) override;
     std::vector<CardEntity> getAll() override;
-    void setById(long, CardEntity&) override;
+    void setById(long, const CardEntity&) override;
     void deleteById(long) override;
     bool existsById(long) override;
     CardEntity getByCardId(long long cardId);
@@ -22,6 +23,12 @@ protected:
     CardRepositoryDBImpl();
     ~CardRepositoryDBImpl(){} // destructor for _rep is called from global window destructor
 private:
+    void fillCache(const std::vector<CardEntity>& vector);
+
+    int _counter_of_usages_while_cache_is_modified;
+    const int cache_limit = 5;
+    CardRepository* _cache;
+    bool _cache_modified;
     static CardRepository* _rep;
     DBManager* _db_manager;
 };

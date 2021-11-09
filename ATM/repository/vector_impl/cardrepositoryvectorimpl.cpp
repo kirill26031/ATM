@@ -28,7 +28,7 @@ std::vector<CardEntity> CardRepositoryVectorImpl::getAll()
     return _entities;
 }
 
-void CardRepositoryVectorImpl::setById(long id, CardEntity& card)
+void CardRepositoryVectorImpl::setById(long id, const CardEntity& card)
 {
     for(CardEntity& c : _entities)
     {

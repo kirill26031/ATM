@@ -8,7 +8,19 @@
 
 TransactionRepository* TransactionRepositoryDBImpl::_rep = nullptr;
 
-TransactionRepositoryDBImpl::TransactionRepositoryDBImpl() : TransactionRepository(), _db_manager(DBManager::getInstance()) {}
+TransactionRepositoryDBImpl::TransactionRepositoryDBImpl() : TransactionRepository(), _db_manager(DBManager::getInstance()),
+    _cache(TransactionRepositoryVectorImpl::getInstance()), _cache_modified(true)
+{
+    getAll();
+}
+
+void TransactionRepositoryDBImpl::fillCache(const std::vector<TransactionEntity> &vector)
+{
+    for(const TransactionEntity& e : vector)
+    {
+        _cache->setById(e.id(), e);
+    }
+}
 
 TransactionRepository* TransactionRepositoryDBImpl::getInstance()
 {
@@ -19,6 +31,8 @@ TransactionRepository* TransactionRepositoryDBImpl::getInstance()
 
 TransactionEntity TransactionRepositoryDBImpl::getById(long id)
 {
+    qDebug() << "\TransactionRepositoryDBImpl::getById " << _cache_modified;
+    if(!_cache_modified) return _cache->getById(id);
     QSqlQuery query(_db_manager->db());
     query.prepare("SELECT id, from_card_id, to_card_id, amount, type, automatic_transaction_id FROM schema.transaction WHERE id = :id");
     query.bindValue(":id", QVariant::fromValue(id));
@@ -39,6 +53,8 @@ TransactionEntity TransactionRepositoryDBImpl::getById(long id)
 
 std::vector<TransactionEntity> TransactionRepositoryDBImpl::getAll()
 {
+    qDebug() << "\nTransactionRepositoryDBImpl::getAll " << _cache_modified;
+    if(!_cache_modified) return _cache->getAll();
     QSqlQuery query("SELECT id, from_card_id, to_card_id, amount, type, automatic_transaction_id FROM schema.transaction", _db_manager->db());
     std::vector<TransactionEntity> res;
     while(query.next())
@@ -49,11 +65,15 @@ std::vector<TransactionEntity> TransactionRepositoryDBImpl::getAll()
                                       record.value(3).toLongLong(), record.value(4).toInt(), automatic_transaction_id);
         res.push_back(transaction);
     }
+    fillCache(res);
+    _cache_modified = false;
     return res;
 }
 
-void TransactionRepositoryDBImpl::setById(long id, TransactionEntity& transaction)
+void TransactionRepositoryDBImpl::setById(long id, const TransactionEntity& transaction)
 {
+    qDebug() << "\nTransactionRepositoryDBImpl::setById " << _cache_modified;
+    _cache_modified = true;
     QSqlQuery query(_db_manager->db());
     if(id == -1)
     {
@@ -83,6 +103,8 @@ void TransactionRepositoryDBImpl::setById(long id, TransactionEntity& transactio
 
 void TransactionRepositoryDBImpl::deleteById(long id)
 {
+    qDebug() << "\nTransactionRepositoryDBImpl::deleteById ";
+    _cache->deleteById(id);
     QSqlQuery query(_db_manager->db());
     query.prepare("DELETE FROM schema.transaction WHERE id = :id");
     query.bindValue(":id", QVariant::fromValue(id));
@@ -94,6 +116,8 @@ void TransactionRepositoryDBImpl::deleteById(long id)
 
 bool TransactionRepositoryDBImpl::existsById(long id)
 {
+    qDebug() << "\nTransactionRepositoryDBImpl::existsById " << _cache_modified;
+    if(!_cache_modified) return _cache->existsById(id);
     QSqlQuery query(_db_manager->db());
     query.prepare("SELECT id FROM schema.transaction WHERE id = :id");
     query.bindValue(":id", QVariant::fromValue(id));
