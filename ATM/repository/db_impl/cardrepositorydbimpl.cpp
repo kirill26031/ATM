@@ -122,10 +122,17 @@ bool CardRepositoryDBImpl::existsById(long id)
 CardEntity CardRepositoryDBImpl::getByCardId(long long cardId)
 {
     QSqlQuery query(_db_manager->db());
-    query.prepare("SELECT id, card_id, pin, user_id, name, balance, min_balance, max_balance, reserve_card_id, overflow_card_id FROM schema.card WHERE card_id = :card_id");
-    query.bindValue(":card_id", QString::fromStdString(printCardNumber(cardId)));
+    query.prepare("SELECT id, card_id, pin, user_id, name, balance, min_balance, max_balance, reserve_card_id, overflow_card_id FROM schema.card WHERE card_id = :card_id ");
+    std::string card_numbers = printCardNumber(cardId);
+    query.bindValue(":card_id", QString::fromStdString(card_numbers));
     if(!query.exec())
     {
+        auto r = query.boundValues();
+        for(auto i: r){
+            qDebug() << "\n" << i;
+        }
+        auto r2 = query.lastQuery();
+
         throw SQLException(query.lastError().text().toStdString());
     }
     if(!query.next())

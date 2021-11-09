@@ -16,7 +16,6 @@ DBManager::DBManager()
     _db.setDatabaseName("wpqbitaa");
     _db.setUserName("wpqbitaa");
     _db.setPassword("y31HWiGr_8fsZSTLr9RoNAbHES-kOiLo");
-
     if (!_db.open())
     {
        qDebug() << "Error: connection with database fail";

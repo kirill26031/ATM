@@ -28,11 +28,16 @@ int main(int argc, char *argv[])
         qDebug() << e._message.c_str();
     }
 
-
+    try{
     QApplication a(argc, argv);
     Widget w;
     w.show();
-    return a.exec();
-
+    int res = a.exec();
+    return res;
+    }
+    catch(const CustomException& e)
+    {
+        qDebug() << e._message.c_str();
+    }
 
 }
