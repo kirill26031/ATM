@@ -14,14 +14,17 @@ public:
     std::vector<CardEntity> getAll() override;
     void setById(long, const CardEntity&) override;
     void deleteById(long) override;
+    void clearAll() override {};
+
     bool existsById(long) override;
     CardEntity getByCardId(long long cardId);
     std::vector<CardEntity> getCardsDependantOnThisByReserve(long id);
     std::vector<CardEntity> getCardsDependantOnThisByOverflow(long id);
     static CardRepository* getInstance();
+    ~CardRepositoryDBImpl(){} // destructor for _rep is called from global window destructor
+
 protected:
     CardRepositoryDBImpl();
-    ~CardRepositoryDBImpl(){} // destructor for _rep is called from global window destructor
 private:
     void fillCache(const std::vector<CardEntity>& vector);
 

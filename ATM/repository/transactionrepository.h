@@ -7,10 +7,11 @@
 
 class TransactionRepository : public Repository<TransactionEntity>
 {
-//public:
+public:
+    virtual ~TransactionRepository() {}
+
 protected:
     TransactionRepository() : Repository<TransactionEntity>() {}
-    virtual ~TransactionRepository() {}
 };
 
 #endif // TRANSACTIONREPOSITORY_H

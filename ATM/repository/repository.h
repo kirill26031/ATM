@@ -10,10 +10,12 @@ public:
     virtual T getById(long) = 0;
     virtual void setById(long, const T&) = 0;
     virtual void deleteById(long) = 0;
+    virtual void clearAll() = 0;
     virtual bool existsById(long) = 0;
+    virtual ~Repository() {}
+
 protected:
     Repository() {}
-    virtual ~Repository() {}
 };
 
 #endif // REPOSITORY_H

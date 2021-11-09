@@ -50,6 +50,11 @@ void UserRepositoryVectorImpl::deleteById(long id)
     }
 }
 
+void UserRepositoryVectorImpl::clearAll()
+{
+    _entities.clear();
+}
+
 UserRepository* UserRepositoryVectorImpl::getInstance()
 {
     if(_rep == nullptr) _rep = new UserRepositoryVectorImpl();

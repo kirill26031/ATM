@@ -2,10 +2,16 @@
 
 TransactionService* TransactionService::_service = nullptr;
 
-TransactionService::TransactionService() : _card_rep(CardRepositoryDBImpl::getInstance()),
-    _transaction_rep(TransactionRepositoryDBImpl::getInstance())
+TransactionService::TransactionService()
 {
+    if(Config::DEBUG_MODE){
+        _transaction_rep = TransactionRepositoryVectorImpl::getInstance();
+        _card_rep = CardRepositoryVectorImpl::getInstance();
 
+    }else{
+        _transaction_rep = TransactionRepositoryDBImpl::getInstance();
+        _card_rep = CardRepositoryDBImpl::getInstance();
+    }
 }
 
 bool TransactionService::Transfer(long amount, long from_card_id, long to_card_id, long* automatic_transaction_id)

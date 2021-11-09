@@ -7,6 +7,7 @@
 #include "repository/db_impl/transactionrepositorydbimpl.h"
 #include "repository/db_impl/cardrepositorydbimpl.h"
 #include "util/utils.h"
+#include <config.h>
 //#include "automatictransactionservice.h"
 
 

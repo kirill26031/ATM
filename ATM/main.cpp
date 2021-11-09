@@ -6,16 +6,20 @@
 #include "service/automatictransactionservice.h"
 #include "repository/db_impl/userrepositorydbimpl.h"
 #include <tests/unittests.h>
-
-#define NODEBUG 1
+#include <config.h>
 
 int main(int argc, char *argv[])
 {
-    if(!NODEBUG)
+    if(Config::DEBUG_MODE)
     {
         UnitTests tests;
         tests.runTests();
     }
+
+
+    try{
+    QApplication a(argc, argv);
+    Widget w;
 
     try{
 
@@ -28,9 +32,6 @@ int main(int argc, char *argv[])
         qDebug() << e._message.c_str();
     }
 
-    try{
-    QApplication a(argc, argv);
-    Widget w;
     w.show();
     int res = a.exec();
     return res;
@@ -39,5 +40,7 @@ int main(int argc, char *argv[])
     {
         qDebug() << e._message.c_str();
     }
+
+
 
 }

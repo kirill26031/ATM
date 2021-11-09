@@ -13,10 +13,12 @@ public:
     void setById(long, const UserEntity&) override;
     void deleteById(long) override;
     bool existsById(long) override;
+    void clearAll() override;
     static UserRepository* getInstance();
+    ~UserRepositoryVectorImpl(){} // destructor for _rep is called from global window destructor
+
 protected:
     UserRepositoryVectorImpl();
-    ~UserRepositoryVectorImpl(){} // destructor for _rep is called from global window destructor
 private:
     std::vector<UserEntity> _entities;
     static UserRepository* _rep;

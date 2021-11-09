@@ -5,6 +5,7 @@
 #include "repository/db_impl/cardrepositorydbimpl.h"
 #include "exception/incorrectcardauthinfoexception.h"
 #include "exception/circulardependancyexception.h"
+#include <config.h>
 
 class CardService
 {
@@ -20,9 +21,10 @@ public:
     void setAsOverflowCard(long long from_card_id, long long to_card_id, long max_limit);
 
     static CardService* getInstance();
+
+    ~CardService(){}
 protected:
     CardService();
-    ~CardService(){}
 private:
     bool detectedCircularDependancy(long card_id, long other_id, bool is_reserve);
 

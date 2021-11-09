@@ -7,10 +7,10 @@
 
 class UserRepository : public Repository<UserEntity>
 {
-//public:
+public:
+    virtual ~UserRepository() {}
 protected:
     UserRepository() : Repository<UserEntity>() {}
-    virtual ~UserRepository() {}
 };
 
 #endif // USERREPOSITORY_H
