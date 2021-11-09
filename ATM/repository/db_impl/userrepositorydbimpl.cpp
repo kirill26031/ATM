@@ -63,7 +63,7 @@ void UserRepositoryDBImpl::setById(long id, UserEntity& user)
 //    auto r1 = query.boundValues();
     if(!query.exec())
     {
-//        auto r = query.executedQuery();
+        auto r = query.executedQuery();
         throw SQLException(query.lastError().text().toStdString());
     }
 }

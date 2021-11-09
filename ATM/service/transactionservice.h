@@ -26,7 +26,7 @@ public:
 
     std::vector<TransactionEntity> getReceivedTransactions(long receiver_card_id);
 
-    const TransactionEntity& getById(long id);
+    TransactionEntity getById(long id);
 protected:
     TransactionService();
 private:

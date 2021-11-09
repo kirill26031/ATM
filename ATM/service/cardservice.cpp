@@ -69,7 +69,7 @@ long CardService::generateCard(long user_id, const std::string& name)
     return card.id();
 }
 
-const CardEntity& CardService::getCardById(long id)
+CardEntity CardService::getCardById(long id)
 {
     return _card_rep->getById(id);
 }

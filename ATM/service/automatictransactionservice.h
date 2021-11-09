@@ -30,7 +30,7 @@ public:
     std::vector<AutomaticTransactionEntity> getAllAutomaticTransactionsFromMe(long sender_card_id);
     std::vector<AutomaticTransactionEntity> getAllAutomaticTransactionsToMe(long receiver_card_id);
     void checkAndExecute();
-    const AutomaticTransactionEntity& getById(long id);
+    AutomaticTransactionEntity getById(long id);
 
 protected:
     AutomaticTransactionService();

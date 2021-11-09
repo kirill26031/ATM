@@ -9,7 +9,7 @@ AutomaticTransactionService::AutomaticTransactionService() : _transaction_rep(Tr
 
 }
 
-const AutomaticTransactionEntity& AutomaticTransactionService::getById(long id)
+AutomaticTransactionEntity AutomaticTransactionService::getById(long id)
 {
     return _a_tr_rep->getById(id);
 }
