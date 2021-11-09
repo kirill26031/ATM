@@ -3,9 +3,9 @@
 UserRepository* UserRepositoryVectorImpl::_rep = nullptr;
 
 UserRepositoryVectorImpl::UserRepositoryVectorImpl() : UserRepository() {
-    _entities.push_back(UserEntity(0, "Bill Crapet 0"));
-    _entities.push_back(UserEntity(1, "Bill Crapet 1"));
-    _entities.push_back(UserEntity(2, "Bill Crapet 2"));
+//    _entities.push_back(UserEntity(0, "Bill Crapet 0"));
+//    _entities.push_back(UserEntity(1, "Bill Crapet 1"));
+//    _entities.push_back(UserEntity(2, "Bill Crapet 2"));
 }
 
 
@@ -41,11 +41,13 @@ void UserRepositoryVectorImpl::setById(long id, UserEntity& user)
 
 void UserRepositoryVectorImpl::deleteById(long id)
 {
-    if(id >= 0 && id < _entities.size())
+    for(auto iter = _entities.begin(); iter != _entities.end(); ++iter)
     {
-        _entities.erase(_entities.begin()+id);
+        if(iter->id() == id){
+            _entities.erase(iter);
+            break;
+        }
     }
-    else throw NotFoundException(std::string("User with id=").append(std::to_string(id)).append(" not found in UserRepository"));
 }
 
 UserRepository* UserRepositoryVectorImpl::getInstance()
