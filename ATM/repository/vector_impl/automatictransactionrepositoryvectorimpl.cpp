@@ -4,7 +4,7 @@
 AutomaticTransactionRepository* AutomaticTransactionRepositoryVectorImpl::_rep = nullptr;
 
 AutomaticTransactionRepositoryVectorImpl::AutomaticTransactionRepositoryVectorImpl() : AutomaticTransactionRepository() {
-    _entities.push_back(AutomaticTransactionEntity(0, 0, 3, 10, 1, 30, time(0)-1500));
+    _entities.push_back(AutomaticTransactionEntity(0, 0, 3, 10, 1, 20, time(0)-150));
 }
 
 

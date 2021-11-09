@@ -66,10 +66,13 @@ void Widget::on_ok_button_clicked()
             AutomaticTransactionService::getInstance()->createAutomaticTransaction(curr_card.cardId(), card.cardId(), sum, sum_per_time, time_period, 0);
 
         } else {
-            TransactionService::getInstance()->makeTransfer(sum, curr_card.cardId(), card.cardId());
+            if (!TransactionService::getInstance()->makeTransfer(sum, curr_card.cardId(), card.cardId())) {
+                QMessageBox::critical(nullptr, "Error", "You do not have enough money!");
+                return;
+            }
         }
 
-        InitATM(current_card_id);
+        UpdateATM(current_card_id);
 
         ui->screens_container->setCurrentIndex(3);
 
@@ -158,7 +161,7 @@ void Widget::on_init_submit_button_clicked()
     }
 
     CardEntity card = CardRepositoryVectorImpl::getInstance()->getByCardId(card_number);
-    InitATM(card.id());
+    UpdateATM(card.id());
 
     //QMessageBox::information(nullptr, "Info", QString::number(card.cardId()));
     ui->screens_container->setCurrentIndex(3);
@@ -186,24 +189,27 @@ void Widget::on_save_changes_button_clicked()
         QMessageBox::critical(nullptr, "Error", "Pin must contain 4 digits!");
         return;
     }
-    entity._pin = new_pin;
+    CardService::getInstance()->editPin(entity.cardId(), entity.pin(), new_pin);
+
 
     if (max_sum <= min_sum) {
         QMessageBox::critical(nullptr, "Error", "Max sum must be greater then min sum!");
         return;
     }
-    entity._max_balance = max_sum;
-    entity._min_balance = min_sum;
+
+
 
 
     if (ui->overflow_card_field->text() != "")
         try {
-            //CardService::getInstance()->setAsOverflowCard(entity.cardId(), overflow_card_number, max_sum);
             CardEntity overflow_card = CardRepositoryVectorImpl::getInstance()->getByCardId(overflow_card_number);
-            entity._overflow_card_id = new long (overflow_card.id());
-        } catch (NotFoundException ex) {
-            QMessageBox::warning(nullptr, "Warning", "Reserve card number does not exist!");
+            CardService::getInstance()->setAsOverflowCard(entity.cardId(), overflow_card_number, max_sum);
+        } catch (...) {
+            QMessageBox::warning(nullptr, "Warning", "Overflow card issue!");
         }
+
+
+
 
     if (ui->reserve_card_field->text() != "")
         try {
@@ -211,14 +217,18 @@ void Widget::on_save_changes_button_clicked()
             if (reserve_card.pin() != reserve_card_pin) {
                 QMessageBox::warning(nullptr, "Warning", "Incorrect pin for reserve");
             } else {
-                entity._reserve_card_id = new long (reserve_card.id());
+                CardService::getInstance()->setAsReserveCard(entity.cardId(), reserve_card_number, min_sum);
             }
-        } catch (NotFoundException ex) {
-           QMessageBox::warning(nullptr, "Warning", "Reserve card number does not exist!");
+        } catch (...) {
+           QMessageBox::warning(nullptr, "Warning", "Reserve card issue!");
         }
 
-    CardRepositoryVectorImpl::getInstance()->setById(current_card_id, entity);
-    InitATM(current_card_id);
+
+    //error
+
+    //CardRepositoryVectorImpl::getInstance()->setById(current_card_id, entity);
+    UpdateATM(current_card_id);
+
     ui->screens_container->setCurrentIndex(3);
 }
 
@@ -240,12 +250,15 @@ void Widget::on_auto_exit_button_clicked() {
     ui->screens_container->setCurrentIndex(3);
 }
 
-void Widget::InitATM(long card_id) {
+void Widget::UpdateATM(long card_id) {
+    AutomaticTransactionService::getInstance()->checkAndExecute();
+
     current_card_id = card_id;
     CardEntity card = CardRepositoryVectorImpl::getInstance()->getById(current_card_id);
     ui->balance_field_1->SetAmount(card.balance());
     ui->balance_field_2->SetAmount(card.balance());
     ui->pin_edit_field->SetPin(card.pin());
+
     ui->transaction_list->clear();
     for (TransactionEntity entity : TransactionRepositoryVectorImpl::getInstance()->getAll()) {
         if (entity.fromCardId() == card.id() || entity.toCardId() == card.id()) {
@@ -253,6 +266,7 @@ void Widget::InitATM(long card_id) {
         }
     }
 
+    ui->auto_transaction_list->clear();
     for (AutomaticTransactionEntity entity : AutomaticTransactionRepositoryVectorImpl::getInstance()->getAll()) {
         if (entity.fromCardId() == card.id()) {
             ui->auto_transaction_list->addItem(new QAutoTransactionItem(entity.id(), card.id()));
@@ -319,5 +333,11 @@ void Widget::on_auto_transaction_list_itemClicked(QListWidgetItem *item)
     } else {
         ui->auto_card_field->SetCardNumber(from_card.cardId());
     }
+}
+
+
+void Widget::on_screens_container_currentChanged(int arg1)
+{
+    UpdateATM(current_card_id);
 }
 
