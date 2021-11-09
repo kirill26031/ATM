@@ -13,8 +13,12 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Sql)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Sql)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Test REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Test REQUIRED)
+
+enable_testing(false)
 
 set(PROJECT_SOURCES
         main.cpp
@@ -40,9 +44,16 @@ set(PROJECT_SOURCES
         util/utils.h util/utils.cpp
         exception/logicconflictexception.h exception/logicconflictexception.cpp
         service/transactionservice.h service/transactionservice.cpp
-#        service/globalservice.h service/globalservice.cpp
+        view/qcardnumberedit.h view/qcardnumberedit.cpp
         service/automatictransactionservice.h service/automatictransactionservice.cpp
         exception/notenoughmoney.h exception/notenoughmoney.cpp
+        #view/qintegervalueedit.h view/qintegervalueedit.cpp
+        view/qtransactionitem.h view/qtransactionitem.cpp
+        #view/qautomatictransactionitem.h view/qautomatictransactionitem.cpp
+        #view/qpinedit.h view/qpinedit.cpp
+        #view/qamountedit.h view/qamountedit.cpp
+        view/qpinedit.h view/qpinedit.cpp
+        view/qamountedit.h view/qamountedit.cpp
         exception/circulardependancyexception.h exception/circulardependancyexception.cpp
         dbmanager.h dbmanager.cpp
         repository/db_impl/cardrepositorydbimpl.h repository/db_impl/cardrepositorydbimpl.cpp
@@ -50,7 +61,10 @@ set(PROJECT_SOURCES
         repository/db_impl/automatictransactiondbimpl.h repository/db_impl/automatictransactiondbimpl.cpp
         repository/db_impl/userrepositorydbimpl.h repository/db_impl/userrepositorydbimpl.cpp
         exception/sqlexception.h exception/sqlexception.cpp
+        tests/unittests.h tests/unittests.cpp
+        view/qautotransactionitem.h view/qautotransactionitem.cpp
 )
+
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(ATM

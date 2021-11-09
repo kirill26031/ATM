@@ -10,9 +10,9 @@ TransactionService::TransactionService() : _card_rep(CardRepositoryVectorImpl::g
 
 bool TransactionService::Transfer(long amount, long from_card_id, long to_card_id, long* automatic_transaction_id)
 {
-    bool can_execute = prepareTransferFromCard(amount, from_card_id, to_card_id, false, false) &&
-            prepareTransferToCard(amount, from_card_id, to_card_id, false, false);
-    if (can_execute)
+    bool can_execute_from = prepareTransferFromCard(amount, from_card_id, to_card_id, false, false);
+    bool can_execute_to = prepareTransferToCard(amount, from_card_id, to_card_id, false, false);
+    if (can_execute_from && can_execute_to)
     {
         prepareTransferFromCard(amount, from_card_id, to_card_id, true, false);
         prepareTransferToCard(amount, from_card_id, to_card_id, true, false);
@@ -32,8 +32,11 @@ bool TransactionService::Transfer(long amount, long from_card_id, long to_card_i
 bool TransactionService::prepareTransferFromCard(long amount, long from_card_id, long to_card_id, bool execute, bool dependant) {
     try {
         const CardEntity& from_card = _card_rep->getById(from_card_id);
-
-        if (from_card.balance() - amount < from_card.minBalance()) {
+        long blnc = from_card.balance();
+        long res = blnc - amount;
+        long minblnc = from_card.minBalance();
+        bool cond = (from_card.balance() - amount) < from_card.minBalance();
+        if ((from_card.balance() - amount) < from_card.minBalance()) {
             long lacks = from_card.minBalance() - (from_card.balance() - amount);
             if(from_card.reserveCardId() == nullptr) return false;
             bool result = prepareTransferFromCard(lacks, *from_card.reserveCardId(), from_card_id, execute, true);
@@ -79,7 +82,7 @@ bool TransactionService::prepareTransferFromCard(long amount, long from_card_id,
 bool TransactionService::prepareTransferToCard(long amount, long from_card_id, long to_card_id, bool execute, bool dependant) {
     try {
         const CardEntity& to_card = _card_rep->getById(to_card_id);
-
+        long maxblnc = to_card.maxBalance();
         if (to_card.balance() + amount > to_card.maxBalance()) {
             long overflows = to_card.balance() + amount - to_card.maxBalance();
             if(to_card.overflowCardId() == nullptr) return false;

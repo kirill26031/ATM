@@ -74,7 +74,7 @@ CardEntity CardService::getCardById(long id)
     return _card_rep->getById(id);
 }
 
-void CardService::setAsReserveCard(long long protected_card_id, long long reserve_card_id, unsigned long min_limit)
+void CardService::setAsReserveCard(long long protected_card_id, long long reserve_card_id, long min_limit)
 {
     if(cardIdExists(protected_card_id) && cardIdExists(reserve_card_id))
     {
@@ -82,7 +82,7 @@ void CardService::setAsReserveCard(long long protected_card_id, long long reserv
         const CardEntity& reserve = _card_rep->getByCardId(reserve_card_id);
         if(detectedCircularDependancy(pr.id(), reserve.id(), true))
             throw CircularDependancyException("Setting reserve card for this card to this value would create circular dependancy");
-        if(pr.balance() <= min_limit) throw LogicConflictException("You can't set minimum limit below it's current balance");
+        if(pr.balance() < min_limit) throw LogicConflictException("You can't set minimum limit below it's current balance");
         CardEntity updated_protected_card(pr.id(), pr.cardId(), pr.pin(), pr.userId(), pr.name(), pr.balance(),
                                           min_limit, pr.maxBalance(), new long(reserve.id()));
         _card_rep->setById(pr.id(), updated_protected_card);
@@ -93,7 +93,7 @@ void CardService::setAsReserveCard(long long protected_card_id, long long reserv
     }
 }
 
-void CardService::setAsOverflowCard(long long from_card_id, long long to_card_id, unsigned long max_limit)
+void CardService::setAsOverflowCard(long long from_card_id, long long to_card_id, long max_limit)
 {
     if(cardIdExists(from_card_id) && cardIdExists(to_card_id))
     {
@@ -101,14 +101,12 @@ void CardService::setAsOverflowCard(long long from_card_id, long long to_card_id
         const CardEntity& target = _card_rep->getByCardId(to_card_id);
         if(detectedCircularDependancy(ov.id(), target.id(), false))
             throw CircularDependancyException("Setting overflow card for this card to this value would create circular dependancy");
-        if(ov.balance() >= max_limit) throw LogicConflictException("You can't set maximum limit above it's current balance");
+        if(ov.balance() > max_limit) throw LogicConflictException("You can't set maximum limit above it's current balance");
         CardEntity target_card(ov.id(), ov.cardId(), ov.pin(), ov.userId(), ov.name(), ov.balance(),
                                ov.minBalance(), max_limit, ov.reserveCardId(),
                                new long(target.id()));
         _card_rep->setById(target_card.id(), target_card);
-    }
-    else
-    {
+    } else {
         throw NotFoundException("One of card numbers provided to CardService::setAsReserveCard was incorrect");
     }
 }

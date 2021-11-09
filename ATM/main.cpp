@@ -5,9 +5,21 @@
 #include "service/transactionservice.h"
 #include "service/automatictransactionservice.h"
 #include "repository/db_impl/userrepositorydbimpl.h"
+#include <tests/unittests.h>
+
+#define NODEBUG 1
 
 int main(int argc, char *argv[])
 {
+    if(!NODEBUG)
+    {
+        UnitTests tests;
+        tests.runTests();
+    }
+
+
+
+
 //    CardService* cs = CardService::getInstance();
     try {
 //        cs->editPin(1234567890123456, 4355, 4444);
@@ -45,6 +57,9 @@ int main(int argc, char *argv[])
 //        u_rep->setById(-1, uu);
 //        auto r3 = u_rep->getAll();
        int x = 2+ 2;
+       AutomaticTransactionService* a_t_s = AutomaticTransactionService::getInstance();
+       a_t_s->checkAndExecute();
+
     }
     catch(const CustomException& e)
     {
