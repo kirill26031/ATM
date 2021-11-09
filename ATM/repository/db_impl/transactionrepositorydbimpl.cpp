@@ -31,7 +31,7 @@ TransactionRepository* TransactionRepositoryDBImpl::getInstance()
 
 TransactionEntity TransactionRepositoryDBImpl::getById(long id)
 {
-    qDebug() << "\TransactionRepositoryDBImpl::getById " << _cache_modified;
+    // qDebug() << "\TransactionRepositoryDBImpl::getById " << _cache_modified;
     if(!_cache_modified) return _cache->getById(id);
     QSqlQuery query(_db_manager->db());
     query.prepare("SELECT id, from_card_id, to_card_id, amount, type, automatic_transaction_id FROM schema.transaction WHERE id = :id");
@@ -53,7 +53,7 @@ TransactionEntity TransactionRepositoryDBImpl::getById(long id)
 
 std::vector<TransactionEntity> TransactionRepositoryDBImpl::getAll()
 {
-    qDebug() << "\nTransactionRepositoryDBImpl::getAll " << _cache_modified;
+    // qDebug() << "\nTransactionRepositoryDBImpl::getAll " << _cache_modified;
     if(!_cache_modified) return _cache->getAll();
     QSqlQuery query("SELECT id, from_card_id, to_card_id, amount, type, automatic_transaction_id FROM schema.transaction", _db_manager->db());
     std::vector<TransactionEntity> res;
@@ -72,7 +72,7 @@ std::vector<TransactionEntity> TransactionRepositoryDBImpl::getAll()
 
 void TransactionRepositoryDBImpl::setById(long id, const TransactionEntity& transaction)
 {
-    qDebug() << "\nTransactionRepositoryDBImpl::setById " << _cache_modified;
+    // qDebug() << "\nTransactionRepositoryDBImpl::setById " << _cache_modified;
     _cache_modified = true;
     QSqlQuery query(_db_manager->db());
     if(id == -1)
@@ -103,7 +103,7 @@ void TransactionRepositoryDBImpl::setById(long id, const TransactionEntity& tran
 
 void TransactionRepositoryDBImpl::deleteById(long id)
 {
-    qDebug() << "\nTransactionRepositoryDBImpl::deleteById ";
+    // qDebug() << "\nTransactionRepositoryDBImpl::deleteById ";
     _cache->deleteById(id);
     QSqlQuery query(_db_manager->db());
     query.prepare("DELETE FROM schema.transaction WHERE id = :id");
@@ -116,7 +116,7 @@ void TransactionRepositoryDBImpl::deleteById(long id)
 
 bool TransactionRepositoryDBImpl::existsById(long id)
 {
-    qDebug() << "\nTransactionRepositoryDBImpl::existsById " << _cache_modified;
+    // qDebug() << "\nTransactionRepositoryDBImpl::existsById " << _cache_modified;
     if(!_cache_modified) return _cache->existsById(id);
     QSqlQuery query(_db_manager->db());
     query.prepare("SELECT id FROM schema.transaction WHERE id = :id");
