@@ -8,9 +8,9 @@
 class AutomaticTransactionRepositoryVectorImpl : public AutomaticTransactionRepository
 {
 public:
-    const AutomaticTransactionEntity& getById(long) override;
-    const std::vector<AutomaticTransactionEntity>& getAll() override;
-    void setById(long, AutomaticTransactionEntity&) override;
+    AutomaticTransactionEntity getById(long) override;
+    std::vector<AutomaticTransactionEntity> getAll() override;
+    void setById(long, const AutomaticTransactionEntity&) override;
     void deleteById(long) override;
     bool existsById(long) override;
     static AutomaticTransactionRepository* getInstance();

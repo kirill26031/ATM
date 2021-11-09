@@ -1,7 +1,8 @@
 #ifndef CARDSERVICE_H
 #define CARDSERVICE_H
 
-#include "repository/vector_impl./cardrepositoryvectorimpl.h"
+//#include "repository/vector_impl./cardrepositoryvectorimpl.h"
+#include "repository/db_impl/cardrepositorydbimpl.h"
 #include "exception/incorrectcardauthinfoexception.h"
 #include "exception/circulardependancyexception.h"
 
@@ -13,7 +14,8 @@ public:
     bool areCardCredentialsCorrect(long long card_id, int pin);
     long getCardIdByCredentials(long long card_id, int pin);
     long generateCard(long user_id, const std::string& name);
-    const CardEntity& getCardById(long id);
+    CardEntity getCardById(long id);
+    CardEntity getByCardNumber(long long card_number);
     void setAsReserveCard(long long protected_card_id, long long reserve_card_id, long min_limit);
     void setAsOverflowCard(long long from_card_id, long long to_card_id, long max_limit);
 

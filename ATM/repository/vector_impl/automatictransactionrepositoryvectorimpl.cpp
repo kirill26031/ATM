@@ -1,14 +1,14 @@
-#include "automaticTransactionrepositoryvectorimpl.h"
+#include "automatictransactionrepositoryvectorimpl.h"
 #include <ctime>
 
 AutomaticTransactionRepository* AutomaticTransactionRepositoryVectorImpl::_rep = nullptr;
 
 AutomaticTransactionRepositoryVectorImpl::AutomaticTransactionRepositoryVectorImpl() : AutomaticTransactionRepository() {
-    _entities.push_back(AutomaticTransactionEntity(0, 0, 3, 10, 1, 20, time(0)-150));
+//    _entities.push_back(AutomaticTransactionEntity(0, 0, 3, 10, 10, 1, 20, time(0)-150));
 }
 
 
-const AutomaticTransactionEntity& AutomaticTransactionRepositoryVectorImpl::getById(long id)
+AutomaticTransactionEntity AutomaticTransactionRepositoryVectorImpl::getById(long id)
 {
     for(AutomaticTransactionEntity& e : _entities)
     {
@@ -17,12 +17,12 @@ const AutomaticTransactionEntity& AutomaticTransactionRepositoryVectorImpl::getB
     throw NotFoundException(std::string("AutomaticTransaction with id=").append(std::to_string(id)).append(" not found in AutomaticTransactionRepository"));
 }
 
-const std::vector<AutomaticTransactionEntity>& AutomaticTransactionRepositoryVectorImpl::getAll()
+std::vector<AutomaticTransactionEntity> AutomaticTransactionRepositoryVectorImpl::getAll()
 {
     return _entities;
 }
 
-void AutomaticTransactionRepositoryVectorImpl::setById(long id, AutomaticTransactionEntity& AutomaticTransaction)
+void AutomaticTransactionRepositoryVectorImpl::setById(long id, const AutomaticTransactionEntity& AutomaticTransaction)
 {
     for(AutomaticTransactionEntity& e : _entities)
     {
@@ -39,11 +39,13 @@ void AutomaticTransactionRepositoryVectorImpl::setById(long id, AutomaticTransac
 
 void AutomaticTransactionRepositoryVectorImpl::deleteById(long id)
 {
-    if(id >= 0 && id < _entities.size())
+    for(auto iter = _entities.begin(); iter != _entities.end(); ++iter)
     {
-        _entities.erase(_entities.begin()+id);
+        if(iter->id() == id){
+            _entities.erase(iter);
+            break;
+        }
     }
-    else throw NotFoundException(std::string("AutomaticTransaction with id=").append(std::to_string(id)).append(" not found in AutomaticTransactionRepository"));
 }
 
 AutomaticTransactionRepository* AutomaticTransactionRepositoryVectorImpl::getInstance()

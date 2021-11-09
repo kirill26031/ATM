@@ -1,12 +1,12 @@
 #include "widget.h"
 #include "./ui_widget.h"
-#include <repository/vector_impl/cardrepositoryvectorimpl.h>
+//#include <repository/vector_impl/cardrepositoryvectorimpl.h>
 #include <view/qcardnumberedit.h>
 #include <QMessageBox>
-#include <repository/vector_impl/transactionrepositoryvectorimpl.h>
+//#include <repository/vector_impl/transactionrepositoryvectorimpl.h>
 #include <view/qtransactionitem.h>
 #include <view/qautotransactionitem.h>
-#include <repository/vector_impl/automatictransactionrepositoryvectorimpl.h>
+//#include <repository/vector_impl/automatictransactionrepositoryvectorimpl.h>
 #include <service/automatictransactionservice.h>
 #include <service/transactionservice.h>
 #include <model/automatictransactionentity.h>
@@ -21,7 +21,9 @@
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::Widget)
+    , ui(new Ui::Widget), _card_service(CardService::getInstance()),
+      _transaction_service(TransactionService::getInstance()),
+      _auto_service(AutomaticTransactionService::getInstance())
 {
     ui->setupUi(this);
 }
@@ -38,8 +40,8 @@ void Widget::on_ok_button_clicked()
     long sum = ui->sum_field->GetAmount();
 
     try {
-        CardEntity curr_card = CardRepositoryVectorImpl::getInstance()->getById(current_card_id);
-        CardEntity card = CardRepositoryVectorImpl::getInstance()->getByCardId(number);
+        CardEntity curr_card = _card_service->getCardById(current_card_id);
+        CardEntity card = _card_service->getByCardNumber(number);
 
 
         if (sum == -1) {
@@ -143,7 +145,7 @@ void Widget::on_init_submit_button_clicked()
     int pin_code = ui->init_pin_code_field->text().toInt(nullptr);
 
     try {
-        CardEntity card = CardRepositoryVectorImpl::getInstance()->getByCardId(card_number);
+        CardEntity card = _card_service->getByCardNumber(card_number);
         if (card.pin() != pin_code) {
             QMessageBox::critical(nullptr, "Error", "Incorrect pin code");
             return;
@@ -160,7 +162,7 @@ void Widget::on_init_submit_button_clicked()
         return;
     }
 
-    CardEntity card = CardRepositoryVectorImpl::getInstance()->getByCardId(card_number);
+    CardEntity card = _card_service->getByCardNumber(card_number);
     UpdateATM(card.id());
 
     //QMessageBox::information(nullptr, "Info", QString::number(card.cardId()));
@@ -182,7 +184,7 @@ void Widget::on_save_changes_button_clicked()
     long long reserve_card_number = ui->reserve_card_field->GetCardNumber();
     long long overflow_card_number = ui->overflow_card_field->GetCardNumber();
     int reserve_card_pin = ui->reserve_pin_field->GetPin();
-    CardEntity entity = CardRepositoryVectorImpl::getInstance()->getById(current_card_id);
+    CardEntity entity = _card_service->getCardById(current_card_id);
 
 
     if (new_pin == -1) {
@@ -202,7 +204,7 @@ void Widget::on_save_changes_button_clicked()
 
     if (ui->overflow_card_field->text() != "")
         try {
-            CardEntity overflow_card = CardRepositoryVectorImpl::getInstance()->getByCardId(overflow_card_number);
+            CardEntity overflow_card = _card_service->getByCardNumber(overflow_card_number);
             CardService::getInstance()->setAsOverflowCard(entity.cardId(), overflow_card_number, max_sum);
         } catch (...) {
             QMessageBox::warning(nullptr, "Warning", "Overflow card issue!");
@@ -213,7 +215,7 @@ void Widget::on_save_changes_button_clicked()
 
     if (ui->reserve_card_field->text() != "")
         try {
-            CardEntity reserve_card = CardRepositoryVectorImpl::getInstance()->getByCardId(reserve_card_number);
+            CardEntity reserve_card = _card_service->getByCardNumber(reserve_card_number);
             if (reserve_card.pin() != reserve_card_pin) {
                 QMessageBox::warning(nullptr, "Warning", "Incorrect pin for reserve");
             } else {
@@ -254,37 +256,36 @@ void Widget::UpdateATM(long card_id) {
     AutomaticTransactionService::getInstance()->checkAndExecute();
 
     current_card_id = card_id;
-    CardEntity card = CardRepositoryVectorImpl::getInstance()->getById(current_card_id);
+    CardEntity card = _card_service->getCardById(current_card_id);
     ui->balance_field_1->SetAmount(card.balance());
     ui->balance_field_2->SetAmount(card.balance());
     ui->pin_edit_field->SetPin(card.pin());
 
     ui->transaction_list->clear();
-    for (TransactionEntity entity : TransactionRepositoryVectorImpl::getInstance()->getAll()) {
-        if (entity.fromCardId() == card.id() || entity.toCardId() == card.id()) {
-            ui->transaction_list->addItem(new QTransactionItem(entity.id(), card.id()));
-        }
+    for (TransactionEntity entity : _transaction_service->getReceivedTransactions(current_card_id)) {
+        ui->transaction_list->addItem(new QTransactionItem(entity.id(), card.id()));
+    }
+    for (TransactionEntity entity : _transaction_service->getSentTransactions(current_card_id)) {
+        ui->transaction_list->addItem(new QTransactionItem(entity.id(), card.id()));
     }
 
     ui->auto_transaction_list->clear();
-    for (AutomaticTransactionEntity entity : AutomaticTransactionRepositoryVectorImpl::getInstance()->getAll()) {
-        if (entity.fromCardId() == card.id()) {
+    for (AutomaticTransactionEntity entity : _auto_service->getAllAutomaticTransactionsFromMe(current_card_id)) {
             ui->auto_transaction_list->addItem(new QAutoTransactionItem(entity.id(), card.id()));
-        }
     }
 
     ui->max_sum_field->SetAmount(card.maxBalance());
     ui->min_sum_field->SetAmount(card.minBalance());
 
     if (card.overflowCardId() != nullptr) {
-        CardEntity overflow_card = CardRepositoryVectorImpl::getInstance()->getById(*card.overflowCardId());
+        CardEntity overflow_card = _card_service->getCardById(*card.overflowCardId());
         ui->overflow_card_field->SetCardNumber(overflow_card.cardId());
     } else {
         ui->overflow_card_field->clear();
     }
 
     if (card.reserveCardId() != nullptr) {
-        CardEntity reserve_card = CardRepositoryVectorImpl::getInstance()->getById(*card.reserveCardId());
+        CardEntity reserve_card = _card_service->getCardById(*card.reserveCardId());
         ui->reserve_card_field->SetCardNumber(reserve_card.cardId());
         ui->reserve_pin_field->SetPin(reserve_card.pin());
     } else {
@@ -298,9 +299,9 @@ void Widget::on_transaction_list_itemClicked(QListWidgetItem *item)
 {
     ui->transaction_widget->setVisible(true);
     long transaction_id = static_cast<QTransactionItem*>(item)->transaction_id;
-    TransactionEntity transaction = TransactionRepositoryVectorImpl::getInstance()->getById(transaction_id);
-    CardEntity from_card = CardRepositoryVectorImpl::getInstance()->getById(transaction.fromCardId());
-    CardEntity to_card = CardRepositoryVectorImpl::getInstance()->getById(transaction.toCardId());
+    TransactionEntity transaction = _transaction_service->getById(transaction_id);
+    CardEntity from_card = _card_service->getCardById(transaction.fromCardId());
+    CardEntity to_card = _card_service->getCardById(transaction.toCardId());
 
     if (transaction.toCardId() == current_card_id) {
         ui->transaction_card_field->SetCardNumber(from_card.cardId());
@@ -321,9 +322,9 @@ void Widget::on_auto_transaction_list_itemClicked(QListWidgetItem *item)
 {
     ui->auto_transaction_widget->setVisible(true);
     long transaction_id = static_cast<QAutoTransactionItem*>(item)->transaction_id;
-    AutomaticTransactionEntity transaction = AutomaticTransactionRepositoryVectorImpl::getInstance()->getById(transaction_id);
-    CardEntity from_card = CardRepositoryVectorImpl::getInstance()->getById(transaction.fromCardId());
-    CardEntity to_card = CardRepositoryVectorImpl::getInstance()->getById(transaction.toCardId());
+    AutomaticTransactionEntity transaction = _auto_service->getById(transaction_id);
+    CardEntity from_card = _card_service->getCardById(transaction.fromCardId());
+    CardEntity to_card = _card_service->getCardById(transaction.toCardId());
 
     //ui->auto_amount_field->setText("????");
     ui->completed_field->SetAmount(transaction.amount());

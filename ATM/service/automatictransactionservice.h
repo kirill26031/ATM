@@ -4,9 +4,12 @@
 #include "repository/automatictransactionrepository.h"
 #include "repository/transactionrepository.h"
 #include "repository/cardrepository.h"
-#include "repository/vector_impl/automatictransactionrepositoryvectorimpl.h"
-#include "repository/vector_impl/transactionrepositoryvectorimpl.h"
-#include "repository/vector_impl/cardrepositoryvectorimpl.h"
+//#include "repository/vector_impl/automatictransactionrepositoryvectorimpl.h"
+//#include "repository/vector_impl/transactionrepositoryvectorimpl.h"
+//#include "repository/vector_impl/cardrepositoryvectorimpl.h"
+#include "repository/db_impl/automatictransactiondbimpl.h"
+#include "repository/db_impl/transactionrepositorydbimpl.h"
+#include "repository/db_impl/cardrepositorydbimpl.h"
 #include "transactionservice.h"
 #include "exception/notenoughmoney.h"
 #include <set>
@@ -30,7 +33,7 @@ public:
     std::vector<AutomaticTransactionEntity> getAllAutomaticTransactionsFromMe(long sender_card_id);
     std::vector<AutomaticTransactionEntity> getAllAutomaticTransactionsToMe(long receiver_card_id);
     void checkAndExecute();
-    const AutomaticTransactionEntity& getById(long id);
+    AutomaticTransactionEntity getById(long id);
 
 protected:
     AutomaticTransactionService();
@@ -47,6 +50,7 @@ private:
         long _id;
         long long _last_executed_time;
         long _time_period;
+        long _total;
         long _amount;
         long _part; // of payment used for 1 transaction
         long _from_card_id;

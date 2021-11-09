@@ -13,13 +13,12 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Test REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Test REQUIRED)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets Test Sql REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets Test Sql REQUIRED)
+#find_package(QT NAMES Qt6 Qt5 COMPONENTS Test REQUIRED)
+#find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Test REQUIRED)
 
 enable_testing(false)
-
 
 set(PROJECT_SOURCES
         main.cpp
@@ -56,9 +55,14 @@ set(PROJECT_SOURCES
         view/qpinedit.h view/qpinedit.cpp
         view/qamountedit.h view/qamountedit.cpp
         exception/circulardependancyexception.h exception/circulardependancyexception.cpp
+        dbmanager.h dbmanager.cpp
+        repository/db_impl/cardrepositorydbimpl.h repository/db_impl/cardrepositorydbimpl.cpp
+        repository/db_impl/transactionrepositorydbimpl.h repository/db_impl/transactionrepositorydbimpl.cpp
+        repository/db_impl/automatictransactiondbimpl.h repository/db_impl/automatictransactiondbimpl.cpp
+        repository/db_impl/userrepositorydbimpl.h repository/db_impl/userrepositorydbimpl.cpp
+        exception/sqlexception.h exception/sqlexception.cpp
         tests/unittests.h tests/unittests.cpp
         view/qautotransactionitem.h view/qautotransactionitem.cpp
-
 )
 
 
@@ -85,7 +89,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(ATM PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(ATM PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Sql)
 
 set_target_properties(ATM PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

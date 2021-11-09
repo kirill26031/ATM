@@ -3,14 +3,14 @@
 TransactionRepository* TransactionRepositoryVectorImpl::_rep = nullptr;
 
 TransactionRepositoryVectorImpl::TransactionRepositoryVectorImpl() : TransactionRepository() {
-    _entities.push_back(TransactionEntity(0, 0, 2, 100, 0, 0));
-    _entities.push_back(TransactionEntity(1, 2, 0, 150, 0, 0));
-    _entities.push_back(TransactionEntity(2, 2, 0, 150, 0, 0));
-    _entities.push_back(TransactionEntity(3, 2, 0, 150, 0, 0));
+//    _entities.push_back(TransactionEntity(0, 0, 2, 100, 0, 0));
+//    _entities.push_back(TransactionEntity(1, 2, 0, 150, 0, 0));
+//    _entities.push_back(TransactionEntity(2, 2, 0, 150, 0, 0));
+//    _entities.push_back(TransactionEntity(3, 2, 0, 150, 0, 0));
 }
 
 
-const TransactionEntity& TransactionRepositoryVectorImpl::getById(long id)
+TransactionEntity TransactionRepositoryVectorImpl::getById(long id)
 {
     for(TransactionEntity& e : _entities)
     {
@@ -19,12 +19,12 @@ const TransactionEntity& TransactionRepositoryVectorImpl::getById(long id)
     throw NotFoundException(std::string("Transaction with id=").append(std::to_string(id)).append(" not found in TransactionRepository"));
 }
 
-const std::vector<TransactionEntity>& TransactionRepositoryVectorImpl::getAll()
+std::vector<TransactionEntity> TransactionRepositoryVectorImpl::getAll()
 {
     return _entities;
 }
 
-void TransactionRepositoryVectorImpl::setById(long id, TransactionEntity& Transaction)
+void TransactionRepositoryVectorImpl::setById(long id, const TransactionEntity& Transaction)
 {
     for(TransactionEntity& e : _entities)
     {
@@ -41,11 +41,13 @@ void TransactionRepositoryVectorImpl::setById(long id, TransactionEntity& Transa
 
 void TransactionRepositoryVectorImpl::deleteById(long id)
 {
-    if(id >= 0 && id < _entities.size())
+    for(auto iter = _entities.begin(); iter != _entities.end(); ++iter)
     {
-        _entities.erase(_entities.begin()+id);
+        if(iter->id() == id){
+            _entities.erase(iter);
+            break;
+        }
     }
-    else throw NotFoundException(std::string("Transaction with id=").append(std::to_string(id)).append(" not found in TransactionRepository"));
 }
 
 TransactionRepository* TransactionRepositoryVectorImpl::getInstance()

@@ -4,7 +4,7 @@
 
 CardService* CardService::_service = nullptr;
 
-CardService::CardService() : _card_rep(CardRepositoryVectorImpl::getInstance())
+CardService::CardService() : _card_rep(CardRepositoryDBImpl::getInstance())
 {
 
 }
@@ -65,11 +65,11 @@ long CardService::getCardIdByCredentials(long long card_id, int pin)
 long CardService::generateCard(long user_id, const std::string& name)
 {
     CardEntity card(generateId(), generateCardId(), generatePin(), user_id, name, 0);
-    _card_rep->setById(card.id(), card);
+    _card_rep->setById(-1, card);
     return card.id();
 }
 
-const CardEntity& CardService::getCardById(long id)
+CardEntity CardService::getCardById(long id)
 {
     return _card_rep->getById(id);
 }
@@ -132,4 +132,9 @@ bool CardService::detectedCircularDependancy(long card_id, long other_id, bool i
         }
     }
     return false;
+}
+
+CardEntity CardService::getByCardNumber(long long card_number)
+{
+    return _card_rep->getByCardId(card_number);
 }

@@ -2,8 +2,8 @@
 
 TransactionService* TransactionService::_service = nullptr;
 
-TransactionService::TransactionService() : _card_rep(CardRepositoryVectorImpl::getInstance()),
-    _transaction_rep(TransactionRepositoryVectorImpl::getInstance())
+TransactionService::TransactionService() : _card_rep(CardRepositoryDBImpl::getInstance()),
+    _transaction_rep(TransactionRepositoryDBImpl::getInstance())
 {
 
 }
@@ -18,7 +18,7 @@ bool TransactionService::Transfer(long amount, long from_card_id, long to_card_i
         prepareTransferToCard(amount, from_card_id, to_card_id, true, false);
         TransactionEntity transaction(generateId(), from_card_id, to_card_id, amount,
                                       (automatic_transaction_id == nullptr ? 0 : 1), automatic_transaction_id);
-        _transaction_rep->setById(transaction.id(), transaction);
+        _transaction_rep->setById(-1, transaction);
         return true;
     } else {
         return false;
@@ -51,7 +51,7 @@ bool TransactionService::prepareTransferFromCard(long amount, long from_card_id,
                 if(dependant){
                     TransactionEntity dep_tr(generateId(), from_card_id, to_card_id,
                                              amount, 2, nullptr);
-                    _transaction_rep->setById(dep_tr.id(), dep_tr);
+                    _transaction_rep->setById(-1, dep_tr);
                 }
             }
             return true;
@@ -65,7 +65,7 @@ bool TransactionService::prepareTransferFromCard(long amount, long from_card_id,
 
                 if(dependant){
                     TransactionEntity dep_tr(generateId(), from_card_id, to_card_id, amount, 2, nullptr);
-                    _transaction_rep->setById(dep_tr.id(), dep_tr);
+                    _transaction_rep->setById(-1, dep_tr);
                 }
             }
             return true;
@@ -98,7 +98,7 @@ bool TransactionService::prepareTransferToCard(long amount, long from_card_id, l
                 if(dependant){
                     TransactionEntity dep_tr(generateId(), from_card_id, to_card_id,
                                              amount, 3, nullptr);
-                    _transaction_rep->setById(dep_tr.id(), dep_tr);
+                    _transaction_rep->setById(-1, dep_tr);
                 }
             }
             return true;
@@ -111,7 +111,7 @@ bool TransactionService::prepareTransferToCard(long amount, long from_card_id, l
                 _card_rep->setById(to_card_id, updated_to_card);
                 if(dependant){
                     TransactionEntity dep_tr(generateId(), from_card_id, to_card_id, amount, 3, nullptr);
-                    _transaction_rep->setById(dep_tr.id(), dep_tr);
+                    _transaction_rep->setById(-1, dep_tr);
                 }
             }
             return true;
@@ -158,7 +158,7 @@ bool TransactionService::makeTransfer(long amount, long long from_card_n, long l
     return Transfer(amount, from.id(), to.id());
 }
 
-const TransactionEntity& TransactionService::getById(long id)
+TransactionEntity TransactionService::getById(long id)
 {
     return _transaction_rep->getById(id);
 }

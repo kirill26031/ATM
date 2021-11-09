@@ -8,9 +8,9 @@
 class UserRepositoryVectorImpl : public UserRepository
 {
 public:
-    const UserEntity& getById(long) override;
-    const std::vector<UserEntity>& getAll() override;
-    void setById(long, UserEntity&) override;
+    UserEntity getById(long) override;
+    std::vector<UserEntity> getAll() override;
+    void setById(long, const UserEntity&) override;
     void deleteById(long) override;
     bool existsById(long) override;
     static UserRepository* getInstance();

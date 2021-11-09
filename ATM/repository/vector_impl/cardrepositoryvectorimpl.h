@@ -8,14 +8,14 @@
 class CardRepositoryVectorImpl : public CardRepository
 {
 public:
-    const CardEntity& getById(long) override;
-    const std::vector<CardEntity>& getAll() override;
-    void setById(long, CardEntity&) override;
+    CardEntity getById(long) override;
+    std::vector<CardEntity> getAll() override;
+    void setById(long, const CardEntity&) override;
     void deleteById(long) override;
     bool existsById(long) override;
-    const CardEntity& getByCardId(long long) override;
-    const std::vector<CardEntity> getCardsDependantOnThisByReserve(long id) override;
-    const std::vector<CardEntity> getCardsDependantOnThisByOverflow(long id) override;
+    CardEntity getByCardId(long long) override;
+    std::vector<CardEntity> getCardsDependantOnThisByReserve(long id) override;
+    std::vector<CardEntity> getCardsDependantOnThisByOverflow(long id) override;
     static CardRepository* getInstance();
 protected:
     CardRepositoryVectorImpl();
