@@ -62,3 +62,8 @@ bool AutomaticTransactionRepositoryVectorImpl::existsById(long id)
     }
     return false;
 }
+
+void AutomaticTransactionRepositoryVectorImpl::clearAll()
+{
+    _entities.clear();
+}

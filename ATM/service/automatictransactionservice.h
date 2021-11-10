@@ -16,6 +16,7 @@
 #include <functional>
 #include "util/utils.h"
 #include <ctime>
+#include <config.h>
 
 class AutomaticTransactionService
 {

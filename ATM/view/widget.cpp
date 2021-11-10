@@ -11,6 +11,7 @@
 #include <service/transactionservice.h>
 #include <model/automatictransactionentity.h>
 #include <service/cardservice.h>
+#include <repository/vector_impl/userrepositoryvectorimpl.h>
 
 /*
 #include <view/qpinedit.h>
@@ -30,7 +31,33 @@ Widget::Widget(QWidget *parent)
 
 Widget::~Widget()
 {
+    delete TransactionService::getInstance();
+    delete AutomaticTransactionService::getInstance();
+    delete CardService::getInstance();
+
+    if(Config::DEBUG_MODE){
+        delete UserRepositoryVectorImpl::getInstance();
+        delete CardRepositoryVectorImpl::getInstance();
+        delete TransactionRepositoryVectorImpl::getInstance();
+        delete AutomaticTransactionRepositoryVectorImpl::getInstance();
+
+        qDebug() << "Cleared memory for services, and repositories";
+    }
+    else{
+        delete CardRepositoryDBImpl::getInstance();
+        delete TransactionRepositoryDBImpl::getInstance();
+        delete AutomaticTransactionRepositoryDBImpl::getInstance();
+
+        delete CardRepositoryVectorImpl::getInstance();
+        delete TransactionRepositoryVectorImpl::getInstance();
+        delete AutomaticTransactionRepositoryVectorImpl::getInstance();
+    }
+
+
     delete ui;
+
+
+
 }
 
 

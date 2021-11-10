@@ -14,11 +14,13 @@ public:
     std::vector<AutomaticTransactionEntity> getAll() override;
     void setById(long, const AutomaticTransactionEntity&) override;
     void deleteById(long) override;
+    void clearAll() override {};
     bool existsById(long) override;
     static AutomaticTransactionRepository* getInstance();
+    ~AutomaticTransactionRepositoryDBImpl(){} // destructor for _rep is called from global window destructor
+
 protected:
     AutomaticTransactionRepositoryDBImpl();
-    ~AutomaticTransactionRepositoryDBImpl(){} // destructor for _rep is called from global window destructor
 private:
     void fillCache(const std::vector<AutomaticTransactionEntity>& vector);
 

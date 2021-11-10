@@ -13,13 +13,15 @@ public:
     void setById(long, const CardEntity&) override;
     void deleteById(long) override;
     bool existsById(long) override;
+    void clearAll() override;
     CardEntity getByCardId(long long) override;
     std::vector<CardEntity> getCardsDependantOnThisByReserve(long id) override;
     std::vector<CardEntity> getCardsDependantOnThisByOverflow(long id) override;
     static CardRepository* getInstance();
+    ~CardRepositoryVectorImpl(){} // destructor for _rep is called from global window destructor
+
 protected:
     CardRepositoryVectorImpl();
-    ~CardRepositoryVectorImpl(){} // destructor for _rep is called from global window destructor
 private:
     std::vector<CardEntity> _entities;
     static CardRepository* _rep;

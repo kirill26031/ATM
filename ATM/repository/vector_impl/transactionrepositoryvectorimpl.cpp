@@ -50,6 +50,11 @@ void TransactionRepositoryVectorImpl::deleteById(long id)
     }
 }
 
+void TransactionRepositoryVectorImpl::clearAll()
+{
+    _entities.clear();
+}
+
 TransactionRepository* TransactionRepositoryVectorImpl::getInstance()
 {
     if(_rep == nullptr) _rep = new TransactionRepositoryVectorImpl();

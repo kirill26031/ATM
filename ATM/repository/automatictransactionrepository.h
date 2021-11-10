@@ -7,10 +7,11 @@
 
 class AutomaticTransactionRepository : public Repository<AutomaticTransactionEntity>
 {
-//public:
+public:
+    virtual ~AutomaticTransactionRepository() {}
+
 protected:
     AutomaticTransactionRepository() : Repository<AutomaticTransactionEntity>() {}
-    virtual ~AutomaticTransactionRepository() {}
 };
 
 #endif // AUTOMATICTRANSACTIONREPOSITORY_H

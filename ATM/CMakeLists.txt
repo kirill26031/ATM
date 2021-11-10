@@ -63,6 +63,7 @@ set(PROJECT_SOURCES
         exception/sqlexception.h exception/sqlexception.cpp
         tests/unittests.h tests/unittests.cpp
         view/qautotransactionitem.h view/qautotransactionitem.cpp
+        config.h
 )
 
 

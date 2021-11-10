@@ -1,5 +1,7 @@
 #include "dbmanager.h"
 #include <QDebug>
+#include <QApplication>
+
 
 DBManager* DBManager::_db_manager = nullptr;
 

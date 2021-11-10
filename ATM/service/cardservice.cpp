@@ -1,11 +1,17 @@
 #include "cardservice.h"
 #include "util/utils.h"
-#include "exception/logicconflictexception.h"
 
 CardService* CardService::_service = nullptr;
 
-CardService::CardService() : _card_rep(CardRepositoryDBImpl::getInstance())
+CardService::CardService()
 {
+
+    if(Config::DEBUG_MODE){
+        _card_rep = CardRepositoryVectorImpl::getInstance();
+
+    }else{
+        _card_rep = CardRepositoryDBImpl::getInstance();
+    }
 
 }
 

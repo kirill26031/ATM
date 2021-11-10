@@ -54,6 +54,11 @@ void CardRepositoryVectorImpl::deleteById(long id)
     }
 }
 
+void CardRepositoryVectorImpl::clearAll()
+{
+    _entities.clear();
+}
+
 CardEntity CardRepositoryVectorImpl::getByCardId(long long card_id)
 {
     for(CardEntity& card : _entities)
