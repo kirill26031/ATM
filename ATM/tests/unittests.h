@@ -12,6 +12,7 @@
 #include <service/automatictransactionservice.h>
 #include <service/cardservice.h>
 #include <service/transactionservice.h>
+#include <QThread>
 
 using namespace std;
 
@@ -30,6 +31,16 @@ public:
     bool shouldNotAllowTransactionWithoutReserveCard();
     bool shouldNotAllowTransactionWithMultipleReserveCards();
     bool shouldMakeAutomaticTransaction();
+    bool shouldMakeAutomaticTransactionWithOddParts();
+    bool shouldMakeAutomaticTransactionWithOddPartsAndReserveCards();
+    bool shouldMakeFirstPartOfAutomaticTransaction();
+    bool shouldFailAutomaticTransaction();
+
+    bool throwsCircularDependencyException();
+    bool throwsIncorrectCardAuthException();
+    bool throwsNotFoundException();
+    bool throwsLogicConflictException();
+    bool throwsLogicConflictExceptionOverflow();
 private:
     vector<QPair<QString,bool>> _testResults;
     UserRepository *_userRepository;

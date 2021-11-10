@@ -2,6 +2,7 @@
 
 
 
+
 UnitTests::UnitTests()
 {
     _userRepository = UserRepositoryVectorImpl::getInstance();
@@ -28,6 +29,20 @@ void UnitTests::runTests()
     _testResults.push_back(qMakePair("shouldNotAllowTransactionWithoutReserveCard", shouldNotAllowTransactionWithoutReserveCard()));
     _testResults.push_back(qMakePair("shouldNotAllowTransactionWithMultipleReserveCards", shouldNotAllowTransactionWithMultipleReserveCards()));
     _testResults.push_back(qMakePair("shouldMakeAutomaticTransaction", shouldMakeAutomaticTransaction()));
+    _testResults.push_back(qMakePair("shouldMakeAutomaticTransactionWithOddParts", shouldMakeAutomaticTransactionWithOddParts()));
+    _testResults.push_back(qMakePair("shouldMakeAutomaticTransactionWithOddPartsAndReserveCards", shouldMakeAutomaticTransactionWithOddPartsAndReserveCards()));
+    _testResults.push_back(qMakePair("shouldMakeFirstPartOfAutomaticTransaction", shouldMakeFirstPartOfAutomaticTransaction()));
+    _testResults.push_back(qMakePair("shouldFailAutomaticTransaction", shouldFailAutomaticTransaction()));
+
+    _testResults.push_back(qMakePair("throwsCircularDependencyException", throwsCircularDependencyException()));
+    _testResults.push_back(qMakePair("throwsIncorrectCardAuthException", throwsIncorrectCardAuthException()));
+    _testResults.push_back(qMakePair("throwsNotFoundException", throwsNotFoundException()));
+    _testResults.push_back(qMakePair("throwsLogicConflictException", throwsLogicConflictException()));
+    _testResults.push_back(qMakePair("throwsLogicConflictExceptionOverflow", throwsLogicConflictExceptionOverflow()));
+
+
+    qDebug() << "======TEST RESULTS=======";
+
 
     int failedTests = 0;
     int passedTests = 0;
@@ -339,7 +354,7 @@ bool UnitTests::shouldMakeAutomaticTransaction()
     _cardRepository->setById(secondCard.id(),secondCard );
 
 
-    _automaticTransactionService->createAutomaticTransaction(firstCard._card_id, secondCard._card_id,600,300,1,0);
+    _automaticTransactionService->createAutomaticTransaction(firstCard.cardId(), secondCard.cardId(),600,300,1,0);
 
     time_t startTime = time(0);
     time_t currentTime = time(0);
@@ -352,7 +367,7 @@ bool UnitTests::shouldMakeAutomaticTransaction()
         currentTime = time(0);
 
         if(startTime + timeForOneTransaction > currentTime && startTime + 2 * timeForOneTransaction > currentTime){
-            qDebug().noquote() <<  "[" << __func__<< "]" << "ONE PART MUST BE TRANSFERED BY NOW";
+//            qDebug().noquote() <<  "[" << __func__<< "]" << "ONE PART MUST BE TRANSFERED BY NOW";
             if(_cardService->getCardById(firstCard.id()).balance() != 700 ||
                     _cardService->getCardById(secondCard.id()).balance() != 300)
                 return false;
@@ -368,5 +383,250 @@ bool UnitTests::shouldMakeAutomaticTransaction()
 
 }
 
+bool UnitTests::shouldMakeAutomaticTransactionWithOddParts()
+{
+    UserEntity firstUser = UserEntity(generateId(), "Slo Sloer");
+    UserEntity secondUser = UserEntity(generateId(), "Rep Reper");
+    _userRepository->setById(firstUser.id(), firstUser);
+    _userRepository->setById(secondUser.id(), secondUser);
+
+    CardEntity firstCard(generateId(), generateCardId(), generatePin(),firstUser.id(),firstUser.name(),1000);
+    CardEntity secondCard(generateId(), generateCardId(), generatePin(),secondUser.id(),secondUser.name(),0);
+    _cardRepository->setById(firstCard.id(),firstCard );
+    _cardRepository->setById(secondCard.id(),secondCard );
+
+    _automaticTransactionService->createAutomaticTransaction(firstCard.cardId(), secondCard.cardId(),500,200,1,0);
+    qDebug().noquote() <<  "[" << __func__<< "]" << "START TIME: " << time(0);
+
+    QThread::sleep(4); //bad, but it's only for testing
+    _automaticTransactionService->checkAndExecute();
+
+    qDebug().noquote() <<  "[" << __func__<< "]" << "FINISH TIME: " << time(0);
+
+    bool condition1 = _cardService->getCardById(firstCard.id()).balance() == 500;
+    bool condition2 = _cardService->getCardById(secondCard.id()).balance() == 500;
+
+    vector<TransactionEntity> myTransactions =
+            _transactionService->getSentTransactions(firstCard.id());
+
+    qDebug().noquote() <<  "[" << __func__<< "]" << "Transaction count: " << myTransactions.size();
+
+    bool condition3 = myTransactions.at(myTransactions.size() - 1).amount() == 100;
+    bool condition4 = myTransactions.at(myTransactions.size() - 2).amount() == 200;
+    bool condition5 = myTransactions.at(myTransactions.size() - 3).amount() == 200;
+
+    return condition1 && condition2 && condition3 && condition4 && condition5;
+
+}
+
+bool UnitTests::shouldMakeAutomaticTransactionWithOddPartsAndReserveCards()
+{
+    UserEntity firstUser = UserEntity(generateId(), "Moo Mooer");
+    UserEntity secondUser = UserEntity(generateId(), "Den Dener");
+    _userRepository->setById(firstUser.id(), firstUser);
+    _userRepository->setById(secondUser.id(), secondUser);
+
+    CardEntity firstCard(generateId(), generateCardId(), generatePin(),firstUser.id(),firstUser.name(),500);
+    CardEntity secondCard(generateId(), generateCardId(), generatePin(),firstUser.id(),firstUser.name(),300);
+    CardEntity thirdCard(generateId(), generateCardId(), generatePin(),firstUser.id(),firstUser.name(),200);
+    CardEntity fourthCard(generateId(), generateCardId(), generatePin(),secondUser.id(),secondUser.name(),0);
+    _cardRepository->setById(firstCard.id(),firstCard );
+    _cardRepository->setById(secondCard.id(),secondCard );
+    _cardRepository->setById(thirdCard.id(),thirdCard );
+    _cardRepository->setById(fourthCard.id(),fourthCard );
+
+    _cardService->setAsReserveCard(_cardService->getCardById(firstCard.id()).cardId(),
+                                   _cardService->getCardById(secondCard.id()).cardId(), 0);
+
+    _cardService->setAsReserveCard(_cardService->getCardById(secondCard.id()).cardId(),
+                                   _cardService->getCardById(thirdCard.id()).cardId(), 0);
+
+    _automaticTransactionService->createAutomaticTransaction(firstCard.cardId(), fourthCard.cardId(),1000,300,0,0);
+    qDebug().noquote() <<  "[" << __func__<< "]" << "START TIME: " << time(0);
+
+    QThread::sleep(1); //bad, but it's only for testing
+    _automaticTransactionService->checkAndExecute();
+
+    qDebug().noquote() <<  "[" << __func__<< "]" << "FINISH TIME: " << time(0);
+
+    bool condition1 = _cardService->getCardById(firstCard.id()).balance() == 0;
+    bool condition2 = _cardService->getCardById(secondCard.id()).balance() == 0;
+    bool condition3 = _cardService->getCardById(thirdCard.id()).balance() == 0;
+    bool condition4 = _cardService->getCardById(fourthCard.id()).balance() == 1000;
+
+    vector<TransactionEntity> myTransactions =
+            _transactionService->getSentTransactions(firstCard.id());
+
+    qDebug().noquote() <<  "[" << __func__<< "]" << "Transaction count: " << myTransactions.size();
+
+    bool condition5 = myTransactions.at(myTransactions.size() - 1).amount() == 100;
+    bool condition6 = myTransactions.at(myTransactions.size() - 2).amount() == 300;
+    bool condition7 = myTransactions.at(myTransactions.size() - 3).amount() == 300;
+
+    return condition1 && condition2 && condition3 && condition4 && condition5 && condition6 && condition7;
+
+}
+
+bool UnitTests::shouldMakeFirstPartOfAutomaticTransaction()
+{
+    UserEntity firstUser = UserEntity(generateId(), "Err Errer");
+    UserEntity secondUser = UserEntity(generateId(), "Seen Seener");
+    _userRepository->setById(firstUser.id(), firstUser);
+    _userRepository->setById(secondUser.id(), secondUser);
+
+    CardEntity firstCard(generateId(), generateCardId(), generatePin(),firstUser.id(),firstUser.name(),1000);
+    _cardRepository->setById(firstCard.id(),firstCard );
+
+    CardEntity secondCard(generateId(), generateCardId(), generatePin(),secondUser.id(),secondUser.name(),0);
+    _cardRepository->setById(secondCard.id(),secondCard );
 
 
+    _automaticTransactionService->createAutomaticTransaction(firstCard.cardId(), secondCard.cardId(),500,300,2,0);
+
+    QThread::sleep(1);
+
+    _automaticTransactionService->checkAndExecute();
+
+    bool condition1 = _cardService->getCardById(firstCard.id()).balance() == 700;
+    bool condition2 = _cardService->getCardById(secondCard.id()).balance() == 300;
+
+    return condition1 && condition2;
+
+
+}
+
+bool UnitTests::shouldFailAutomaticTransaction()
+{
+    UserEntity firstUser = UserEntity(generateId(), "Err Errer");
+    UserEntity secondUser = UserEntity(generateId(), "Seen Seener");
+    _userRepository->setById(firstUser.id(), firstUser);
+    _userRepository->setById(secondUser.id(), secondUser);
+
+    CardEntity firstCard(generateId(), generateCardId(), generatePin(),firstUser.id(),firstUser.name(),200);
+    _cardRepository->setById(firstCard.id(),firstCard );
+
+    CardEntity secondCard(generateId(), generateCardId(), generatePin(),secondUser.id(),secondUser.name(),0);
+    _cardRepository->setById(secondCard.id(),secondCard );
+
+
+    _automaticTransactionService->createAutomaticTransaction(firstCard._card_id, secondCard._card_id,500,100,0,0);
+
+    QThread::sleep(1);
+
+    _automaticTransactionService->checkAndExecute();
+
+    bool condition1 = _cardService->getCardById(firstCard.id()).balance() == 0;
+    bool condition2 = _cardService->getCardById(secondCard.id()).balance() == 200;
+    bool condition3 = _automaticTransactionService->getAllAutomaticTransactionsFromMe(firstCard.id()).at(0).aborted() == true;
+
+    return condition1 && condition2 && condition3;
+
+
+}
+
+bool UnitTests::throwsCircularDependencyException(){
+    UserEntity firstUser = UserEntity(generateId(), "Nan Naner");
+    _userRepository->setById(firstUser.id(), firstUser);
+
+    CardEntity firstCard(generateId(), generateCardId(), generatePin(),firstUser.id(),firstUser.name(),500);
+    CardEntity secondCard(generateId(), generateCardId(), generatePin(),firstUser.id(),firstUser.name(),300);
+    CardEntity thirdCard(generateId(), generateCardId(), generatePin(),firstUser.id(),firstUser.name(),200);
+    _cardRepository->setById(firstCard.id(),firstCard );
+    _cardRepository->setById(secondCard.id(),secondCard );
+    _cardRepository->setById(thirdCard.id(),thirdCard );
+
+    try {
+        _cardService->setAsReserveCard(_cardService->getCardById(firstCard.id()).cardId(),
+                                       _cardService->getCardById(secondCard.id()).cardId(), 0);
+
+        _cardService->setAsReserveCard(_cardService->getCardById(secondCard.id()).cardId(),
+                                       _cardService->getCardById(thirdCard.id()).cardId(), 0);
+        _cardService->setAsReserveCard(_cardService->getCardById(secondCard.id()).cardId(),
+                                       _cardService->getCardById(firstCard.id()).cardId(), 0);
+    }  catch (CircularDependancyException) {
+        return true;
+    }
+
+    return false;
+}
+
+bool UnitTests::throwsIncorrectCardAuthException(){
+    UserEntity firstUser = UserEntity(generateId(), "Oom Oomer");
+    _userRepository->setById(firstUser.id(), firstUser);
+
+    CardEntity firstCard(generateId(), generateCardId(), generatePin(),firstUser.id(),firstUser.name(),500);
+
+    _cardRepository->setById(firstCard.id(),firstCard );
+
+
+    try {
+        _cardService->getCardIdByCredentials(firstCard.cardId(),-1);
+    }  catch (IncorrectCardAuthInfoException) {
+        return true;
+    }
+
+    return false;
+}
+
+bool UnitTests::throwsNotFoundException(){
+    UserEntity firstUser = UserEntity(generateId(), "Yak Yaker");
+    UserEntity secondUser = UserEntity(generateId(), "Sira Siraer");
+    _userRepository->setById(firstUser.id(), firstUser);
+    _userRepository->setById(secondUser.id(), secondUser);
+
+    CardEntity firstCard(generateId(), generateCardId(), generatePin(),firstUser.id(),firstUser.name(),1000);
+    _cardRepository->setById(firstCard.id(),firstCard );
+
+    CardEntity secondCard(generateId(), generateCardId(), generatePin(),secondUser.id(),secondUser.name(),0);
+    _cardRepository->setById(secondCard.id(),secondCard );
+
+
+    _transactionService->Transfer(100, firstCard.id(),secondCard.id());
+
+    try {
+        _transactionService->getSentTransactions(-1);
+    }  catch (NotFoundException) {
+        return true;
+    }
+
+    return false;
+
+}
+
+bool UnitTests::throwsLogicConflictException(){
+    UserEntity firstUser = UserEntity(generateId(), "Nan Naner");
+    _userRepository->setById(firstUser.id(), firstUser);
+
+    CardEntity firstCard(generateId(), generateCardId(), generatePin(),firstUser.id(),firstUser.name(),500);
+    CardEntity secondCard(generateId(), generateCardId(), generatePin(),firstUser.id(),firstUser.name(),300);
+    _cardRepository->setById(firstCard.id(),firstCard );
+    _cardRepository->setById(secondCard.id(),secondCard );
+    try {
+        _cardService->setAsReserveCard(_cardService->getCardById(firstCard.id()).cardId(),
+                                       _cardService->getCardById(secondCard.id()).cardId(), 700);
+
+    }  catch (LogicConflictException) {
+        return true;
+    }
+
+    return false;
+}
+
+bool UnitTests::throwsLogicConflictExceptionOverflow(){
+    UserEntity firstUser = UserEntity(generateId(), "Nan Naner");
+    _userRepository->setById(firstUser.id(), firstUser);
+
+    CardEntity firstCard(generateId(), generateCardId(), generatePin(),firstUser.id(),firstUser.name(),1000);
+    CardEntity secondCard(generateId(), generateCardId(), generatePin(),firstUser.id(),firstUser.name(),300);
+    _cardRepository->setById(firstCard.id(),firstCard );
+    _cardRepository->setById(secondCard.id(),secondCard );
+    try {
+        _cardService->setAsOverflowCard(_cardService->getCardById(firstCard.id()).cardId(),
+                                       _cardService->getCardById(secondCard.id()).cardId(), 700);
+
+    }  catch (LogicConflictException) {
+        return true;
+    }
+
+    return false;
+}

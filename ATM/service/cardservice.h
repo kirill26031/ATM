@@ -5,6 +5,8 @@
 #include "repository/db_impl/cardrepositorydbimpl.h"
 #include "exception/incorrectcardauthinfoexception.h"
 #include "exception/circulardependancyexception.h"
+#include "exception/logicconflictexception.h"
+
 #include <config.h>
 
 class CardService

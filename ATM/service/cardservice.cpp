@@ -1,6 +1,5 @@
 #include "cardservice.h"
 #include "util/utils.h"
-#include "exception/logicconflictexception.h"
 
 CardService* CardService::_service = nullptr;
 
