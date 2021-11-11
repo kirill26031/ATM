@@ -10,6 +10,7 @@
 
 int main(int argc, char *argv[])
 {
+
     if(Config::DEBUG_MODE)
     {
         UnitTests tests;
