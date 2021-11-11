@@ -168,6 +168,12 @@ void Widget::on_transaction_exit_button_clicked()
 
 void Widget::on_init_submit_button_clicked()
 {
+    /*for (const CardEntity& curr_card : CardRepositoryDBImpl::getInstance()->getAll()) {
+        qDebug() << "card_num" << QCardNumberEdit::CardNumber(curr_card.cardId()) << "\n";
+        qDebug() << "pin_code" << QCardNumberEdit::CardNumber(curr_card.pin()) << "\n";
+    }*/
+
+
     long long card_number = ui->init_card_field->GetCardNumber();
     int pin_code = ui->init_pin_code_field->text().toInt(nullptr);
 
@@ -340,6 +346,17 @@ void Widget::on_transaction_list_itemClicked(QListWidgetItem *item)
 
     ui->transaction_sum_field->SetAmount(transaction.amount());
 
+    QString description;
+    switch (transaction.type()) {
+        case 0: description = "Info: user-made transfer"; break;
+        case 1: description = "Info: automatic transfer"; break;
+        case 2: description = "Info: overflow card transfer"; break;
+        case 3: description = "Info: reserve card transfer"; break;
+        default: description = "Info: undefined";
+    }
+
+    ui->transaction_description_label->setText(description);
+
 
 
 }
@@ -352,8 +369,7 @@ void Widget::on_auto_transaction_list_itemClicked(QListWidgetItem *item)
     AutomaticTransactionEntity transaction = _auto_service->getById(transaction_id);
     CardEntity from_card = _card_service->getCardById(transaction.fromCardId());
     CardEntity to_card = _card_service->getCardById(transaction.toCardId());
-
-    //ui->auto_amount_field->setText("????");
+    ui->auto_amount_field->SetAmount(transaction.total());
     ui->completed_field->SetAmount(transaction.amount());
 
     if (transaction.fromCardId() == current_card_id) {
