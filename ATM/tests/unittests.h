@@ -21,6 +21,7 @@ class UnitTests
 public:
     UnitTests();
     void runTests();
+private:
     bool shouldSuccessfullyCreateNewUser();
     bool shouldCreateLinkCardsToUser();
     bool shouldMakeTransactionsWithoutReserveCard();
@@ -41,7 +42,7 @@ public:
     bool throwsNotFoundException();
     bool throwsLogicConflictException();
     bool throwsLogicConflictExceptionOverflow();
-private:
+    
     vector<QPair<QString,bool>> _testResults;
     UserRepository *_userRepository;
     CardRepository *_cardRepository;
